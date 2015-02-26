@@ -5,6 +5,10 @@ This plugin allows seneca servers and clients to communicate over AMQP.
 
 It is **heavily** inspired by [@rjrodger][1]'s [rabbitmq-transport][2] plugin.
 
+## Install
+
+    npm install seneca-amqp-transport
+
 ## Usage
 
 Server:
