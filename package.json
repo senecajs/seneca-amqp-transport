@@ -1,0 +1,31 @@
+{
+  "name": "seneca-amqp-transport",
+  "version": "0.1.0",
+  "description": "AMQP transport plugin for seneca.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:disintegrator/seneca-amqp-transport.git"
+  },
+  "keywords": [
+    "seneca",
+    "plugin",
+    "amqp"
+  ],
+  "author": "George Haidar <ghaidar0@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/disintegrator/seneca-amqp-transport/issues"
+  },
+  "homepage": "https://github.com/disintegrator/seneca-amqp-transport",
+  "dependencies": {
+    "amqplib": "^0.3.1",
+    "async": "^0.9.0",
+    "lodash": "^3.3.1",
+    "seneca": "^0.6.1",
+    "shortid": "^2.1.3"
+  }
+}
