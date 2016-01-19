@@ -7,7 +7,7 @@ This plugin allows seneca listeners and clients to communicate over AMQP.
 
 ## Install
 
-```
+```sh
 npm install seneca-amqp-transport
 ```
 
@@ -16,7 +16,7 @@ The following snippets showcase the most basic usage examples.
 
 ### Listener
 
-```
+```javascript
 require('seneca')()
   .use('seneca-amqp-transport')
   .add({
@@ -35,7 +35,7 @@ require('seneca')()
 
 ### Client
 
-```
+```javascript
 var client = require('seneca')()
   .use('seneca-amqp-transport')
   .client({
@@ -104,7 +104,7 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
 
 # Start client.js
 cd examples
-AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
+AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 2016-01-19T19:45:27.797Z kozrmji8xksw/1453232727786/26313/- INFO	hello	Seneca/1.0.0/kozrmji8xksw/1453232727786/26313/-
 2016-01-19T19:45:28.162Z kozrmji8xksw/1453232727786/26313/- INFO	client	{type:amqp,pin:role:create}
 null { pid: 26290, id: 46 }
