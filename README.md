@@ -21,9 +21,7 @@ The following snippets showcase the most basic usage examples.
 ```javascript
 require('seneca')()
   .use('seneca-amqp-transport')
-  .add({
-    role: 'create'
-  }, function(message, done) {
+  .add('role:create', function(message, done) {
     return done(null, {
       pid: process.pid,
       id: Math.floor(Math.random() * (message.max - message.min + 1)) + message.min
@@ -115,7 +113,7 @@ null { pid: 26290, id: 73 }
 # ...
 ```
 
-> If you don't export the env variable `AMQP_UR`L the default value of `amqp://localhost` will be used.
+> If you don't export the env variable `AMQP_URL` the default value of `amqp://localhost` will be used.
 
 ## TODO
 - Tests
