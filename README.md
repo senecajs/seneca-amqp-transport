@@ -3,7 +3,9 @@
 > A [Seneca.js][1] transport plugin
 
 # seneca-amqp-transport
-This plugin allows seneca listeners and clients to communicate over AMQP.
+[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+
+This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
 ## Install
 
@@ -56,26 +58,26 @@ The following object describes the available options for this transport. These a
 
 ```javascript
 var defaults = {
-    amqp: {
-        type: 'amqp',
-        url: 'amqp://localhost',
-        exchange: {
-            name: 'seneca.direct',
-            options: {
-                durable: true,
-                autoDelete: false
-            }
-        },
-        queues: {
-            action: {
-                durable: true
-            },
-            response: {
-                autoDelete: true,
-                exclusive: true
-            }
-        }
-    }
+  amqp: {
+      type: 'amqp',
+      url: 'amqp://localhost',
+      exchange: {
+          name: 'seneca.direct',
+          options: {
+              durable: true,
+              autoDelete: false
+          }
+      },
+      queues: {
+          action: {
+              durable: true
+          },
+          response: {
+              autoDelete: true,
+              exclusive: true
+          }
+      }
+  }
 };
 ```
 
@@ -83,11 +85,11 @@ To override this settings, pass them to the plugin's `.use` declaration:
 
 ```javascript
 require('seneca')()
-    .use('seneca-amqp-transport', {
-        amqp: {
-            url: 'amqp://username:password@localhost:5672/vhost'
-        }
-    });
+  .use('seneca-amqp-transport', {
+      amqp: {
+          url: 'amqp://username:password@localhost:5672/vhost'
+      }
+  });
 ```
 
 ## Run the examples
@@ -110,10 +112,10 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 null { pid: 26290, id: 46 }
 null { pid: 26290, id: 36 }
 null { pid: 26290, id: 73 }
-...
+# ...
 ```
 
-> If you don't export the env variable AMQP_URL the default value of 'amqp://localhost' will be used.
+> If you don't export the env variable `AMQP_UR`L the default value of `amqp://localhost` will be used.
 
 ## TODO
 - Tests
@@ -121,3 +123,4 @@ null { pid: 26290, id: 73 }
 Any help/contribution is appreciated!
 
 [1]: https://senecajs.org
+[2]: https://www.amqp.org/
