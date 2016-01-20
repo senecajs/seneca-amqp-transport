@@ -1,11 +1,21 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var client = require('seneca')()
-    .use(require('..'))
-    .client({type: 'amqp'});
+  .use('..', {
+    amqp: {
+      url: process.env.AMQP_URL
+    }
+  })
+  .client({
+    type: 'amqp',
+    pin: 'role:create'
+  });
 
 setInterval(function() {
-    client.act({generate:'id'}, function(err, result) {
-        console.log(JSON.stringify(result));
-    });
+  client.act('role:create', {
+    max: 100,
+    min: 25
+  }, console.log);
 }, 500);
