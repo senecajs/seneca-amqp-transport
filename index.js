@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var async = require('async');
 var amqp = require('amqplib/callback_api');
+var amqpuri = require('./lib/amqp-uri');
 var shortid = require('shortid');
 
 var defaults = {
@@ -33,10 +34,11 @@ var hookListen = function(options, args, done) {
   var seneca = this;
   var type = args.type;
   var listenOptions = seneca.util.clean(_.extend({}, options[type], args));
+  var url = amqpuri.format(listenOptions);
   var tu = seneca.export('transport/utils');
   async.auto({
     conn: function(cb) {
-      return amqp.connect(listenOptions.url, cb);
+      return amqp.connect(url, cb);
     },
     channel: ['conn', function(cb, results) {
       var conn = results.conn;
@@ -155,10 +157,11 @@ var hookClient = function(options, args, done) {
   var seneca = this;
   var type = args.type;
   var clientOptions = seneca.util.clean(_.extend({}, options[type], args));
+  var url = amqpuri.format(clientOptions);
   var tu = seneca.export('transport/utils');
   async.auto({
     conn: function(cb) {
-      return amqp.connect(clientOptions.url, cb);
+      return amqp.connect(url, cb);
     },
     channel: ['conn', function(cb, results) {
       var conn = results.conn;

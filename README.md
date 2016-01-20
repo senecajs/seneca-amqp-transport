@@ -80,7 +80,7 @@ var defaults = {
 };
 ```
 
-- To override this settings, pass them to the plugin's `.use` declaration:
+To override this settings, pass them to the plugin's `.use` declaration:
 
 ```javascript
 require('seneca')()
@@ -93,16 +93,36 @@ require('seneca')()
   });
 ```
 
-- AMQP URI may be declared during `seneca#client()` or `seneca#listen()` definition, like so:
+### Transport options
+AMQP related options may be indicated either by [the connection URI](https://www.rabbitmq.com/uri-spec.html) or by passing additional parameters to the `seneca#client()` or `seneca#listen()` functions.
+
+This,
 
 ```javascript
 require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    url: 'amqp://rabbitmq.host:5672'
+    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR'
   });
 ```
+
+will result in the same connection URI as:
+
+```javascript
+require('seneca')()
+  .use('seneca-amqp-transport')
+  .client({
+    type: 'amqp',
+    hostname: 'rabbitmq.host',
+    port: 5672,
+    vhost: 'seneca',
+    locale: 'es_AR',
+    username: 'guest',
+    password: 'guest'
+  });
+```
+
 
 ## Run the examples
 
