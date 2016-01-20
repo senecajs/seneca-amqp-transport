@@ -54,30 +54,30 @@ setInterval(function() {
 ## Options
 The following object describes the available options for this transport. These are applicable to both clients and listeners.
 
-```javascript
-var defaults = {
-  amqp: {
-    type: 'amqp',
-    url: 'amqp://localhost',
-    exchange: {
-      name: 'seneca.topic',
-      type: 'topic',
-      options: {
-          durable: true,
-          autoDelete: false
+```json
+{
+  "amqp": {
+    "type": "amqp",
+    "url": "amqp://localhost",
+    "exchange": {
+      "type": "topic",
+      "name": "seneca.topic",
+      "options": {
+        "durable": true,
+        "autoDelete": false
       }
     },
-    queues: {
-      action: {
-        durable: true
+    "queues": {
+      "action": {
+        "durable": true
       },
-      response: {
-        autoDelete: true,
-        exclusive: true
+      "response": {
+        "autoDelete": true,
+        "exclusive": true
       }
     }
   }
-};
+}
 ```
 
 To override this settings, pass them to the plugin's `.use` declaration:
