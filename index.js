@@ -10,7 +10,8 @@ var defaults = {
     type: 'amqp',
     url: 'amqp://localhost',
     exchange: {
-      name: 'seneca.direct',
+      type: 'topic',
+      name: 'seneca.topic',
       options: {
         durable: true,
         autoDelete: false
@@ -53,7 +54,7 @@ var hookListen = function(options, args, done) {
       var ex = listenOptions.exchange;
       var name = ex.name;
       var opts = ex.options;
-      return channel.assertExchange(name, 'direct', opts, function(err, ok) {
+      return channel.assertExchange(name, ex.type, opts, function(err, ok) {
         if (err) {
           return cb(err);
         }
@@ -87,6 +88,7 @@ var hookListen = function(options, args, done) {
 
       async.each(results.topics, function(topic, done) {
         var actQueue = topic.replace(/\./g, '_') + '_act';
+        actQueue = actQueue.replace(/\*/, 'any');
         channel.assertQueue(actQueue, opts, function(err) {
           if (err) {
             return cb(err);
@@ -167,7 +169,7 @@ var hookClient = function(options, args, done) {
       var ex = clientOptions.exchange;
       var name = ex.name;
       var opts = ex.options;
-      return channel.assertExchange(name, 'direct', opts, function(err, ok) {
+      return channel.assertExchange(name, ex.type, opts, function(err, ok) {
         return cb(err, ok.exchange);
       });
     }],

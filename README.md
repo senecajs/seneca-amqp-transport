@@ -57,36 +57,50 @@ The following object describes the available options for this transport. These a
 ```javascript
 var defaults = {
   amqp: {
-      type: 'amqp',
-      url: 'amqp://localhost',
-      exchange: {
-          name: 'seneca.direct',
-          options: {
-              durable: true,
-              autoDelete: false
-          }
-      },
-      queues: {
-          action: {
-              durable: true
-          },
-          response: {
-              autoDelete: true,
-              exclusive: true
-          }
+    type: 'amqp',
+    url: 'amqp://localhost',
+    exchange: {
+      name: 'seneca.topic',
+      type: 'topic',
+      options: {
+          durable: true,
+          autoDelete: false
       }
+    },
+    queues: {
+      action: {
+        durable: true
+      },
+      response: {
+        autoDelete: true,
+        exclusive: true
+      }
+    }
   }
 };
 ```
 
-To override this settings, pass them to the plugin's `.use` declaration:
+- To override this settings, pass them to the plugin's `.use` declaration:
 
 ```javascript
 require('seneca')()
   .use('seneca-amqp-transport', {
-      amqp: {
-          url: 'amqp://username:password@localhost:5672/vhost'
+    queues: {
+      action: {
+        durable: false
       }
+    }
+  });
+```
+
+- AMQP URI may be declared during `seneca#client()` or `seneca#listen()` definition, like so:
+
+```javascript
+require('seneca')()
+  .use('seneca-amqp-transport')
+  .client({
+    type: 'amqp',
+    url: 'amqp://rabbitmq.host:5672'
   });
 ```
 
