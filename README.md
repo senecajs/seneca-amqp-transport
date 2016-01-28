@@ -123,6 +123,34 @@ require('seneca')()
   });
 ```
 
+### Socket options
+Additionally, you may pass in options to the `amqp.connect` method of [amqplib][3] as documented in [its API reference][4], using the `socketOptions` parameter.
+
+```javascript
+// Example of using a TLS/SSL connection. Note that the server must be
+// configured to accept SSL connections; see http://www.rabbitmq.com/ssl.html.
+
+var fs = require('fs');
+
+var opts = {
+  cert: fs.readFileSync('../etc/client/cert.pem'),
+  key: fs.readFileSync('../etc/client/key.pem'),
+  // cert and key or
+  // pfx: fs.readFileSync('../etc/client/keycert.p12'),
+  passphrase: 'MySecretPassword',
+  ca: [fs.readFileSync('../etc/testca/cacert.pem')]
+};
+
+require('seneca')()
+  .use('seneca-amqp-transport')
+  .client({
+    type: 'amqp',
+    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR',
+    socketOptions: opts
+  });
+```
+
+> Snippet above is based on [amqplib/examples/ssl.js][5]
 
 ## Run the examples
 
@@ -154,5 +182,8 @@ null { pid: 26290, id: 73 }
 
 Any help/contribution is appreciated!
 
-[1]: https://senecajs.org
+[1]: https://senecajs.org/
 [2]: https://www.amqp.org/
+[3]: https://github.com/squaremo/amqp.node
+[4]: http://www.squaremobius.net/amqp.node/channel_api.html#connect
+[5]: https://github.com/squaremo/amqp.node/blob/b74a7ca6acbfcd0fb10127d4770b4f825da57745/examples/ssl.js
