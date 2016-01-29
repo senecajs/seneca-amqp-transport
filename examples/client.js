@@ -6,13 +6,14 @@ var client = require('seneca')()
   .use('..')
   .client({
     type: 'amqp',
-    pin: 'role:create',
+    pins: ['role:create,type:random','role:create,type:sequential'],
     url: process.env.AMQP_URL
   });
 
-setInterval(function() {
-  client.act('role:create', {
+var types = ['random', 'sequential'];
+for(var i = 0; i < 10; i++) {
+  client.act('role:create,type:' + types[i%2], {
     max: 100,
     min: 25
   }, console.log);
-}, 500);
+}
