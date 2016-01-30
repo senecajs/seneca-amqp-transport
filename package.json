@@ -3,8 +3,16 @@
   "version": "0.2.0-dev",
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "index.js",
+    "defaults.json",
+    "lib/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test",
+    "validate": "gulp validate"
   },
   "repository": {
     "type": "git",
@@ -18,6 +26,9 @@
     "rabbitmq"
   ],
   "author": "George Haidar <ghaidar0@gmail.com>",
+  "contributors": [
+    "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/disintegrator/seneca-amqp-transport/issues"
@@ -26,14 +37,24 @@
   "dependencies": {
     "amqplib": "^0.4.0",
     "async": "^1.5.2",
-    "lodash": "^4.0.0",
+    "lodash": "^4.1.0",
     "seneca": "^1.0.0",
     "shortid": "^2.2.4"
   },
   "devDependencies": {
     "eslint": "^1.10.3",
-    "eslint-config-semistandard": "^5.0.0",
-    "eslint-config-standard": "^4.4.0",
-    "eslint-plugin-standard": "^1.3.1"
-  }
+    "eslint-config-seneca": "^1.1.2",
+    "eslint-plugin-hapi": "^4.0.0",
+    "eslint-plugin-standard": "^1.3.1",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^1.1.1",
+    "gulp-if": "^2.0.0",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-load-plugins": "^1.2.0",
+    "gulp-mocha": "^2.2.0",
+    "pre-commit": "^1.1.2"
+  },
+  "pre-commit": [
+    "validate"
+  ]
 }
