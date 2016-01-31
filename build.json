@@ -1,0 +1,9 @@
+{
+  "paths": {
+    "src": ["index.js", "lib/**/*.js", "!test/"],
+    "test": ["test/**/*spec.js", "test/**/*test.js"]
+  },
+  "eslint": {
+    "failOnError": true
+  }
+}

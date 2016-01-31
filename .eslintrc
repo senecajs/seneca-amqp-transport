@@ -1,9 +1,12 @@
 {
-  "extends": "semistandard",
+  "extends": "seneca",
   "env": {
     "mocha": true
   },
   "rules": {
+    "semi": [2, "always"],
+    "no-extra-semi": 2,
+    "semi-spacing": [2, { "before": false, "after": true }],
     "callback-return": [2, ["callback", "cb", "next", "done"]],
     "no-unused-vars": [2, { "vars": "all", "args": "after-used" }],
     "space-before-function-paren": [2, "never"]
