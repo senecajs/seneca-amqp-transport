@@ -1,8 +1,8 @@
 'use strict';
 
-var Defaults = require('./defaults');
-var ClientHook = require('./lib/client-hook');
-var ListenHook = require('./lib/listen-hook');
+const Defaults = require('./defaults');
+const ClientHook = require('./lib/client-hook');
+const ListenHook = require('./lib/listen-hook');
 
 const PLUGIN_NAME = 'amqp-transport';
 
