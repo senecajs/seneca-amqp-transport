@@ -34,7 +34,7 @@ require('seneca')()
   });
 ```
 
-#### How does it work
+#### How it works
 A listener _always_ creates one _and only one_ queue. The queue name can be provided via the `name` parameter, but it will be auto-generated from the `pin` (or `pins`) if not.
 
 > Be careful with name clashing when specifying a `name` for a listener. Having more than one queue with the same name declared on the AMQP broker will probably behave unexpectedly. It is recommended that you leave the name generation to the plugin in order to avoid problems, unless you know what you are doing.
@@ -67,7 +67,7 @@ setInterval(function() {
 }, 500);
 ```
 
-#### How does it work
+#### How it works
 A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
 > Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
