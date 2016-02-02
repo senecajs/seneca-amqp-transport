@@ -68,9 +68,9 @@ setInterval(function() {
 ```
 
 #### How does it work
-A client creates an [exclusive][1], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it (much like a listener would do). On every `act`, the client publishes the message to the topic `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an RPC-schema fashion.
+A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
-> Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported, as client queues are deleted once the client disconnect and re-created each time.
+> Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
 
 As you can see, pins play an important role on routing messages on the broker, so in order for a listener to receive messages from a client, **their pins must match**.
 
@@ -79,7 +79,7 @@ In the example, the following things are declared:
 - A **topic** exchange named `seneca.topic`.
 - An exclusive **queue** with a random alphanumeric name (like `seneca.res.x42jK0l`).
 
-> Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach is destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
+> Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
 
 ## Options
 The following object describes the available options for this transport. These are applicable to both clients and listeners.
@@ -216,8 +216,15 @@ null { pid: 26290, id: 73 }
 
 > If you don't export the env variable `AMQP_URL` the default value of `amqp://localhost` will be used.
 
-## TODO
-- Tests
+## Roadmap
+- Mocha unit tests.
+- Functional tests.
+- Setup Travis CI.
+- Support for message TTL and dead-lettering.
+- Better support for work queues.
+
+## License
+MIT
 
 Any help/contribution is appreciated!
 
@@ -227,3 +234,4 @@ Any help/contribution is appreciated!
 [4]: http://www.squaremobius.net/amqp.node/channel_api.html#connect
 [5]: https://github.com/squaremo/amqp.node/blob/b74a7ca6acbfcd0fb10127d4770b4f825da57745/examples/ssl.js
 [6]: https://www.rabbitmq.com/semantics.html
+[7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
