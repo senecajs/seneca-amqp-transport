@@ -28,5 +28,6 @@ require('seneca')()
   .listen({
     type: 'amqp',
     pin: ['action:get_time', 'level:*', 'proc:status'],
+    name: 'seneca.multi-task.queue',
     url: process.env.AMQP_URL
   });

@@ -12,7 +12,7 @@ require('seneca')()
   })
   .listen({
     type: 'amqp',
-    pin: ['action:log', 'level:*', 'proc:test'],
+    pin: 'role:create',
     url: process.env.AMQP_URL,
     socketOptions: {
       foo: 'bar'
