@@ -28,10 +28,26 @@ require('seneca')()
     });
   })
   .listen({
+    name: 'create_act.queue', // This is optional
     type: 'amqp',
     pin: 'role:create'
   });
 ```
+
+#### How does it work
+A listener _always_ creates one _and only one_ queue. The queue name can be provided via the `name` parameter, but it will be auto-generated from the `pin` (or `pins`) if not.
+
+> Be careful with name clashing when specifying a `name` for a listener. Having more than one queue with the same name declared on the AMQP broker will probably behave unexpectedly. It is recommended that you leave the name generation to the plugin in order to avoid problems, unless you know what you are doing.
+
+If your intention is to create multiple queues, just declare multiple listeners. Each queue will be bound to an exchange (`seneca.topic`, by default) using routing keys derived from the `pin` (or `pins`).
+
+In the example above, the following things are declared:
+
+- A **topic** exchange named `seneca.topic`.
+- A **queue** named `seneca.create_act`.
+- A **binding** between the queue and the exchange using the _routing key_ `role.create` (named after the pin).
+
+> Queue names are prefixed with a configurable word (`seneca.`, by default). It can be disabled or modified during plugin declaration (read below).
 
 ### Client
 
@@ -51,6 +67,20 @@ setInterval(function() {
 }, 500);
 ```
 
+#### How does it work
+A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
+
+> Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
+
+As you can see, pins play an important role on routing messages on the broker, so in order for a listener to receive messages from a client, **their pins must match**.
+
+In the example, the following things are declared:
+
+- A **topic** exchange named `seneca.topic`.
+- An exclusive **queue** with a random alphanumeric name (like `seneca.res.x42jK0l`).
+
+> Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
+
 ## Options
 The following object describes the available options for this transport. These are applicable to both clients and listeners.
 
@@ -69,11 +99,19 @@ The following object describes the available options for this transport. These a
     },
     "queues": {
       "action": {
-        "durable": true
+        "prefix": "seneca",
+        "separator": ".",
+        "options": {
+          "durable": true
+        }
       },
       "response": {
-        "autoDelete": true,
-        "exclusive": true
+        "prefix": "seneca.res",
+        "separator": ".",
+        "options": {
+          "autoDelete": true,
+          "exclusive": true
+        }
       }
     }
   }
@@ -88,6 +126,7 @@ require('seneca')()
     queues: {
       action: {
         durable: false
+        prefix: 'my.namespace'
       }
     }
   });
@@ -177,8 +216,15 @@ null { pid: 26290, id: 73 }
 
 > If you don't export the env variable `AMQP_URL` the default value of `amqp://localhost` will be used.
 
-## TODO
-- Tests
+## Roadmap
+- Mocha unit tests.
+- Functional tests.
+- Setup Travis CI.
+- Support for message TTL and dead-lettering.
+- Better support for work queues.
+
+## License
+MIT
 
 Any help/contribution is appreciated!
 
@@ -187,3 +233,5 @@ Any help/contribution is appreciated!
 [3]: https://github.com/squaremo/amqp.node
 [4]: http://www.squaremobius.net/amqp.node/channel_api.html#connect
 [5]: https://github.com/squaremo/amqp.node/blob/b74a7ca6acbfcd0fb10127d4770b4f825da57745/examples/ssl.js
+[6]: https://www.rabbitmq.com/semantics.html
+[7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html

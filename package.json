@@ -37,6 +37,7 @@
   "dependencies": {
     "amqplib": "^0.4.0",
     "async": "^1.5.2",
+    "jsonic": "^0.2.2",
     "lodash": "^4.1.0",
     "seneca": "^1.0.0",
     "shortid": "^2.2.4"

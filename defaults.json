@@ -12,11 +12,19 @@
     },
     "queues": {
       "action": {
-        "durable": true
+        "prefix": "seneca",
+        "separator": ".",
+        "options": {
+          "durable": true
+        }
       },
       "response": {
-        "autoDelete": true,
-        "exclusive": true
+        "prefix": "seneca.res",
+        "separator": ".",
+        "options": {
+          "autoDelete": true,
+          "exclusive": true
+        }
       }
     }
   }
