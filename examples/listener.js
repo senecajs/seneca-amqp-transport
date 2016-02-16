@@ -3,11 +3,7 @@
 'use strict';
 
 require('seneca')()
-  .use('..', {
-    amqp: {
-      url: process.env.AMQP_URL
-    }
-  })
+  .use('..')
   .add('role:create', function(message, done) {
     return done(null, {
       pid: process.pid,
@@ -16,5 +12,9 @@ require('seneca')()
   })
   .listen({
     type: 'amqp',
-    pin: 'role:create'
+    pin: 'role:create',
+    url: process.env.AMQP_URL,
+    socketOptions: {
+      foo: 'bar'
+    }
   });

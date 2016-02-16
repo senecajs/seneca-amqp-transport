@@ -1,0 +1,31 @@
+{
+  "amqp": {
+    "type": "amqp",
+    "url": "amqp://localhost",
+    "exchange": {
+      "type": "topic",
+      "name": "seneca.topic",
+      "options": {
+        "durable": true,
+        "autoDelete": false
+      }
+    },
+    "queues": {
+      "action": {
+        "prefix": "seneca",
+        "separator": ".",
+        "options": {
+          "durable": true
+        }
+      },
+      "response": {
+        "prefix": "seneca.res",
+        "separator": ".",
+        "options": {
+          "autoDelete": true,
+          "exclusive": true
+        }
+      }
+    }
+  }
+}

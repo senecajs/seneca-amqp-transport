@@ -3,14 +3,11 @@
 'use strict';
 
 var client = require('seneca')()
-  .use('..', {
-    amqp: {
-      url: process.env.AMQP_URL
-    }
-  })
+  .use('..')
   .client({
     type: 'amqp',
-    pin: 'role:create'
+    pin: 'role:create',
+    url: process.env.AMQP_URL
   });
 
 setInterval(function() {
