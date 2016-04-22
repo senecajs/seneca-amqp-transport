@@ -1,5 +1,7 @@
 'use strict';
-
+/**
+ * @module seneca-amqp-transport
+ */
 const Defaults = require('./defaults');
 const ClientHook = require('./lib/client-hook');
 const ListenHook = require('./lib/listen-hook');
