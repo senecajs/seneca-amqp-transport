@@ -15,4 +15,4 @@ setInterval(function() {
     max: 100,
     min: 25
   }, console.log);
-}, 500);
+}, 2000);
