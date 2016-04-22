@@ -4,10 +4,7 @@
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
   "files": [
-    "README.md",
-    "LICENSE",
     "index.js",
-    "defaults.json",
     "lib/*"
   ],
   "scripts": {
@@ -23,7 +20,10 @@
     "plugin",
     "amqp",
     "transport",
-    "rabbitmq"
+    "rabbitmq",
+    "zmq",
+    "activemq",
+    "microservice"
   ],
   "author": "George Haidar <ghaidar0@gmail.com>",
   "contributors": [
@@ -54,6 +54,7 @@
     "gulp-istanbul": "^0.10.4",
     "gulp-load-plugins": "^1.2.2",
     "gulp-mocha": "^2.2.0",
+    "gulp-release": "^1.0.5",
     "pre-commit": "^1.1.2"
   },
   "pre-commit": [

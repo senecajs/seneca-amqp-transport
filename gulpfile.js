@@ -1,11 +1,11 @@
-/**
- * @author nfantone
- */
 'use strict';
 
 const $ = require('gulp-load-plugins')();
 const config = require('./build.json');
 const gulp = require('gulp');
+
+// Declare release task
+$.release.register(gulp);
 
 /**
  * Runs eslint linter on source code
