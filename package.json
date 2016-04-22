@@ -1,6 +1,7 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "0.2.1",
+  "version": "0.2.2-dev",
+  "codename": "Quiescent queuing",
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
   "files": [
@@ -59,6 +60,5 @@
   },
   "pre-commit": [
     "validate"
-  ],
-  "codename": "Quiescent queuing"
+  ]
 }
