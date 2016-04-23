@@ -37,7 +37,7 @@
   "homepage": "https://github.com/disintegrator/seneca-amqp-transport",
   "dependencies": {
     "amqplib": "^0.4.1",
-    "amqpuri": "^1.0.1",
+    "amqpuri": "^1.0.2",
     "async": "^2.0.0-rc.3",
     "jsonic": "^0.2.2",
     "lodash": "^4.11.1",
