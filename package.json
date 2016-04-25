@@ -1,7 +1,7 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "0.2.2-dev",
-  "codename": "Quiescent queuing",
+  "version": "0.2.2",
+  "codename": "Quarantined queuing",
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
   "files": [
