@@ -39,8 +39,6 @@ A listener _always_ creates one _and only one_ queue. The queue name can be prov
 
 > Be careful with name clashing when specifying a `name` for a listener. Having more than one queue with the same name declared on the AMQP broker will probably behave unexpectedly. It is recommended that you leave the name generation to the plugin in order to avoid problems, unless you know what you are doing.
 
-If your intention is to create multiple queues, just declare multiple listeners. Each queue will be bound to an exchange (`seneca.topic`, by default) using routing keys derived from the `pin` (or `pins`).
-
 In the example above, the following things are declared:
 
 - A **topic** exchange named `seneca.topic`.
@@ -48,6 +46,10 @@ In the example above, the following things are declared:
 - A **binding** between the queue and the exchange using the _routing key_ `role.create` (named after the pin).
 
 > Queue names are prefixed with a configurable word (`seneca.`, by default). It can be disabled or modified during plugin declaration (read below).
+
+If your intention is to **create multiple queues**, just declare multiple listeners. Each queue will be bound to an exchange (`seneca.topic`, by default) using routing keys derived from the `pin` (or `pins`).
+
+If your intention is to **declare multiple consumers** on a single queue, run multiple listeners with the same set of `pins`. Or just spawn many instances of a single microservice.
 
 ### Client
 
