@@ -144,7 +144,7 @@ require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR'
+    url: 'amqp://guest:guest@rabbitmq.host:5672/seneca?locale=es_AR'
   });
 ```
 
@@ -186,7 +186,7 @@ require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR',
+    url: 'amqp://guest:guest@rabbitmq.host:5672/seneca?locale=es_AR',
     socketOptions: opts
   });
 ```
