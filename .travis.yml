@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - '4'
+  - '5'
+  - '6'
+sudo: false
+branches:
+  only:
+  - master
+  - develop
+notifications:
+  email:
+  - nfantone@gmail.com
+script: ./node_modules/.bin/gulp validate && ./node_modules/.bin/codecov
+before_script:
+  - npm install codecov
+deploy:
+  provider: npm
+  email: nfantone@gmail.com
+  api_key:
+    secure: XpyWFiL/HBU/Kgce5x6pl8RqtoBNHG7h7sANk4LhhsaLJd8P4+rSP3Fdr1S/tY4uIPVVuO2/1UiQsSdmjYdR04tk4BPXaLH2ZknREF3V7k30ESS52IUKxEsHEVR37SE2NiOqutYDvI4dsO8ANOh/b+5CaZPEvchZRWvaydlFUsYsQwZICV7tKIEwU0E+pLboG0Y08UGaqG1j5KH6pp+5BL4G3rv04f0IcA2GtdjSDKcVjZE1U/MvQCAFOraXDJQq906n83LRM9Tf9Yr7oZlR9ivNzP1Sp8kOJh/L4IC/jkczfwGgA6NnXyt0nfDxVaKyevyl4A/ttYFbuLJ5p2qSxyd3KAfvWxgMzypFV5EaWvObjWcZbaCoR/GNz8J4ATgQ9LfMD/dgtHrpE8WCCb2XkCXU2rkmaIxPUyAHPVL3q20GXi/K2yl725vPwJLr37vHYfbS/7tkqNZdc7DIPCtMLHyZiMrTlH4HIvPYcFpFagKaLmVKrB49qO/w/nk0sdh2p3dLCUxd5PffMX9wygTN9YbMHYMDem3QaG/dF1WjgtSEq+EdC1c7mwGorDc+3SL9kthnlwyu/9rHsdz3pxc3tqmwZOK7/A/GQMRUxv3vSNln7saRV3Z/wcdWHVU/3gcJkA03lhEP3hXeEiRMLAQSs7XiFk7IgqYQkKkpao9a/yw=
+  on:
+    tags: true
+    repo: seneca-contrib/seneca-amqp-transport
+cache:
+  directories: node_modules
