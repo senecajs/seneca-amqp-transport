@@ -3,7 +3,7 @@
 > A [Seneca.js][1] transport plugin
 
 # seneca-amqp-transport
-[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+[![Build Status](https://travis-ci.org/seneca-contrib/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/seneca-contrib/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/seneca-contrib/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/seneca-contrib/seneca-amqp-transport?branch=develop) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/seneca-contrib/seneca-amqp-transport/blob/master/LICENSE)
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
