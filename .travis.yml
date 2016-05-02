@@ -11,9 +11,9 @@ branches:
 notifications:
   email:
   - nfantone@gmail.com
-script: ./node_modules/.bin/gulp validate && ./node_modules/.bin/codecov
-before_script:
-  - npm install codecov
+script: npm run validate
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
