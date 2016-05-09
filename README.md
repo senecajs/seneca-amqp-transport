@@ -127,7 +127,7 @@ require('seneca')()
   .use('seneca-amqp-transport', {
     queues: {
       action: {
-        durable: false
+        durable: false,
         prefix: 'my.namespace'
       }
     }
