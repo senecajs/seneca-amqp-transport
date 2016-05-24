@@ -25,7 +25,8 @@
     "rabbitmq",
     "zmq",
     "activemq",
-    "microservice"
+    "microservice",
+    "rpc"
   ],
   "author": "George Haidar <ghaidar0@gmail.com>",
   "contributors": [
@@ -33,13 +34,12 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/disintegrator/seneca-amqp-transport/issues"
+    "url": "https://github.com/seneca-contrib/seneca-amqp-transport/issues"
   },
-  "homepage": "https://github.com/disintegrator/seneca-amqp-transport",
+  "homepage": "https://github.com/seneca-contrib/seneca-amqp-transport",
   "dependencies": {
     "amqplib": "^0.4.1",
     "amqpuri": "^1.0.2",
-    "async": "^2.0.0-rc.5",
     "bluebird": "^3.4.0",
     "jsonic": "^0.2.2",
     "lodash": "^4.12.0",
