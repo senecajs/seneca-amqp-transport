@@ -13,7 +13,7 @@ module.exports = function(opts) {
   var so = seneca.options();
   var options = seneca.util.deepextend(Defaults, so.transport, opts);
   var listen = new ListenHook(seneca, options);
-  var client = new ClientHook(seneca, options);
+  var client = new ClientHook(seneca);
   seneca.add({
     role: 'transport',
     hook: 'listen',
@@ -23,7 +23,7 @@ module.exports = function(opts) {
     role: 'transport',
     hook: 'client',
     type: 'amqp'
-  }, client.hook());
+  }, client.hook(options));
 
   return {
     name: PLUGIN_NAME
