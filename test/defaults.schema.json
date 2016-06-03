@@ -1,0 +1,90 @@
+{
+
+  "title": "Default options schema",
+  "type": "object",
+  "required": ["amqp"],
+  "properties": {
+    "amqp": {
+      "type": "object",
+      "required": ["type", "url", "exchange", "queues"],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "exchange": {
+          "type": "object",
+          "required": ["type","name","options"],
+          "properties": {
+            "type": "string",
+            "name": "string",
+            "options": {
+              "type": "object",
+              "required": ["durable", "autoDelete"],
+              "properties": {
+                "durable": {
+                  "type": "boolean"
+                },
+                "autoDelete": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "queues": {
+          "type": "object",
+          "required": ["action","response"],
+          "properties": {
+            "action": {
+              "type": "object",
+              "properties": {
+                "prefix": {
+                  "type": "string"
+                },
+                "separator": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "object",
+                  "required": ["durable"],
+                  "properties": {
+                    "durable": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "response": {
+              "type": "object",
+              "properties": {
+                "prefix": {
+                  "type": "string"
+                },
+                "separator": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "object",
+                  "required": ["autoDelete", "exclusive"],
+                  "properties": {
+                    "autoDelete": {
+                      "type": "boolean"
+                    },
+                    "exclusive": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
