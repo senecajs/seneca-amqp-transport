@@ -93,11 +93,22 @@ describe('Unit tests for amqp-util module', function() {
       queue.should.equal('seneca.role:entity.cmd:save');
     });
 
+    it("should resolve pins with arrays of commands", function() {
+
+      var pin = {
+        role: 'entity',
+        cmd: ['save','read','delete']
+      };
+
+      var queue = AmqpUtil.resolveListenQueue(pin);
+      queue.should.equal('seneca.role:entity.cmd:save_read_delete');
+    });
+
     it("should resolve multiple pins", function() {
 
       var pins = [{
         role: 'entity',
-        cmd: 'save'
+        cmd: ['save','read','delete']
       }, {
         role: 'entity',
         cmd: 'list'
@@ -106,7 +117,7 @@ describe('Unit tests for amqp-util module', function() {
       }];
 
       var queue = AmqpUtil.resolveListenQueue(pins);
-      queue.should.equal('seneca.role:entity.cmd:save_list.foo:any');
+      queue.should.equal('seneca.role:entity.cmd:save_read_delete_list.foo:any');
     });
 
     it("should resolve multiple pins by honoring custom prefix and separator", function() {
