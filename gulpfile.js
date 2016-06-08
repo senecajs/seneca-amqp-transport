@@ -14,7 +14,7 @@ $.release.register(gulp);
  * `gulp eslint`
  */
 gulp.task('eslint', () =>
-  gulp.src(config.paths.src)
+  gulp.src([].concat(config.paths.src, config.paths.test))
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.if(config.eslint.failOnError, $.eslint.failOnError()))
