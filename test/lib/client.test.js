@@ -3,6 +3,7 @@
 const Chai = require('chai');
 const Sinon = require('sinon');
 const SinonChai = require('sinon-chai');
+require('sinon-bluebird');
 Chai.should();
 Chai.use(SinonChai);
 
@@ -127,20 +128,18 @@ describe('Unit tests for AMQPSenecaListener module', function() {
   });
 
   describe('callback()', function() {
-    it('should consume reply messages from the channel', Sinon.test(function() {
-      // spies
-      var spy_parseJSON = this.spy(client.utils, 'parseJSON');
-
-      var stub_handle_response = this.stub(client.utils, 'handle_response', function() {});
+    it('should forward channel messages to consumeReply()', Sinon.test(function() {
+      // stubs
+      var stub_consume = this.stub(client.transport.channel, 'consume').resolves(message);
+      var stub_sendDone = this.stub();
 
       // consume the response message
-      client.consumeReply()(message);
+      client.callback()(null, null, stub_sendDone);
 
       /*
        * assertions
        */
-      spy_parseJSON.should.have.been.calledOnce;
-      stub_handle_response.should.have.been.calledOnce;
+      stub_consume.should.have.been.calledOnce;
     }));
   });
 });

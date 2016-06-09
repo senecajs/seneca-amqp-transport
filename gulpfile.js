@@ -1,8 +1,8 @@
 'use strict';
 
-const $ = require('Gulp-load-plugins')();
+const $ = require('gulp-load-plugins')();
 const Config = require('./build.json');
-const Gulp = require('Gulp');
+const Gulp = require('gulp');
 
 // Declare release task
 $.release.register(Gulp);
