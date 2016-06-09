@@ -1,37 +1,37 @@
 'use strict';
 
-const $ = require('gulp-load-plugins')();
-const config = require('./build.json');
-const gulp = require('gulp');
+const $ = require('Gulp-load-plugins')();
+const Config = require('./build.json');
+const Gulp = require('Gulp');
 
 // Declare release task
-$.release.register(gulp);
+$.release.register(Gulp);
 
 /**
  * Runs eslint linter on source code
  * and prints a report.
  *
- * `gulp eslint`
+ * `Gulp eslint`
  */
-gulp.task('eslint', () =>
-  gulp.src([].concat(config.paths.src, config.paths.test))
+Gulp.task('eslint', () =>
+  Gulp.src([].concat(Config.paths.src, Config.paths.test))
     .pipe($.eslint())
     .pipe($.eslint.format())
-    .pipe($.if(config.eslint.failOnError, $.eslint.failOnError()))
+    .pipe($.if(Config.eslint.failOnError, $.eslint.failOnError()))
 );
 
 /**
  * Runs unit tests and prints out
  * a report.
  *
- * `gulp test`
+ * `Gulp test`
  */
-gulp.task('test', (cb) => {
-  gulp.src(config.paths.src)
+Gulp.task('test', (cb) => {
+  Gulp.src(Config.paths.src)
     .pipe($.istanbul()) // Covering files
     .pipe($.istanbul.hookRequire()) // Force `require` to return covered files
     .on('finish', function() {
-      gulp.src(config.paths.test)
+      Gulp.src(Config.paths.test)
         .pipe($.mocha())
         .pipe($.istanbul.writeReports()) // Creating the reports after tests ran
         .pipe($.istanbul.enforceThresholds({
@@ -47,22 +47,22 @@ gulp.task('test', (cb) => {
  * Watches sources and runs linter on
  * changes.
  *
- * `gulp watch`
+ * `Gulp watch`
  */
-gulp.task('watch', () => gulp.watch(config.paths.src, ['eslint']));
+Gulp.task('watch', () => Gulp.watch(Config.paths.src, ['eslint']));
 
 /**
  * Lints source code and runs test suite.
  * Used as a pre-commit hook.
  *
- * `gulp validate`
+ * `Gulp validate`
  */
-gulp.task('validate', ['eslint', 'test']);
+Gulp.task('validate', ['eslint', 'test']);
 
 /**
  * Alias for 'validate'.
  * Default task.
  *
- * `gulp [--debug|--debug-brk]`
+ * `Gulp [--debug|--debug-brk]`
  */
-gulp.task('default', ['validate']);
+Gulp.task('default', ['validate']);
