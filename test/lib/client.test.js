@@ -125,6 +125,22 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       spy_parseJSON.should.have.been.calledOnce;
       stub_handle_response.should.have.been.calledOnce;
     }));
+
+    it('should handle reply messages with no content', Sinon.test(function() {
+      // spies
+      var spy_parseJSON = this.spy(client.utils, 'parseJSON');
+
+      var stub_handle_response = this.stub(client.utils, 'handle_response', function() {});
+
+      // consume the response message
+      client.consumeReply()({});
+
+      /*
+       * assertions
+       */
+      spy_parseJSON.should.have.been.calledOnce;
+      stub_handle_response.should.have.been.calledOnce;
+    }));
   });
 
   describe('callback()', function() {
