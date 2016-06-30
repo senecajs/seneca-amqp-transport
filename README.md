@@ -218,10 +218,14 @@ null { pid: 26290, id: 73 }
 
 > If you don't export the env variable `AMQP_URL` the default value of `amqp://localhost` will be used.
 
+## Contributors
+- George Haidar (ghaidar0@gmail.com) _(author of the original version)_.
+- Chris Spiliotopoulos (chrysanthos.spiliotopoulos@gmail.com)
+
 ## Roadmap
-- Mocha unit tests.
+- ~~Mocha unit tests~~
 - Functional tests.
-- Setup Travis CI.
+- ~~Setup Travis CI~~
 - Support for message TTL and dead-lettering.
 - Better support for work queues.
 

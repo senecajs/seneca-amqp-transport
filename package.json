@@ -28,9 +28,9 @@
     "microservice",
     "rpc"
   ],
-  "author": "George Haidar <ghaidar0@gmail.com>",
+  "author": "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
   "contributors": [
-    "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
+    "George Haidar <ghaidar0@gmail.com>",
     "Chris Spiliotopoulos <chrysanthos.spiliotopoulos@gmail.com> (https://github.com/chefArchitect)"
   ],
   "license": "MIT",
