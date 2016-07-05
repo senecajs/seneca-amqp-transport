@@ -19,7 +19,7 @@ gulp.task('eslint', () =>
   gulp.src([].concat(config.paths.src, config.paths.test))
   .pipe($.eslint())
   .pipe($.eslint.format())
-  .pipe($.if(config.eslint.failOnError, $.eslint.failOnError()))
+  .pipe($.if(config.eslint.failOnError, $.eslint.failAfterError()))
 );
 
 /**
@@ -29,6 +29,7 @@ gulp.task('eslint', () =>
  * `gulp test`
  */
 gulp.task('test', (cb) => {
+  process.env.NODE_ENV = 'test';
   gulp.src(config.paths.src)
     .pipe($.istanbul()) // Covering files
     .pipe($.istanbul.hookRequire()) // Force `require` to return covered files
