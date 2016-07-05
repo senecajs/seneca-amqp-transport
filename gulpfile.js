@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use strict';
 
 const $ = require('gulp-load-plugins')();
@@ -13,12 +15,12 @@ $.release.register(gulp);
  *
  * `gulp eslint`
  */
-gulp.task('eslint', function() {
-  return gulp.src(config.paths.src)
-    .pipe($.eslint())
-    .pipe($.eslint.format())
-    .pipe($.if(config.eslint.failOnError, $.eslint.failOnError()));
-});
+gulp.task('eslint', () =>
+  gulp.src([].concat(config.paths.src, config.paths.test))
+  .pipe($.eslint())
+  .pipe($.eslint.format())
+  .pipe($.if(config.eslint.failOnError, $.eslint.failAfterError()))
+);
 
 /**
  * Runs unit tests and prints out
@@ -26,7 +28,8 @@ gulp.task('eslint', function() {
  *
  * `gulp test`
  */
-gulp.task('test', function(cb) {
+gulp.task('test', (cb) => {
+  process.env.NODE_ENV = 'test';
   gulp.src(config.paths.src)
     .pipe($.istanbul()) // Covering files
     .pipe($.istanbul.hookRequire()) // Force `require` to return covered files
@@ -49,9 +52,7 @@ gulp.task('test', function(cb) {
  *
  * `gulp watch`
  */
-gulp.task('watch', function() {
-  gulp.watch(config.paths.src, ['eslint']);
-});
+gulp.task('watch', () => gulp.watch(config.paths.src, ['eslint']));
 
 /**
  * Lints source code and runs test suite.

@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+- '5'
+- '6'
+sudo: false
+branches:
+  only:
+  - master
+  - develop
+  - /^v?(\d\.){2}\d$/
+notifications:
+  email:
+  - nfantone@gmail.com
+script: npm run validate
+after_success:
+- bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: npm
+  email: nfantone@gmail.com
+  api_key:
+    secure: PKTP7urawBqTihUIyVUqtAysnfaJRXTWaAtRyT+z5fdb19/SqyKKSyu3j6VuBPtn/GGYj3xulZ5qzMfiE2mwcM1UQcq6LVB4tSoXgEMZ3MGfSNQ3Jjca6eWLG6KJl1LOxhCe5y2kEJrcLTHpc9LE7g5J7JDP/s+egUVYaozcEwI=
+  on:
+    tags: true
+    repo: seneca-contrib/seneca-amqp-transport
+    node_js: '5'
+cache:
+  bundler: true
+  directories: node_modules

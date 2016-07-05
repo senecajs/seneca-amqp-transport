@@ -3,15 +3,17 @@
 > A [Seneca.js][1] transport plugin
 
 # seneca-amqp-transport
-[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+[![Build Status](https://travis-ci.org/seneca-contrib/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/seneca-contrib/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/seneca-contrib/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/seneca-contrib/seneca-amqp-transport?branch=develop) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/seneca-contrib/seneca-amqp-transport/blob/master/LICENSE)
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
 ## Install
 
 ```sh
-npm install seneca-amqp-transport
+npm install --save seneca-amqp-transport
 ```
+
+> This transport supports AMQP 0-9-1, which is what [amqplib][3] currently supports. For an AMQP 1.0 compliant transport, take a look at [seneca-servicebus-transport][8]
 
 ## Usage
 The following snippets showcase the most basic usage examples.
@@ -127,7 +129,7 @@ require('seneca')()
   .use('seneca-amqp-transport', {
     queues: {
       action: {
-        durable: false
+        durable: false,
         prefix: 'my.namespace'
       }
     }
@@ -144,7 +146,7 @@ require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR'
+    url: 'amqp://guest:guest@rabbitmq.host:5672/seneca?locale=es_AR'
   });
 ```
 
@@ -186,7 +188,7 @@ require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    url: 'amqp://guest@guest:rabbitmq.host:5672/seneca?locale=es_AR',
+    url: 'amqp://guest:guest@rabbitmq.host:5672/seneca?locale=es_AR',
     socketOptions: opts
   });
 ```
@@ -218,10 +220,14 @@ null { pid: 26290, id: 73 }
 
 > If you don't export the env variable `AMQP_URL` the default value of `amqp://localhost` will be used.
 
+## Contributors
+- George Haidar (ghaidar0@gmail.com) _(author of the original version)_.
+- Chris Spiliotopoulos (chrysanthos.spiliotopoulos@gmail.com)
+
 ## Roadmap
-- Mocha unit tests.
+- ~~Mocha unit tests~~
 - Functional tests.
-- Setup Travis CI.
+- ~~Setup Travis CI~~
 - Support for message TTL and dead-lettering.
 - Better support for work queues.
 
@@ -237,3 +243,4 @@ Any help/contribution is appreciated!
 [5]: https://github.com/squaremo/amqp.node/blob/b74a7ca6acbfcd0fb10127d4770b4f825da57745/examples/ssl.js
 [6]: https://www.rabbitmq.com/semantics.html
 [7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+[8]: https://github.com/otaviosoares/seneca-servicebus-transport

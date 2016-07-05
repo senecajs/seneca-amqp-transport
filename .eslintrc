@@ -10,6 +10,7 @@
     "callback-return": [2, ["callback", "cb", "next", "done"]],
     "no-unused-vars": [2, { "vars": "all", "args": "after-used" }],
     "space-before-function-paren": [2, "never"],
-    "brace-style": [2, "1tbs",  { "allowSingleLine": false }]
+    "brace-style": [2, "1tbs",  { "allowSingleLine": false }],
+    "arrow-parens": ["error", "always"]
   }
 }
