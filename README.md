@@ -10,8 +10,10 @@ This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 ## Install
 
 ```sh
-npm install seneca-amqp-transport
+npm install --save seneca-amqp-transport
 ```
+
+> This transport supports AMQP 0-9-1, which is what [amqplib][3] currently supports. For an AMQP 1.0 compliant transport, take a look at [seneca-servicebus-transport][8]
 
 ## Usage
 The following snippets showcase the most basic usage examples.
@@ -241,3 +243,4 @@ Any help/contribution is appreciated!
 [5]: https://github.com/squaremo/amqp.node/blob/b74a7ca6acbfcd0fb10127d4770b4f825da57745/examples/ssl.js
 [6]: https://www.rabbitmq.com/semantics.html
 [7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+[8]: https://github.com/otaviosoares/seneca-servicebus-transport
