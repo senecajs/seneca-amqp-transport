@@ -1,10 +1,12 @@
 'use strict';
 
 const Chai = require('chai');
+const DirtyChai = require('dirty-chai');
 const Sinon = require('sinon');
 const SinonChai = require('sinon-chai');
 Chai.should();
 Chai.use(SinonChai);
+Chai.use(DirtyChai);
 
 const Defaults = require('../../defaults');
 const seneca = require('seneca')();
@@ -61,14 +63,14 @@ describe('Unit tests for AMQPSenecaListener module', function() {
   describe('handleMessage()', function() {
     it('should not handle empty messages', Sinon.test(function() {
       // stubs
-      var stub_handle_request = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
-        cb();
+      var stubHandleRequest = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
+        return cb();
       });
 
       // spies
-      var spy_stringifyJSON = this.spy(listener.utils, 'stringifyJSON');
-      var spy_sendToQueue = this.spy(transport.channel, 'sendToQueue');
-      var spy_ack = this.spy(transport.channel, 'ack');
+      var spyStringifyJSON = this.spy(listener.utils, 'stringifyJSON');
+      var spySendToQueue = this.spy(transport.channel, 'sendToQueue');
+      var spyAck = this.spy(transport.channel, 'ack');
 
       // handle the message
       listener.handleMessage(message, data);
@@ -76,22 +78,22 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       /*
        * assertions
        */
-      stub_handle_request.should.have.been.calledOnce;
-      spy_stringifyJSON.should.have.not.been.called;
-      spy_sendToQueue.should.have.not.been.called;
-      spy_ack.should.have.not.been.called;
+      stubHandleRequest.should.have.been.calledOnce();
+      spyStringifyJSON.should.have.not.been.called();
+      spySendToQueue.should.have.not.been.called();
+      spyAck.should.have.not.been.called();
     }));
 
     it('should push messages to reply queue and acknowledge them', Sinon.test(function() {
       // stubs
-      var stub_handle_request = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
-        cb(data);
+      var stubHandleRequest = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
+        return cb(data);
       });
 
       // spies
-      var spy_stringifyJSON = this.spy(listener.utils, 'stringifyJSON');
-      var spy_sendToQueue = this.spy(transport.channel, 'sendToQueue');
-      var spy_ack = this.spy(transport.channel, 'ack');
+      var spyStringifyJSON = this.spy(listener.utils, 'stringifyJSON');
+      var spySendToQueue = this.spy(transport.channel, 'sendToQueue');
+      var spyAck = this.spy(transport.channel, 'ack');
 
       // handle the message
       listener.handleMessage(message, data);
@@ -99,27 +101,27 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       /*
        * assertions
        */
-      stub_handle_request.should.have.been.calledOnce;
-      spy_stringifyJSON.should.have.been.calledOnce;
-      spy_stringifyJSON.should.have.been.calledWithExactly(seneca, 'listen-amqp', data);
-      spy_sendToQueue.should.have.been.calledOnce;
-      spy_sendToQueue.should.have.been.calledWithExactly(message.properties.replyTo, new Buffer(JSON.stringify(data)));
-      spy_ack.should.have.been.calledOnce;
-      spy_ack.should.have.been.calledWithExactly(message);
+      stubHandleRequest.should.have.been.calledOnce();
+      spyStringifyJSON.should.have.been.calledOnce();
+      spyStringifyJSON.should.have.been.calledWithExactly(seneca, 'listen-amqp', data);
+      spySendToQueue.should.have.been.calledOnce();
+      spySendToQueue.should.have.been.calledWithExactly(message.properties.replyTo, new Buffer(JSON.stringify(data)));
+      spyAck.should.have.been.calledOnce();
+      spyAck.should.have.been.calledWithExactly(message);
     }));
   });
 
   describe('listen()', function() {
     it('should listen and consume messages from the channel', Sinon.test(function() {
       // stubs
-      var stub_consume = this.stub(transport.channel, 'consume', function(queue, cb) {
+      var spyConsume = this.stub(transport.channel, 'consume', function(queue, cb) {
         // return the message
-        cb(message);
+        return cb(message);
       });
 
       listener.listen(transport.queue, message);
 
-      stub_consume.should.have.been.calledOnce;
+      spyConsume.should.have.been.calledOnce();
     }));
   });
 
@@ -131,44 +133,42 @@ describe('Unit tests for AMQPSenecaListener module', function() {
         }
       };
 
-      var spy_nack = this.spy(transport.channel, 'nack');
-      var spy_handleMessage = this.spy(listener, 'handleMessage');
+      var spyNack = this.spy(transport.channel, 'nack');
+      var spyHandleMessage = this.spy(listener, 'handleMessage');
 
       // consume the message
       listener.consume()(msg);
 
-      spy_nack.should.have.been.calledOnce;
-      spy_handleMessage.should.not.have.been.called;
+      spyNack.should.have.been.calledOnce();
+      spyHandleMessage.should.not.have.been.called();
     }));
 
     it('should not acknowledge messages without a replyTo property', Sinon.test(function() {
       var msg = {
-        properties: {
-
-        }
+        properties: {}
       };
 
-      var spy_nack = this.spy(transport.channel, 'nack');
-      var spy_handleMessage = this.spy(listener, 'handleMessage');
+      var spyNack = this.spy(transport.channel, 'nack');
+      var spyHandleMessage = this.spy(listener, 'handleMessage');
 
       // consume the message
       listener.consume()(msg);
 
-      spy_nack.should.have.been.calledOnce;
-      spy_handleMessage.should.not.have.been.called;
+      spyNack.should.have.been.calledOnce();
+      spyHandleMessage.should.not.have.been.called();
     }));
 
     it('should handle a valid message', Sinon.test(function() {
-      var spy_nack = this.spy(transport.channel, 'nack');
-      var spy_handleMessage = this.spy(listener, 'handleMessage');
-      var spy_parseJSON = this.spy(listener.utils, 'parseJSON');
+      var spyNack = this.spy(transport.channel, 'nack');
+      var spyHandleMessage = this.spy(listener, 'handleMessage');
+      var spyParseJSON = this.spy(listener.utils, 'parseJSON');
 
       // consume the message
       listener.consume()(message);
 
-      spy_nack.should.not.have.been.called;
-      spy_parseJSON.should.have.been.calledOnce;
-      spy_handleMessage.should.have.been.calledOnce;
+      spyNack.should.not.have.been.called();
+      spyParseJSON.should.have.been.calledOnce();
+      spyHandleMessage.should.have.been.calledOnce();
     }));
   });
 });

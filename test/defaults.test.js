@@ -2,7 +2,7 @@
 
 const Chai = require('chai');
 Chai.should();
-Chai.use(require('chai-json-schema'));
+Chai.use(require('chai3-json-schema'));
 
 const Defaults = require('../defaults');
 const Schema = require('./defaults.schema.json');

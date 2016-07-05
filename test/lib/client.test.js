@@ -1,11 +1,13 @@
 'use strict';
 
 const Chai = require('chai');
+const DirtyChai = require('dirty-chai');
 const Sinon = require('sinon');
 const SinonChai = require('sinon-chai');
 require('sinon-bluebird');
 Chai.should();
 Chai.use(SinonChai);
+Chai.use(DirtyChai);
 
 const Defaults = require('../../defaults');
 const seneca = require('seneca')();
@@ -25,11 +27,11 @@ var transport = {
 };
 
 var reply = {
-  'kind': 'res',
-  'sync': true,
-  'res': {
-    'pid': 14825,
-    'id': 74
+  kind: 'res',
+  sync: true,
+  res: {
+    pid: 14825,
+    id: 74
   }
 };
 
@@ -59,44 +61,44 @@ describe('Unit tests for AMQPSenecaListener module', function() {
 
   describe('publish()', function() {
     it('should publish a valid message to the channel', Sinon.test(function() {
-      // spies
-      var spy_prepare_request = this.spy(client.utils, 'prepare_request');
-      var spy_stringifyJSON = this.spy(client.utils, 'stringifyJSON');
-      var spy_resolveClientTopic = this.spy(AmqpUtil, 'resolveClientTopic');
-      var spy_publish = this.spy(transport.channel, 'publish');
-      var spy_done = this.spy();
+      // Setup spies
+      var spyPrepareRequest = this.spy(client.utils, 'prepare_request');
+      var spyStringifyJSON = this.spy(client.utils, 'stringifyJSON');
+      var spyResolveClientTopic = this.spy(AmqpUtil, 'resolveClientTopic');
+      var spyPublish = this.spy(transport.channel, 'publish');
+      var spyDone = this.spy();
 
       var args = {
         max: 100,
         min: 25,
         role: 'create',
-        'meta$': {
+        meta$: {
           pattern: 'role:create',
           sync: true
         }
       };
 
       // publish the message
-      client.publish()(args, spy_done);
+      client.publish()(args, spyDone);
 
       /*
        * assertions
        */
-      spy_prepare_request.should.have.been.calledOnce;
-      spy_stringifyJSON.should.have.been.calledOnce;
-      spy_resolveClientTopic.should.have.been.calledOnce;
-      spy_publish.should.have.been.called;
+      spyPrepareRequest.should.have.been.calledOnce();
+      spyStringifyJSON.should.have.been.calledOnce();
+      spyResolveClientTopic.should.have.been.calledOnce();
+      spyPublish.should.have.been.called();
     }));
   });
 
   describe('awaitReply()', function() {
     it('should await for reply messages from the channel', Sinon.test(function() {
       // stubs
-      var stub_consume = this.stub(client.transport.channel, 'consume', function(queue, cb) {
+      var spyConsume = this.stub(client.transport.channel, 'consume', function(queue, cb) {
         cb(message);
       });
 
-      var stub_handle_response = this.stub(client.utils, 'handle_response', function() {});
+      var stubHandleResponse = this.stub(client.utils, 'handle_response', function() {});
 
       // wait for reply messages
       client.awaitReply();
@@ -104,17 +106,17 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       /*
        * assertions
        */
-      stub_consume.should.have.been.calledOnce;
-      stub_handle_response.should.have.been.calledOnce;
+      spyConsume.should.have.been.calledOnce();
+      stubHandleResponse.should.have.been.calledOnce();
     }));
   });
 
   describe('consumeReply()', function() {
     it('should consume reply messages from the channel', Sinon.test(function() {
       // spies
-      var spy_parseJSON = this.spy(client.utils, 'parseJSON');
+      var spyParseJSON = this.spy(client.utils, 'parseJSON');
 
-      var stub_handle_response = this.stub(client.utils, 'handle_response', function() {});
+      var stubHandleResponse = this.stub(client.utils, 'handle_response', function() {});
 
       // consume the response message
       client.consumeReply()(message);
@@ -122,15 +124,15 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       /*
        * assertions
        */
-      spy_parseJSON.should.have.been.calledOnce;
-      stub_handle_response.should.have.been.calledOnce;
+      spyParseJSON.should.have.been.calledOnce();
+      stubHandleResponse.should.have.been.calledOnce();
     }));
 
     it('should handle reply messages with no content', Sinon.test(function() {
       // spies
-      var spy_parseJSON = this.spy(client.utils, 'parseJSON');
+      var spyParseJSON = this.spy(client.utils, 'parseJSON');
 
-      var stub_handle_response = this.stub(client.utils, 'handle_response', function() {});
+      var stubHandleResponse = this.stub(client.utils, 'handle_response', function() {});
 
       // consume the response message
       client.consumeReply()({});
@@ -138,24 +140,24 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       /*
        * assertions
        */
-      spy_parseJSON.should.have.been.calledOnce;
-      stub_handle_response.should.have.been.calledOnce;
+      spyParseJSON.should.have.been.calledOnce();
+      stubHandleResponse.should.have.been.calledOnce();
     }));
   });
 
   describe('callback()', function() {
     it('should forward channel messages to consumeReply()', Sinon.test(function() {
       // stubs
-      var stub_consume = this.stub(client.transport.channel, 'consume').resolves(message);
-      var stub_sendDone = this.stub();
+      var spyConsume = this.stub(client.transport.channel, 'consume').resolves(message);
+      var stubSendDone = this.stub();
 
       // consume the response message
-      client.callback()(null, null, stub_sendDone);
+      client.callback()(null, null, stubSendDone);
 
       /*
        * assertions
        */
-      stub_consume.should.have.been.calledOnce;
+      spyConsume.should.have.been.calledOnce();
     }));
   });
 });

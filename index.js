@@ -1,5 +1,8 @@
 'use strict';
 /**
+ * Plugin that allows seneca listeners
+ * and clients to communicate over AMQP 0-9-1.
+ *
  * @module seneca-amqp-transport
  */
 const Defaults = require('./defaults');
