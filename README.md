@@ -127,10 +127,13 @@ To override this settings, pass them to the plugin's `.use` declaration:
 ```javascript
 require('seneca')()
   .use('seneca-amqp-transport', {
-    queues: {
-      action: {
-        durable: false,
-        prefix: 'my.namespace'
+    amqp: {
+      queues: {
+        action: {
+          options: {
+            durable: false
+          }
+        }
       }
     }
   });
