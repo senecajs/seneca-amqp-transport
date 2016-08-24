@@ -1,5 +1,19 @@
 # Change Log
 
+## [Unreleased](https://github.com/seneca-contrib/seneca-amqp-transport/tree/HEAD)
+
+[Full Changelog](https://github.com/seneca-contrib/seneca-amqp-transport/compare/1.0.0...HEAD)
+
+**Fixed bugs:**
+
+- Correct bad plugin options usage [\#45](https://github.com/seneca-contrib/seneca-amqp-transport/pull/45) ([nfantone](https://github.com/nfantone))
+
+**Merged pull requests:**
+
+- Update eslint-config-seneca to version 3.0.0 🚀 [\#43](https://github.com/seneca-contrib/seneca-amqp-transport/pull/43) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update gulp-mocha to version 3.0.0 🚀 [\#42](https://github.com/seneca-contrib/seneca-amqp-transport/pull/42) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update eslint-plugin-standard to version 2.0.0 🚀 [\#40](https://github.com/seneca-contrib/seneca-amqp-transport/pull/40) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
 ## [1.0.0](https://github.com/seneca-contrib/seneca-amqp-transport/tree/1.0.0) (2016-07-05)
 [Full Changelog](https://github.com/seneca-contrib/seneca-amqp-transport/compare/0.2.2...1.0.0)
 
