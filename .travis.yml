@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '5'
+- '4'
 - '6'
 sudo: false
 branches:
@@ -11,9 +11,11 @@ branches:
 notifications:
   email:
   - nfantone@gmail.com
+before_install:
+  - npm i -g npm
 script: npm run validate
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
@@ -22,7 +24,7 @@ deploy:
   on:
     tags: true
     repo: seneca-contrib/seneca-amqp-transport
-    node_js: '5'
+    node_js: '6'
 cache:
   bundler: true
   directories: node_modules
