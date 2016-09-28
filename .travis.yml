@@ -15,7 +15,7 @@ before_install:
   - npm i -g npm
 script: npm run validate
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - test $TRAVIS_NODE_VERSION == '6' && bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
