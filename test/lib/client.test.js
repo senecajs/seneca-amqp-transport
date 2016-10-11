@@ -50,7 +50,7 @@ describe('Unit tests for AMQPSenecaListener module', function() {
     seneca.ready(function() {
       // create a new AMQPSenecaClient instance
       client = new AMQPSenecaClient(seneca, transport, options);
-
+      message.properties.correlationId = client.correlationId;
       done();
     });
   });
@@ -112,6 +112,22 @@ describe('Unit tests for AMQPSenecaListener module', function() {
   });
 
   describe('consumeReply()', function() {
+    it('should ignore messages if correlationId does not match', Sinon.test(function() {
+      // Spies
+      var spyParseJSON = this.spy(client.utils, 'parseJSON');
+      var stubHandleResponse = this.stub(client.utils, 'handle_response', Function.prototype);
+
+      // Consume the response message
+      client.consumeReply()({
+        properties: {
+          correlationId: 'foo_d8a42bc0-9022-4db5-ab57-121cd21ac295'
+        }
+      });
+
+      spyParseJSON.should.not.have.been.called();
+      stubHandleResponse.should.not.have.been.called();
+    }));
+
     it('should consume reply messages from the channel', Sinon.test(function() {
       // spies
       var spyParseJSON = this.spy(client.utils, 'parseJSON');
@@ -135,7 +151,7 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       var stubHandleResponse = this.stub(client.utils, 'handle_response', function() {});
 
       // consume the response message
-      client.consumeReply()({});
+      client.consumeReply()(message);
 
       /*
        * assertions

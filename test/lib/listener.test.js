@@ -12,7 +12,7 @@ const Defaults = require('../../defaults');
 const seneca = require('seneca')();
 const AMQPSenecaListener = require('../../lib/listener');
 
-// use the default options
+// Use default options
 var options = Defaults.amqp;
 
 var transport = {
@@ -105,7 +105,9 @@ describe('Unit tests for AMQPSenecaListener module', function() {
       spyStringifyJSON.should.have.been.calledOnce();
       spyStringifyJSON.should.have.been.calledWithExactly(seneca, 'listen-amqp', data);
       spySendToQueue.should.have.been.calledOnce();
-      spySendToQueue.should.have.been.calledWithExactly(message.properties.replyTo, new Buffer(JSON.stringify(data)));
+      spySendToQueue.should.have.been.calledWithExactly(message.properties.replyTo, new Buffer(JSON.stringify(data)), {
+        correlationId: message.properties.correlationId
+      });
       spyAck.should.have.been.calledOnce();
       spyAck.should.have.been.calledWithExactly(message);
     }));

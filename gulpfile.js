@@ -39,9 +39,9 @@ gulp.task('test', (cb) => {
         .pipe($.istanbul.writeReports()) // Creating the reports after tests ran
         .pipe($.istanbul.enforceThresholds({
           thresholds: {
-            global: 80
+            global: 90
           }
-        })) // Enforce a coverage of at least 80%
+        })) // Enforce a coverage of at least 90%
         .on('end', cb);
     });
 });

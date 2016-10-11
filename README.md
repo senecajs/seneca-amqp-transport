@@ -3,7 +3,7 @@
 > A [Seneca.js][1] transport plugin
 
 # seneca-amqp-transport
-[![Build Status](https://travis-ci.org/seneca-contrib/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/seneca-contrib/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/seneca-contrib/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/seneca-contrib/seneca-amqp-transport?branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/seneca-contrib/seneca-amqp-transport/badge.svg)](https://snyk.io/test/github/seneca-contrib/seneca-amqp-transport) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/seneca-contrib/seneca-amqp-transport/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/senecajs/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/senecajs/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/senecajs/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/senecajs/seneca-amqp-transport?branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-amqp-transport/badge.svg)](https://snyk.io/test/github/senecajs/seneca-amqp-transport) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/senecajs/seneca-amqp-transport/blob/master/LICENSE)
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
@@ -228,18 +228,19 @@ null { pid: 26290, id: 73 }
 - Chris Spiliotopoulos (chrysanthos.spiliotopoulos@gmail.com)
 
 ## Roadmap
-- ~~Mocha unit tests~~
-- Functional tests.
-- ~~Setup Travis CI~~
-- Support for message TTL and dead-lettering.
-- Better support for work queues.
+- [x] :muscle: ~~Mocha unit tests~~
+- [ ] Functional tests.
+- [x] :muscle: ~~Setup Travis CI~~
+- [ ] Support for message TTL and dead-lettering.
+- [ ] :running_man: Better support for work queues (async).
+
+## Contributing
+This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
 
 ## License
-MIT
+Licensed under the [MIT][12] license.
 
-Any help/contribution is appreciated!
-
-[1]: https://senecajs.org/
+[1]: http://senecajs.org/
 [2]: https://www.amqp.org/
 [3]: https://github.com/squaremo/amqp.node
 [4]: http://www.squaremobius.net/amqp.node/channel_api.html#connect
@@ -247,3 +248,7 @@ Any help/contribution is appreciated!
 [6]: https://www.rabbitmq.com/semantics.html
 [7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
 [8]: https://github.com/otaviosoares/seneca-servicebus-transport
+[9]: https://github.com/senecajs/seneca-amqp-transport/issues/new
+[10]: https://github.com/senecajs/seneca-amqp-transport/pulls
+[11]: http://senecajs.org/contribute/
+[12]: ./LICENSE.md

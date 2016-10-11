@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-- '5'
+- '4'
 - '6'
 sudo: false
 branches:
@@ -11,9 +11,11 @@ branches:
 notifications:
   email:
   - nfantone@gmail.com
+before_install:
+  - npm i -g npm
 script: npm run validate
 after_success:
-- bash <(curl -s https://codecov.io/bash)
+  - test $TRAVIS_NODE_VERSION == '6' && bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
@@ -21,8 +23,8 @@ deploy:
     secure: PKTP7urawBqTihUIyVUqtAysnfaJRXTWaAtRyT+z5fdb19/SqyKKSyu3j6VuBPtn/GGYj3xulZ5qzMfiE2mwcM1UQcq6LVB4tSoXgEMZ3MGfSNQ3Jjca6eWLG6KJl1LOxhCe5y2kEJrcLTHpc9LE7g5J7JDP/s+egUVYaozcEwI=
   on:
     tags: true
-    repo: seneca-contrib/seneca-amqp-transport
-    node_js: '5'
+    repo: senecajs/seneca-amqp-transport
+    node_js: '6'
 cache:
   bundler: true
   directories: node_modules
