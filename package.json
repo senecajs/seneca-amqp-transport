@@ -35,9 +35,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seneca-contrib/seneca-amqp-transport/issues"
+    "url": "https://github.com/senecajs/seneca-amqp-transport/issues"
   },
-  "homepage": "https://github.com/seneca-contrib/seneca-amqp-transport",
+  "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
     "amqplib": "^0.4.2",
     "amqpuri": "^1.0.2",
