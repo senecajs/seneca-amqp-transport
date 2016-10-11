@@ -206,18 +206,15 @@ There are simple examples under the `/examples` directory. To run them, just exe
 # Start listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
-2016-01-19T19:43:41.883Z xsgjohldv9st/1453232621872/26290/- INFO	hello	Seneca/1.0.0/xsgjohldv9st/1453232621872/26290/-
-2016-01-19T19:43:42.272Z xsgjohldv9st/1453232621872/26290/- INFO	listen	{type:amqp,pin:role:create}
-2016-01-19T19:43:45.114Z xsgjohldv9st/1453232621872/26290/- INFO	plugin	amqp-transport	listen	open	{type:amqp,url:amqp://guest:guest@dev.rabbitmq.com:5672,exchange:{name:seneca.direct,options:{durable:true,auto	{did:(4eq8t),fixedargs:{},context:{module:{id:/home/nfantone/dev/js/seneca-amqp-transport/node_modules/seneca/l...
+{"kind":"notice","notice":"seneca started","level":"info","when":1476216405556}
 
 # Start client.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
-2016-01-19T19:45:27.797Z kozrmji8xksw/1453232727786/26313/- INFO	hello	Seneca/1.0.0/kozrmji8xksw/1453232727786/26313/-
-2016-01-19T19:45:28.162Z kozrmji8xksw/1453232727786/26313/- INFO	client	{type:amqp,pin:role:create}
-null { pid: 26290, id: 46 }
-null { pid: 26290, id: 36 }
-null { pid: 26290, id: 73 }
+{"kind":"notice","notice":"seneca started","level":"info","when":1476216473818}
+{ pid: 7756, id: 99 }
+{ pid: 7756, id: 63 }
+{ pid: 7756, id: 94 }
 # ...
 ```
 
@@ -232,7 +229,7 @@ null { pid: 26290, id: 73 }
 - [ ] Functional tests.
 - [x] :muscle: ~~Setup Travis CI~~
 - [ ] Support for message TTL and dead-lettering.
-- [ ] :running_man: Better support for work queues (async).
+- [ ] Better support for work queues (async).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
