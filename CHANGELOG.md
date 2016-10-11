@@ -2,7 +2,21 @@
 
 ## [Unreleased](https://github.com/senecajs/seneca-amqp-transport/tree/HEAD)
 
-[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.0.0...HEAD)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.0.1...HEAD)
+
+**Implemented enhancements:**
+
+- Add correlationId on RPC messages [\#56](https://github.com/senecajs/seneca-amqp-transport/pull/56) ([nfantone](https://github.com/nfantone))
+
+**Merged pull requests:**
+
+- Update eslint-config-xo-space to version 0.15.0 🚀 [\#55](https://github.com/senecajs/seneca-amqp-transport/pull/55) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- seneca@3.2.1 breaks build 🚨 [\#54](https://github.com/senecajs/seneca-amqp-transport/pull/54) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- chore\(package\): update seneca to version 3.2.1 [\#52](https://github.com/senecajs/seneca-amqp-transport/pull/52) ([nfantone](https://github.com/nfantone))
+- Update seneca to version 3.0.0 🚀 [\#46](https://github.com/senecajs/seneca-amqp-transport/pull/46) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [1.0.1](https://github.com/senecajs/seneca-amqp-transport/tree/1.0.1) (2016-08-24)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.0.0...1.0.1)
 
 **Fixed bugs:**
 
