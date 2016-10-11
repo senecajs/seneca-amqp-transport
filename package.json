@@ -1,6 +1,6 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "1.1.0",
+  "version": "1.1.1-dev",
   "codename": "Supersarcastic Stan",
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
