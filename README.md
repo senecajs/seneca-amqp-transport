@@ -240,7 +240,7 @@ This module follows the general [Senecajs.org][1] contribution guidelines and en
 ## License
 Licensed under the [MIT][12] license.
 
-[1]: https://senecajs.org/
+[1]: http://senecajs.org/
 [2]: https://www.amqp.org/
 [3]: https://github.com/squaremo/amqp.node
 [4]: http://www.squaremobius.net/amqp.node/channel_api.html#connect
@@ -250,5 +250,5 @@ Licensed under the [MIT][12] license.
 [8]: https://github.com/otaviosoares/seneca-servicebus-transport
 [9]: https://github.com/seneca-contrib/seneca-amqp-transport/issues/new
 [10]: https://github.com/seneca-contrib/seneca-amqp-transport/pulls
-[11]: https://senecajs.org/contribute/
+[11]: http://senecajs.org/contribute/
 [12]: ./LICENSE.md
