@@ -53,7 +53,7 @@
     "dirty-chai": "^1.2.2",
     "eslint": "^3.3.1",
     "eslint-config-seneca": "^3.0.0",
-    "eslint-config-xo-space": "^0.14.0",
+    "eslint-config-xo-space": "^0.15.0",
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-standard": "^2.0.0",
     "gulp": "^3.9.1",
