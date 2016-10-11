@@ -2,7 +2,7 @@
   "name": "seneca-amqp-transport",
   "version": "1.1.2-dev",
   "codename": "Supersarcastic Stan",
-  "description": "AMQP transport plugin for seneca.js",
+  "description": "Official AMQP transport plugin for Seneca",
   "main": "index.js",
   "files": [
     "index.js",
@@ -19,6 +19,7 @@
   },
   "keywords": [
     "seneca",
+    "official",
     "plugin",
     "amqp",
     "transport",
@@ -30,7 +31,7 @@
   ],
   "author": "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
   "contributors": [
-    "George Haidar <ghaidar0@gmail.com>",
+    "George Haidar <ghaidar0@gmail.com> (https://github.com/disintegrator)",
     "Chris Spiliotopoulos <chrysanthos.spiliotopoulos@gmail.com> (https://github.com/chefArchitect)"
   ],
   "license": "MIT",
