@@ -23,7 +23,7 @@ deploy:
     secure: PKTP7urawBqTihUIyVUqtAysnfaJRXTWaAtRyT+z5fdb19/SqyKKSyu3j6VuBPtn/GGYj3xulZ5qzMfiE2mwcM1UQcq6LVB4tSoXgEMZ3MGfSNQ3Jjca6eWLG6KJl1LOxhCe5y2kEJrcLTHpc9LE7g5J7JDP/s+egUVYaozcEwI=
   on:
     tags: true
-    repo: seneca-contrib/seneca-amqp-transport
+    repo: senecajs/seneca-amqp-transport
     node_js: '6'
 cache:
   bundler: true
