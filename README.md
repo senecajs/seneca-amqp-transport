@@ -228,16 +228,17 @@ null { pid: 26290, id: 73 }
 - Chris Spiliotopoulos (chrysanthos.spiliotopoulos@gmail.com)
 
 ## Roadmap
-- ~~Mocha unit tests~~
-- Functional tests.
-- ~~Setup Travis CI~~
-- Support for message TTL and dead-lettering.
-- Better support for work queues.
+- [x] :muscle: ~~Mocha unit tests~~
+- [] Functional tests.
+- [x] :muscle: ~~Setup Travis CI~~
+- [] Support for message TTL and dead-lettering.
+- [] :running_man: Better support for work queues (async).
+
+## Contributing
+This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
 
 ## License
-MIT
-
-Any help/contribution is appreciated!
+Licensed under the [MIT][12] license.
 
 [1]: https://senecajs.org/
 [2]: https://www.amqp.org/
@@ -247,3 +248,7 @@ Any help/contribution is appreciated!
 [6]: https://www.rabbitmq.com/semantics.html
 [7]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
 [8]: https://github.com/otaviosoares/seneca-servicebus-transport
+[9]: https://github.com/seneca-contrib/seneca-amqp-transport/issues/new
+[10]: https://github.com/seneca-contrib/seneca-amqp-transport/pulls
+[11]: https://senecajs.org/contribute/
+[12]: ./LICENSE.md
