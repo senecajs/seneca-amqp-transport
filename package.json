@@ -1,6 +1,6 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "codename": "Supersarcastic Stan",
   "description": "AMQP transport plugin for seneca.js",
   "main": "index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:disintegrator/seneca-amqp-transport.git"
+    "url": "git@github.com:senecajs/seneca-amqp-transport.git"
   },
   "keywords": [
     "seneca",

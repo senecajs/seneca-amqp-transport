@@ -14,5 +14,10 @@ setInterval(function() {
   client.act('role:create', {
     max: 100,
     min: 25
-  }, console.log);
+  }, (err, res) => {
+    if (err) {
+      throw err;
+    }
+    console.log(res);
+  });
 }, 2000);
