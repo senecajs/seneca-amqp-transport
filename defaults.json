@@ -10,7 +10,7 @@
         "autoDelete": false
       }
     },
-    "client": {
+    "listen": {
       "channel": {
         "prefetch": 1
       },
@@ -22,7 +22,7 @@
         }
       }
     },
-    "listen": {
+    "client": {
       "channel": {
         "prefetch": 1
       },
