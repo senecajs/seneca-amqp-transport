@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Plugin that allows seneca listeners
+ * Plugin that allows Seneca listeners
  * and clients to communicate over AMQP 0-9-1.
  *
  * @module seneca-amqp-transport
@@ -10,6 +10,7 @@ const ClientHook = require('./lib/client-hook');
 const ListenHook = require('./lib/listen-hook');
 
 const PLUGIN_NAME = 'amqp-transport';
+const PLUGIN_TAG = require('./package.json').version;
 const TRANSPORT_TYPE = 'amqp';
 
 module.exports = function(opts) {
@@ -30,6 +31,7 @@ module.exports = function(opts) {
   }, client.hook(options));
 
   return {
+    tag: PLUGIN_TAG,
     name: PLUGIN_NAME
   };
 };

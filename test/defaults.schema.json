@@ -1,45 +1,20 @@
 {
-
-  "title": "Default options schema",
-  "type": "object",
   "required": ["amqp"],
+  "type": "object",
   "properties": {
     "amqp": {
+      "required": ["client", "exchange", "listen", "type", "url"],
       "type": "object",
-      "required": ["type", "url", "exchange", "queues"],
       "properties": {
-        "type": {
+        "url": {
           "type": "string"
         },
-        "url": {
-          "type": "string",
-          "format": "uri"
-        },
-        "exchange": {
+        "listen": {
+          "required": ["channel", "queues"],
           "type": "object",
-          "required": ["type","name","options"],
           "properties": {
-            "type": "string",
-            "name": "string",
-            "options": {
-              "type": "object",
-              "required": ["durable", "autoDelete"],
-              "properties": {
-                "durable": {
-                  "type": "boolean"
-                },
-                "autoDelete": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        },
-        "queues": {
-          "type": "object",
-          "required": ["action","response"],
-          "properties": {
-            "action": {
+            "queues": {
+              "required": ["options", "prefix", "separator"],
               "type": "object",
               "properties": {
                 "prefix": {
@@ -49,8 +24,8 @@
                   "type": "string"
                 },
                 "options": {
-                  "type": "object",
                   "required": ["durable"],
+                  "type": "object",
                   "properties": {
                     "durable": {
                       "type": "boolean"
@@ -59,7 +34,23 @@
                 }
               }
             },
-            "response": {
+            "channel": {
+              "required": ["prefetch"],
+              "type": "object",
+              "properties": {
+                "prefetch": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "client": {
+          "required": ["channel", "queues"],
+          "type": "object",
+          "properties": {
+            "queues": {
+              "required": ["options", "prefix", "separator"],
               "type": "object",
               "properties": {
                 "prefix": {
@@ -69,16 +60,52 @@
                   "type": "string"
                 },
                 "options": {
-                  "type": "object",
                   "required": ["autoDelete", "exclusive"],
+                  "type": "object",
                   "properties": {
-                    "autoDelete": {
+                    "exclusive": {
                       "type": "boolean"
                     },
-                    "exclusive": {
+                    "autoDelete": {
                       "type": "boolean"
                     }
                   }
+                }
+              }
+            },
+            "channel": {
+              "required": ["prefetch"],
+              "type": "object",
+              "properties": {
+                "prefetch": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "type": {
+          "type": "string"
+        },
+        "exchange": {
+          "required": ["name", "options", "type"],
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "options": {
+              "required": ["autoDelete", "durable"],
+              "type": "object",
+              "properties": {
+                "durable": {
+                  "type": "boolean"
+                },
+                "autoDelete": {
+                  "type": "boolean"
                 }
               }
             }

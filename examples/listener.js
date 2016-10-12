@@ -1,20 +1,23 @@
 #!/usr/bin/env node
-
 'use strict';
+
+const Path = require('path');
 
 require('seneca')()
   .use('..')
-  .add('role:create', function(message, done) {
+  .add('cmd:salute', function(message, done) {
     return done(null, {
-      pid: process.pid,
-      id: Math.floor(Math.random() * (message.max - message.min + 1)) + message.min
+      id: Math.floor(Math.random() * (message.max - message.min + 1)) + message.min,
+      message: `Hello ${message.name}!`,
+      from: {
+        pid: process.pid,
+        file: Path.relative(process.cwd(), __filename)
+      },
+      now: Date.now()
     });
   })
   .listen({
     type: 'amqp',
-    pin: 'role:create',
-    url: process.env.AMQP_URL,
-    socketOptions: {
-      foo: 'bar'
-    }
+    pin: 'cmd:salute',
+    url: process.env.AMQP_URL
   });
