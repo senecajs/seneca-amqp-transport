@@ -24,13 +24,10 @@
                   "type": "string"
                 },
                 "options": {
-                  "required": ["autoDelete", "exclusive"],
+                  "required": ["durable"],
                   "type": "object",
                   "properties": {
-                    "exclusive": {
-                      "type": "boolean"
-                    },
-                    "autoDelete": {
+                    "durable": {
                       "type": "boolean"
                     }
                   }
@@ -63,10 +60,13 @@
                   "type": "string"
                 },
                 "options": {
-                  "required": ["durable"],
+                  "required": ["autoDelete", "exclusive"],
                   "type": "object",
                   "properties": {
-                    "durable": {
+                    "exclusive": {
+                      "type": "boolean"
+                    },
+                    "autoDelete": {
                       "type": "boolean"
                     }
                   }
