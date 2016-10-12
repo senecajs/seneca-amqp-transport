@@ -15,18 +15,18 @@ const AmqpUtil = require('../../lib/amqp-util');
 const AMQPSenecaClient = require('../../lib/client');
 
 // use the default options
-var options = Defaults.amqp;
+const options = Defaults.amqp;
 
-var transport = {
+const transport = {
   exchange: 'seneca.topic',
   queue: 'seneca.role:create',
   channel: {
-    publish: function() {},
-    consume: function() {}
+    publish: Function.prototype,
+    consume: Function.prototype
   }
 };
 
-var reply = {
+const reply = {
   kind: 'res',
   sync: true,
   res: {
@@ -35,7 +35,7 @@ var reply = {
   }
 };
 
-var message = {
+const message = {
   properties: {
     replyTo: 'seneca.res.r1FYNSEN'
   },

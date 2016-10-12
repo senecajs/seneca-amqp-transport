@@ -10,15 +10,23 @@
         "autoDelete": false
       }
     },
-    "queues": {
-      "action": {
+    "client": {
+      "channel": {
+        "prefetch": 1
+      },
+      "queues": {
         "prefix": "seneca",
         "separator": ".",
         "options": {
           "durable": true
         }
+      }
+    },
+    "listen": {
+      "channel": {
+        "prefetch": 1
       },
-      "response": {
+      "queues": {
         "prefix": "seneca.res",
         "separator": ".",
         "options": {
