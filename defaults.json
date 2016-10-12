@@ -27,7 +27,7 @@
         "prefetch": 1
       },
       "queues": {
-        "prefix": "seneca.res",
+        "prefix": "seneca.act",
         "separator": ".",
         "options": {
           "autoDelete": true,
