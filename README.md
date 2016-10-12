@@ -86,41 +86,7 @@ In the example, the following things are declared:
 > Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
 
 ## Options
-The following object describes the available options for this transport. These are applicable to both clients and listeners.
-
-```json
-{
-  "amqp": {
-    "type": "amqp",
-    "url": "amqp://localhost",
-    "exchange": {
-      "type": "topic",
-      "name": "seneca.topic",
-      "options": {
-        "durable": true,
-        "autoDelete": false
-      }
-    },
-    "queues": {
-      "action": {
-        "prefix": "seneca",
-        "separator": ".",
-        "options": {
-          "durable": true
-        }
-      },
-      "response": {
-        "prefix": "seneca.res",
-        "separator": ".",
-        "options": {
-          "autoDelete": true,
-          "exclusive": true
-        }
-      }
-    }
-  }
-}
-```
+The JSON object in `(defaults.json)[./defaults.json]` describes the available options for this transport. These are applicable to both clients and listeners.
 
 To override this settings, pass them to the plugin's `.use` declaration:
 
@@ -128,8 +94,8 @@ To override this settings, pass them to the plugin's `.use` declaration:
 require('seneca')()
   .use('seneca-amqp-transport', {
     amqp: {
-      queues: {
-        action: {
+      client: {
+        queues: {
           options: {
             durable: false
           }
