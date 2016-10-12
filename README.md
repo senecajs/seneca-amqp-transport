@@ -72,7 +72,7 @@ setInterval(function() {
 ```
 
 #### How it works
-A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
+A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.act.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
 > Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
 
@@ -81,12 +81,12 @@ As you can see, pins play an important role on routing messages on the broker, s
 In the example, the following things are declared:
 
 - A **topic** exchange named `seneca.topic`.
-- An exclusive **queue** with a random alphanumeric name (like `seneca.res.x42jK0l`).
+- An exclusive **queue** with a random alphanumeric name (like `seneca.act.x42jK0l`).
 
 > Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
 
 ## Options
-The JSON object in `(defaults.json)[./defaults.json]` describes the available options for this transport. These are applicable to both clients and listeners.
+The JSON object in [`defaults.json`](./defaults.json) describes the available options for this transport. These are applicable to both clients and listeners.
 
 To override this settings, pass them to the plugin's `.use` declaration:
 
@@ -178,9 +178,10 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216473818}
-{ pid: 7756, id: 99 }
-{ pid: 7756, id: 63 }
-{ pid: 7756, id: 94 }
+{ id: 93,
+  message: 'Hello World!',
+  from: { pid: 4150, file: 'examples/listener.js' },
+  now: 1476306009801 }
 # ...
 ```
 
