@@ -1,6 +1,6 @@
 ![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
 
-> Official [Seneca.js][1] AMQP transport plugin
+> Official [Seneca][1] AMQP transport plugin
 
 # seneca-amqp-transport
 [![Build Status](https://travis-ci.org/senecajs/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/senecajs/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/senecajs/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/senecajs/seneca-amqp-transport?branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-amqp-transport/badge.svg)](https://snyk.io/test/github/senecajs/seneca-amqp-transport) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/senecajs/seneca-amqp-transport/blob/master/LICENSE)
@@ -72,7 +72,7 @@ setInterval(function() {
 ```
 
 #### How it works
-A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.res.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
+A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.act.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
 > Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
 
@@ -81,46 +81,12 @@ As you can see, pins play an important role on routing messages on the broker, s
 In the example, the following things are declared:
 
 - A **topic** exchange named `seneca.topic`.
-- An exclusive **queue** with a random alphanumeric name (like `seneca.res.x42jK0l`).
+- An exclusive **queue** with a random alphanumeric name (like `seneca.act.x42jK0l`).
 
 > Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
 
 ## Options
-The following object describes the available options for this transport. These are applicable to both clients and listeners.
-
-```json
-{
-  "amqp": {
-    "type": "amqp",
-    "url": "amqp://localhost",
-    "exchange": {
-      "type": "topic",
-      "name": "seneca.topic",
-      "options": {
-        "durable": true,
-        "autoDelete": false
-      }
-    },
-    "queues": {
-      "action": {
-        "prefix": "seneca",
-        "separator": ".",
-        "options": {
-          "durable": true
-        }
-      },
-      "response": {
-        "prefix": "seneca.res",
-        "separator": ".",
-        "options": {
-          "autoDelete": true,
-          "exclusive": true
-        }
-      }
-    }
-  }
-}
-```
+The JSON object in [`defaults.json`](./defaults.json) describes the available options for this transport. These are applicable to both clients and listeners.
 
 To override this settings, pass them to the plugin's `.use` declaration:
 
@@ -128,8 +94,8 @@ To override this settings, pass them to the plugin's `.use` declaration:
 require('seneca')()
   .use('seneca-amqp-transport', {
     amqp: {
-      queues: {
-        action: {
+      client: {
+        queues: {
           options: {
             durable: false
           }
@@ -212,9 +178,10 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216473818}
-{ pid: 7756, id: 99 }
-{ pid: 7756, id: 63 }
-{ pid: 7756, id: 94 }
+{ id: 93,
+  message: 'Hello World!',
+  from: { pid: 4150, file: 'examples/listener.js' },
+  now: 1476306009801 }
 # ...
 ```
 

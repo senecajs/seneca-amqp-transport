@@ -6,12 +6,13 @@ var client = require('seneca')()
   .use('..')
   .client({
     type: 'amqp',
-    pin: 'role:create',
+    pin: 'cmd:salute',
     url: process.env.AMQP_URL
   });
 
 setInterval(function() {
-  client.act('role:create', {
+  client.act('cmd:salute', {
+    name: 'World',
     max: 100,
     min: 25
   }, (err, res) => {
