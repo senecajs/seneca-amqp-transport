@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 'use strict';
 
 const $ = require('gulp-load-plugins')();
@@ -17,9 +16,9 @@ $.release.register(gulp);
  */
 gulp.task('eslint', () =>
   gulp.src([].concat(config.paths.src, config.paths.test))
-  .pipe($.eslint())
-  .pipe($.eslint.format())
-  .pipe($.if(config.eslint.failOnError, $.eslint.failAfterError()))
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.if(config.eslint.failOnError, $.eslint.failAfterError()))
 );
 
 /**
