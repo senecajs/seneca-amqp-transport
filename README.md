@@ -172,9 +172,12 @@ require('seneca')()
 
 ## Run the examples
 
-There are simple examples under the `/examples` directory. To run them, just execute:
+There are simple examples under the `/examples` directory. To run them, just install latest `seneca` (if you didn't install `devDependencies`) and execute:
 
 ```sh
+#Install seneca
+npm i seneca
+
 # Start listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
