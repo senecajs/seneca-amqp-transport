@@ -1,8 +1,33 @@
 # Change Log
 
-## [Unreleased](https://github.com/senecajs/seneca-amqp-transport/tree/HEAD)
+## [2.1.0](https://github.com/senecajs/seneca-amqp-transport/tree/2.1.0) (2016-10-16)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/2.0.0...2.1.0)
 
-[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.0.1...HEAD)
+**Implemented enhancements:**
+
+- Support dead lettering of messages [\#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)
+- Support for dead-lettering failed messages [\#61](https://github.com/senecajs/seneca-amqp-transport/pull/61) ([nfantone](https://github.com/nfantone))
+
+**Fixed bugs:**
+
+- Support numbers and booleans on queue name generation [\#62](https://github.com/senecajs/seneca-amqp-transport/pull/62) ([nfantone](https://github.com/nfantone))
+
+## [2.0.0](https://github.com/senecajs/seneca-amqp-transport/tree/2.0.0) (2016-10-12)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.1.1...2.0.0)
+
+**Merged pull requests:**
+
+- Set channel prefetch count [\#57](https://github.com/senecajs/seneca-amqp-transport/pull/57) ([nfantone](https://github.com/nfantone))
+
+## [1.1.1](https://github.com/senecajs/seneca-amqp-transport/tree/1.1.1) (2016-10-11)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.1.0...1.1.1)
+
+**Closed issues:**
+
+- Becoming the official plugin [\#6](https://github.com/senecajs/seneca-amqp-transport/issues/6)
+
+## [1.1.0](https://github.com/senecajs/seneca-amqp-transport/tree/1.1.0) (2016-10-11)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/1.0.1...1.1.0)
 
 **Implemented enhancements:**
 
