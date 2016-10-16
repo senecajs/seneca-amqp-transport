@@ -209,6 +209,7 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 - [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)).
 - [ ] Better support for work queues.
 - [ ] Better support for fanout exchanges.
+- [ ] Improve logging using `seneca.log`.
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
 
 ## Contributing
