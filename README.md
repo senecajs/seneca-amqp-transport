@@ -7,6 +7,8 @@
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
+> **Important notice**: If you are upgrading to `2.1.0` from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
+
 ## Install
 
 ```sh
@@ -172,9 +174,12 @@ require('seneca')()
 
 ## Run the examples
 
-There are simple examples under the `/examples` directory. To run them, just execute:
+There are simple examples under the `/examples` directory. To run them, just install latest `seneca` (if you didn't install `devDependencies`) and execute:
 
 ```sh
+#Install seneca
+npm i seneca
+
 # Start listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
@@ -201,7 +206,7 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 - [x] :muscle: ~~Mocha unit tests~~ 
 - [ ] Functional tests.
 - [x] :muscle: ~~Setup Travis CI~~
-- [ ] Support for message TTL and dead-lettering.
+- [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59).
 - [ ] Better support for work queues (async).
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
 
@@ -223,3 +228,4 @@ Licensed under the [MIT][12] license.
 [10]: https://github.com/senecajs/seneca-amqp-transport/pulls
 [11]: http://senecajs.org/contribute/
 [12]: ./LICENSE.md
+[13]: https://github.com/senecajs/seneca-amqp-transport/wiki/2.1.0-migration-guide
