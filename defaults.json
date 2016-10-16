@@ -28,7 +28,7 @@
         "prefetch": 1
       },
       "queues": {
-        "prefix": "seneca",
+        "prefix": "seneca.add",
         "separator": ".",
         "options": {
           "durable": true,
