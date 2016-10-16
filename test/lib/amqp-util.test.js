@@ -128,14 +128,15 @@ describe('Unit tests for amqp-util module', function() {
 
     it('should resolve numeric and boolean pins', function() {
       var pins = [{
-        remote: 1
+        remote: 1,
+        local: 33.3
       }, {
         cmd: 'act',
         fatal: true
       }];
 
       var queue = AmqpUtil.resolveListenQueue(pins);
-      queue.should.equal('seneca.remote:1.cmd:act.fatal:true');
+      queue.should.equal('seneca.remote:1.local:33.3.cmd:act.fatal:true');
     });
   });
 
