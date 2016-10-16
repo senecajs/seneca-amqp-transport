@@ -124,6 +124,20 @@ describe('Unit tests for amqp-util module', function() {
       var queue = AmqpUtil.resolveListenQueue(pins, options);
       queue.should.equal('myprefix_role:entity_cmd:save_list_foo:any');
     });
+
+
+    it('should resolve numeric and boolean pins', function() {
+      var pins = [{
+        remote: 1,
+        local: 33.3
+      }, {
+        cmd: 'act',
+        fatal: true
+      }];
+
+      var queue = AmqpUtil.resolveListenQueue(pins);
+      queue.should.equal('seneca.remote:1.local:33.3.cmd:act.fatal:true');
+    });
   });
 
 
@@ -140,10 +154,22 @@ describe('Unit tests for amqp-util module', function() {
         cmd: 'list'
       }, {
         foo: '*'
+      }, {
+        remote: 1
+      }, {
+        cmd: 'log',
+        info: true,
+        prefix: '1'
       }];
 
       var topics = AmqpUtil.resolveListenTopics(pins);
-      topics.should.include.members(['cmd.save.role.entity', 'cmd.list.role.entity', 'foo.*']);
+      topics.should.include.members([
+        'cmd.save.role.entity',
+        'cmd.list.role.entity',
+        'foo.*',
+        'remote.1',
+        'cmd.log.info.true.prefix.1'
+      ]);
     });
   });
 });

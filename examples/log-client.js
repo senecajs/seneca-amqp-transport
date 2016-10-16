@@ -5,15 +5,13 @@ var client = require('seneca')()
   .use('..')
   .client({
     type: 'amqp',
-    pin: 'cmd:salute',
+    pin: 'cmd:log,level:log',
     url: process.env.AMQP_URL
   });
 
 setInterval(function() {
-  client.act('cmd:salute', {
-    name: 'World',
-    max: 100,
-    min: 25
+  client.act('cmd:log,level:log', {
+    message: 'Hello World'
   }, (err, res) => {
     if (err) {
       throw err;

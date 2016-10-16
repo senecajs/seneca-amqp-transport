@@ -7,6 +7,8 @@
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
+> **Important notice**: If you are upgrading to `2.1.0` from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
+
 ## Install
 
 ```sh
@@ -20,19 +22,17 @@ The following snippets showcase the most basic usage examples.
 
 ### Listener
 
-```javascript
+```js
 require('seneca')()
   .use('seneca-amqp-transport')
-  .add('role:create', function(message, done) {
-    return done(null, {
-      pid: process.pid,
-      id: Math.floor(Math.random() * (message.max - message.min + 1)) + message.min
-    });
+  .add('cmd:log,level:*', function(req, done) {
+    console[req.level](req.message);
+    return done(null, { ok: true, when: Date.now() });
   })
   .listen({
-    name: 'create_act.queue', // This is optional
     type: 'amqp',
-    pin: 'role:create'
+    pin: 'cmd:log,level:*',
+    url: process.env.AMQP_URL
   });
 ```
 
@@ -44,8 +44,8 @@ A listener _always_ creates one _and only one_ queue. The queue name can be prov
 In the example above, the following things are declared:
 
 - A **topic** exchange named `seneca.topic`.
-- A **queue** named `seneca.create_act`.
-- A **binding** between the queue and the exchange using the _routing key_ `role.create` (named after the pin).
+- A **queue** named `seneca.cmd:log.level:any`.
+- A **binding** between the queue and the exchange using the _routing key_ `cmd.log.level.*` (named after the pin).
 
 > Queue names are prefixed with a configurable word (`seneca.`, by default). It can be disabled or modified during plugin declaration (read below).
 
@@ -55,24 +55,32 @@ If your intention is to **declare multiple consumers** on a single queue, run mu
 
 ### Client
 
-```javascript
+```js
 var client = require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
-    pin: 'role:create'
+    pin: 'cmd:log,level:log',
+    url: process.env.AMQP_URL
   });
 
 setInterval(function() {
-  client.act('role:create', {
-    max: 100,
-    min: 50
-  }, console.log);
-}, 500);
+  client.act('cmd:log,level:log', {
+    message: 'Hello World'
+  }, (err, res) => {
+    if (err) {
+      // Handle error in some way
+      throw err;
+    }
+    // Print out the response
+    console.log(res);
+  });
+}, 2000);
+
 ```
 
 #### How it works
-A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.act.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `role:create` which equals the only declared pin. With that, the routing key `role.create` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
+A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.act.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `cmd:log,level:log` which equals the only declared pin. With that, the routing key `cmd.log.level.log` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
 > Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
 
@@ -83,14 +91,14 @@ In the example, the following things are declared:
 - A **topic** exchange named `seneca.topic`.
 - An exclusive **queue** with a random alphanumeric name (like `seneca.act.x42jK0l`).
 
-> Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination and is discarded, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
+> Clients _do not_ declare the queue of their listener counterpart. So, if the message does not reach its destination or is discarded by the broker, the `seneca` instance will fail with a `TIMEOUT` error on the client side.
 
 ## Options
 The JSON object in [`defaults.json`](./defaults.json) describes the available options for this transport. These are applicable to both clients and listeners.
 
 To override this settings, pass them to the plugin's `.use` declaration:
 
-```javascript
+```js
 require('seneca')()
   .use('seneca-amqp-transport', {
     amqp: {
@@ -110,7 +118,7 @@ AMQP related options may be indicated either by [the connection URI](https://www
 
 This,
 
-```javascript
+```js
 require('seneca')()
   .use('seneca-amqp-transport')
   .client({
@@ -121,7 +129,7 @@ require('seneca')()
 
 will result in the same connection URI as:
 
-```javascript
+```js
 require('seneca')()
   .use('seneca-amqp-transport')
   .client({
@@ -138,7 +146,7 @@ require('seneca')()
 ### Socket options
 Additionally, you may pass in options to the `amqp.connect` method of [amqplib][3] as documented in [its API reference][4], using the `socketOptions` parameter.
 
-```javascript
+```js
 // Example of using a TLS/SSL connection. Note that the server must be
 // configured to accept SSL connections; see http://www.rabbitmq.com/ssl.html.
 
@@ -166,9 +174,12 @@ require('seneca')()
 
 ## Run the examples
 
-There are simple examples under the `/examples` directory. To run them, just execute:
+There are simple examples under the `/examples` directory. To run them, just install latest `seneca` (if you didn't install `devDependencies`) and execute:
 
 ```sh
+#Install seneca
+npm i seneca
+
 # Start listener.js
 cd examples
 AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
@@ -192,11 +203,13 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 - Chris Spiliotopoulos (chrysanthos.spiliotopoulos@gmail.com)
 
 ## Roadmap
-- [x] :muscle: ~~Mocha unit tests~~
+- [x] :muscle: ~~Mocha unit tests.~~
 - [ ] Functional tests.
-- [x] :muscle: ~~Setup Travis CI~~
-- [ ] Support for message TTL and dead-lettering.
-- [ ] Better support for work queues (async).
+- [x] :muscle: ~~Setup Travis CI.~~
+- [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)).
+- [ ] Better support for work queues.
+- [ ] Better support for fanout exchanges.
+- [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
@@ -216,3 +229,4 @@ Licensed under the [MIT][12] license.
 [10]: https://github.com/senecajs/seneca-amqp-transport/pulls
 [11]: http://senecajs.org/contribute/
 [12]: ./LICENSE.md
+[13]: https://github.com/senecajs/seneca-amqp-transport/wiki/2.1.0-migration-guide

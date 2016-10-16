@@ -10,15 +10,32 @@
         "autoDelete": false
       }
     },
+    "deadLetter": {
+      "queue": {
+        "name": "seneca.dlq"
+      },
+      "exchange": {
+        "type": "topic",
+        "name": "seneca.dlx",
+        "options": {
+          "durable": true,
+          "autoDelete": false
+        }
+      }
+    },
     "listen": {
       "channel": {
         "prefetch": 1
       },
       "queues": {
-        "prefix": "seneca",
+        "prefix": "seneca.add",
         "separator": ".",
         "options": {
-          "durable": true
+          "durable": true,
+          "arguments": {
+            "x-dead-letter-exchange": "seneca.dlx",
+            "x-message-ttl": 60000
+          }
         }
       }
     },
@@ -31,7 +48,11 @@
         "separator": ".",
         "options": {
           "autoDelete": true,
-          "exclusive": true
+          "exclusive": true,
+          "arguments": {
+            "x-dead-letter-exchange": "seneca.dlx",
+            "x-message-ttl": 10000
+          }
         }
       }
     }

@@ -45,7 +45,7 @@ const message = {
 
 var client = null;
 
-describe('Unit tests for AMQPSenecaListener module', function() {
+describe('Unit tests for client module', function() {
   before(function(done) {
     seneca.ready(function() {
       // create a new AMQPSenecaClient instance
