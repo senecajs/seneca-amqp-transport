@@ -8,6 +8,7 @@ branches:
   - master
   - develop
   - /^v?(\d\.){2}\d$/
+  - /^greenkeeper-.*$/
 notifications:
   email:
   - nfantone@gmail.com
