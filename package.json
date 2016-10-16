@@ -1,7 +1,7 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "2.0.1-dev",
-  "codename": "Totalitarian Toothrot",
+  "version": "2.1.0",
+  "codename": "Migrative Meathook",
   "description": "Official AMQP transport plugin for Seneca",
   "main": "index.js",
   "files": [
