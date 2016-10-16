@@ -206,7 +206,7 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 - [x] :muscle: ~~Mocha unit tests~~ 
 - [ ] Functional tests.
 - [x] :muscle: ~~Setup Travis CI~~
-- [ ] Support for message TTL and dead-lettering ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59).
+- [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59).
 - [ ] Better support for work queues (async).
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
 
