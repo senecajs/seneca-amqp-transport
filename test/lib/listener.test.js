@@ -46,7 +46,7 @@ var message = {
 
 var listener = null;
 
-describe('Unit tests for AMQPSenecaListener module', function() {
+describe('Unit tests for listener module', function() {
   before(function(done) {
     seneca.ready(function() {
       // create a new AMQPSenecaListener instance
