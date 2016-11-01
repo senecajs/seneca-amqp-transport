@@ -40,7 +40,7 @@
   },
   "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
-    "amqplib": "^0.4.2",
+    "amqplib": "^0.5.0",
     "amqpuri": "^1.0.2",
     "bluebird": "^3.4.6",
     "jsonic": "^0.2.2",
