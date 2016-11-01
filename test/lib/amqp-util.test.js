@@ -175,7 +175,7 @@ describe('Unit tests for amqp-util module', function() {
         'foo.*',
         'remote.1',
         'cmd.log.info.true.prefix.1',
-        'cmd.update.method.GET.remote.1.role.entity.version.v1[:dot:]0[:dot:]0' // Escape sequence use case
+        'cmd.update.method.GET.remote.1.role.entity.version.v1[:dot:]0[:dot:]0'
       ]);
     });
   });
