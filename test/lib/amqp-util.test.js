@@ -160,6 +160,12 @@ describe('Unit tests for amqp-util module', function() {
         cmd: 'log',
         info: true,
         prefix: '1'
+      }, {
+        cmd: 'update',
+        role: 'entity',
+        version: 'v1.0.0',
+        method: 'GET',
+        remote: 1
       }];
 
       var topics = AmqpUtil.resolveListenTopics(pins);
@@ -168,7 +174,8 @@ describe('Unit tests for amqp-util module', function() {
         'cmd.list.role.entity',
         'foo.*',
         'remote.1',
-        'cmd.log.info.true.prefix.1'
+        'cmd.log.info.true.prefix.1',
+        'cmd.update.method.GET.remote.1.role.entity.version.v1[:dot:]0[:dot:]0' // Escape sequence use case
       ]);
     });
   });
