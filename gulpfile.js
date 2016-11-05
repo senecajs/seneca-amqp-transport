@@ -64,7 +64,5 @@ gulp.task('validate', ['eslint', 'test']);
 /**
  * Alias for 'validate'.
  * Default task.
- *
- * `gulp [--debug|--debug-brk]`
  */
 gulp.task('default', ['validate']);
