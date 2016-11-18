@@ -45,7 +45,7 @@
     "bluebird": "^3.4.6",
     "jsonic": "^0.2.2",
     "lodash": "^4.16.4",
-    "uuid": "^2.0.3"
+    "uuid": "^3.0.0"
   },
   "devDependencies": {
     "seneca": "^3.2.1",
