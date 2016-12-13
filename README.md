@@ -204,13 +204,14 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 
 ## Roadmap
 - [x] :muscle: ~~Mocha unit tests.~~
-- [ ] Functional tests.
+- [ ] Functional tests ([#74](https://github.com/senecajs/seneca-amqp-transport/issues/74)).
 - [x] :muscle: ~~Setup Travis CI.~~
 - [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)).
 - [ ] Better support for work queues.
 - [ ] Better support for fanout exchanges.
 - [ ] Improve logging using `seneca.log`.
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
+- [ ] _Internal_: remove classes in favor of factory functions ([WIP](https://github.com/senecajs/seneca-amqp-transport/pull/73)).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
