@@ -182,12 +182,12 @@ npm i seneca
 
 # Start listener.js
 cd examples
-AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
+AMQP_URL='amqp://guest:guest@localhost:5672' node listener.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216405556}
 
 # Start client.js
 cd examples
-AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
+AMQP_URL='amqp://guest:guest@localhost:5672' node client.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216473818}
 { id: 93,
   message: 'Hello World!',
