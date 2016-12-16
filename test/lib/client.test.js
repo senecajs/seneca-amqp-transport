@@ -11,7 +11,7 @@ Chai.use(DirtyChai);
 
 const Defaults = require('../../defaults');
 const seneca = require('seneca')();
-const AmqpUtil = require('../../lib/amqp-util');
+const AmqpUtil = require('../../lib/client/client-util');
 const AMQPSenecaClient = require('../../lib/client');
 
 // use the default options
@@ -39,7 +39,7 @@ const message = {
   properties: {
     replyTo: 'seneca.res.r1FYNSEN'
   },
-  content: new Buffer(JSON.stringify(reply), 'utf-8')
+  content: Buffer.from(JSON.stringify(reply), 'utf-8')
 };
 
 
