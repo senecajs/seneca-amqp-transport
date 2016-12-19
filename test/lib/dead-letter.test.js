@@ -6,6 +6,7 @@ const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 const Promise = require('bluebird');
 require('sinon-bluebird');
+
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
@@ -27,12 +28,8 @@ const DEFAULT_OPTIONS = {
 
 describe('Unit tests for dead-letter module', function() {
   let channel = {
-    assertQueue: (queue) => Promise.resolve({
-      queue
-    }),
-    assertExchange: (exchange) => Promise.resolve({
-      exchange
-    }),
+    assertQueue: (queue) => Promise.resolve({ queue }),
+    assertExchange: (exchange) => Promise.resolve({ exchange }),
     bindQueue: () => Promise.resolve()
   };
 

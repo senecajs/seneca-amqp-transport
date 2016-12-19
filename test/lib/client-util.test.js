@@ -1,58 +1,67 @@
 'use strict';
 
-const Chai = require('chai');
-Chai.should();
+const chai = require('chai');
+chai.should();
 
-const AmqpUtil = require('../../lib/client/client-util');
+const amqputil = require('../../lib/client/client-util');
 
 /**
  * client-utils unit tests
  */
-describe('Unit tests for client-util module', function() {
+describe('On client-util module', function() {
   /**
    * Function: resolveClientQueue()
    */
-  describe('resolveClientQueue()', function() {
-    it('should use default prefix and separator if no options are provided', function() {
-      var queue = AmqpUtil.resolveClientQueue();
+  describe('resolveClientQueue() function', function() {
+    it('should use a custom id if provided', function() {
+      var options = {
+        id: 'secret_id'
+      };
 
-      // queue name should contain default prefix 'seneca' and separator '.'
+      var queue = amqputil.resolveClientQueue(options);
+      queue.should.equal('secret_id');
+    });
+
+    it('should use no prefix or separator if no options are provided',
+      function() {
+        var queue = amqputil.resolveClientQueue();
+        // queue name should contain no prefix or separator
+        queue.should.match(/^[A-F0-9]+$/i);
+      });
+
+    it('should use custom prefix and default separator', function() {
+      var options = {
+        prefix: 'seneca'
+      };
+
+      var queue = amqputil.resolveClientQueue(options);
       queue.should.contain('seneca.');
     });
 
-    it('should use custom prefix', function() {
-      var options = {
-        prefix: 'myprefix'
-      };
-
-      var queue = AmqpUtil.resolveClientQueue(options);
-      queue.should.contain('myprefix.');
-    });
-
-    it('should use custom separator', function() {
+    it('should not use custom separator if no prefix is provided', function() {
       var options = {
         separator: '|'
       };
 
-      var queue = AmqpUtil.resolveClientQueue(options);
+      var queue = amqputil.resolveClientQueue(options);
+      queue.should.not.contain('|');
+    });
+
+    it('should use custom prefix and custom separator', function() {
+      var options = {
+        prefix: 'seneca',
+        separator: '|'
+      };
+
+      var queue = amqputil.resolveClientQueue(options);
       queue.should.contain('seneca|');
-    });
-
-    it('should use custom prefix and separator', function() {
-      var options = {
-        prefix: 'myprefix',
-        separator: '|'
-      };
-
-      var queue = AmqpUtil.resolveClientQueue(options);
-      queue.should.contain('myprefix|');
     });
   });
 
   /**
    * Function: resolveClientTopic()
    */
-  describe('resolveClientTopic()', function() {
+  describe('resolveClientTopic() function', function() {
     it('should use a topic name starting with the action prefix', function() {
       var options = {
         meta$: {
@@ -60,7 +69,7 @@ describe('Unit tests for client-util module', function() {
         }
       };
 
-      var topic = AmqpUtil.resolveClientTopic(options);
+      var topic = amqputil.resolveClientTopic(options);
       topic.should.contain('role.');
     });
   });

@@ -1,26 +1,26 @@
 'use strict';
 
-const Chai = require('chai');
-Chai.should();
+const chai = require('chai');
+chai.should();
 
-const AmqpUtil = require('../../lib/listener/listener-util');
+const amqputil = require('../../lib/listener/listener-util');
 
 /**
  * listener-utils unit tests
  */
-describe('Unit tests for listener-util module', function() {
+describe('On listener-util module', function() {
   /**
    * Function: resolveListenQueue()
    */
-  describe('resolveListenQueue()', function() {
+  describe('resolveListenQueue() function', function() {
     it('should resolve single pin', function() {
       var pin = {
         role: 'entity',
         cmd: 'save'
       };
 
-      var queue = AmqpUtil.resolveListenQueue(pin);
-      queue.should.equal('seneca.role:entity.cmd:save');
+      var queue = amqputil.resolveListenQueue(pin);
+      queue.should.equal('role:entity.cmd:save');
     });
 
     it('should resolve pins with arrays of commands', function() {
@@ -29,8 +29,8 @@ describe('Unit tests for listener-util module', function() {
         cmd: ['save', 'read', 'delete']
       };
 
-      var queue = AmqpUtil.resolveListenQueue(pin);
-      queue.should.equal('seneca.role:entity.cmd:save_read_delete');
+      var queue = amqputil.resolveListenQueue(pin);
+      queue.should.equal('role:entity.cmd:save_read_delete');
     });
 
     it('should resolve multiple pins', function() {
@@ -44,8 +44,8 @@ describe('Unit tests for listener-util module', function() {
         foo: '*'
       }];
 
-      var queue = AmqpUtil.resolveListenQueue(pins);
-      queue.should.equal('seneca.role:entity.cmd:save_read_delete_list.foo:any');
+      var queue = amqputil.resolveListenQueue(pins);
+      queue.should.equal('role:entity.cmd:save_read_delete_list.foo:any');
     });
 
     it('should resolve multiple pins by honoring custom prefix and separator', function() {
@@ -60,12 +60,12 @@ describe('Unit tests for listener-util module', function() {
       }];
 
       var options = {
-        prefix: 'myprefix',
+        prefix: 'seneca',
         separator: '_'
       };
 
-      var queue = AmqpUtil.resolveListenQueue(pins, options);
-      queue.should.equal('myprefix_role:entity_cmd:save_list_foo:any');
+      var queue = amqputil.resolveListenQueue(pins, options);
+      queue.should.equal('seneca_role:entity_cmd:save_list_foo:any');
     });
 
 
@@ -78,8 +78,8 @@ describe('Unit tests for listener-util module', function() {
         fatal: true
       }];
 
-      var queue = AmqpUtil.resolveListenQueue(pins);
-      queue.should.equal('seneca.remote:1.local:33.3.cmd:act.fatal:true');
+      var queue = amqputil.resolveListenQueue(pins);
+      queue.should.equal('remote:1.local:33.3.cmd:act.fatal:true');
     });
   });
 
@@ -111,7 +111,7 @@ describe('Unit tests for listener-util module', function() {
         remote: 1
       }];
 
-      var topics = AmqpUtil.resolveListenTopics(pins);
+      var topics = amqputil.resolveListenTopics(pins);
       topics.should.include.members([
         'cmd.save.role.entity',
         'cmd.list.role.entity',
