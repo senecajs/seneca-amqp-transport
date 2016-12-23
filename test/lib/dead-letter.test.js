@@ -26,7 +26,7 @@ const DEFAULT_OPTIONS = {
   }
 };
 
-describe('Unit tests for dead-letter module', function() {
+describe('On dead-letter module', function() {
   let channel = {
     assertQueue: (queue) => Promise.resolve({ queue }),
     assertExchange: (exchange) => Promise.resolve({ exchange }),
@@ -47,7 +47,7 @@ describe('Unit tests for dead-letter module', function() {
     channel.bindQueue.reset();
   });
 
-  describe('declareDeadLetter()', function() {
+  describe('the declareDeadLetter() function', function() {
     it('should return a Promise', function() {
       deadLetter.declareDeadLetter().should.be.instanceof(Promise);
     });
@@ -56,7 +56,7 @@ describe('Unit tests for dead-letter module', function() {
       var options = {
         exchange: {}
       };
-      deadLetter.declareDeadLetter(options, channel)
+      deadLetter.declareDeadLetter(channel, options)
         .then(() => {
           sinon.assert.notCalled(channel.assertQueue);
           sinon.assert.notCalled(channel.assertExchange);
@@ -68,7 +68,7 @@ describe('Unit tests for dead-letter module', function() {
       var options = {
         queue: {}
       };
-      deadLetter.declareDeadLetter(options, channel)
+      deadLetter.declareDeadLetter(channel, options)
         .then(() => {
           sinon.assert.notCalled(channel.assertQueue);
           sinon.assert.notCalled(channel.assertExchange);
@@ -77,7 +77,7 @@ describe('Unit tests for dead-letter module', function() {
     });
 
     it('should avoid any declaration if `channel` is null', function(done) {
-      deadLetter.declareDeadLetter(DEFAULT_OPTIONS, null)
+      deadLetter.declareDeadLetter(null, DEFAULT_OPTIONS)
         .then(() => {
           sinon.assert.notCalled(channel.assertQueue);
           sinon.assert.notCalled(channel.assertExchange);
@@ -86,7 +86,7 @@ describe('Unit tests for dead-letter module', function() {
     });
 
     it('should declare a dead letter exchange', function(done) {
-      deadLetter.declareDeadLetter(DEFAULT_OPTIONS, channel)
+      deadLetter.declareDeadLetter(channel, DEFAULT_OPTIONS)
         .then(() => {
           var opt = DEFAULT_OPTIONS.exchange;
           sinon.assert.calledOnce(channel.assertExchange);
@@ -96,7 +96,7 @@ describe('Unit tests for dead-letter module', function() {
     });
 
     it('should declare a dead letter queue', function(done) {
-      deadLetter.declareDeadLetter(DEFAULT_OPTIONS, channel)
+      deadLetter.declareDeadLetter(channel, DEFAULT_OPTIONS)
         .then(() => {
           var opt = DEFAULT_OPTIONS.queue;
           sinon.assert.calledOnce(channel.assertQueue);
@@ -106,7 +106,7 @@ describe('Unit tests for dead-letter module', function() {
     });
 
     it('should bind dead letter queue and exchange with "#" as routing key', function(done) {
-      deadLetter.declareDeadLetter(DEFAULT_OPTIONS, channel)
+      deadLetter.declareDeadLetter(channel, DEFAULT_OPTIONS)
         .then(() => {
           sinon.assert.calledOnce(channel.bindQueue);
           sinon.assert.calledWithExactly(channel.bindQueue, DEFAULT_OPTIONS.queue.name, DEFAULT_OPTIONS.exchange.name, '#');
@@ -115,7 +115,7 @@ describe('Unit tests for dead-letter module', function() {
     });
 
     it('should resolve to an object containing `dlq`, `dlx` and `rk` props', function(done) {
-      deadLetter.declareDeadLetter(DEFAULT_OPTIONS, channel)
+      deadLetter.declareDeadLetter(channel, DEFAULT_OPTIONS)
         .then((dl) => {
           // Match `dlq` property to `options.queue.name`
           dl.should.have.property('dlq')
