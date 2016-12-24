@@ -3,16 +3,16 @@
 const chai = require('chai');
 chai.should();
 
-const amqputil = require('../../lib/client/client-util');
+const amqputil = require('../../../lib/client/client-util');
 
 /**
- * client-utils unit tests
+ * client-util unit tests
  */
 describe('On client-util module', function() {
   /**
    * Function: resolveClientQueue()
    */
-  describe('resolveClientQueue() function', function() {
+  describe('the resolveClientQueue() function', function() {
     it('should use a custom id if provided', function() {
       var options = {
         id: 'secret_id'
@@ -61,7 +61,7 @@ describe('On client-util module', function() {
   /**
    * Function: resolveClientTopic()
    */
-  describe('resolveClientTopic() function', function() {
+  describe('the resolveClientTopic() function', function() {
     it('should use a topic name starting with the action prefix', function() {
       var options = {
         meta$: {

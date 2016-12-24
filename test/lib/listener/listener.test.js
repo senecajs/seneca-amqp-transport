@@ -8,9 +8,9 @@ Chai.should();
 Chai.use(SinonChai);
 Chai.use(DirtyChai);
 
-const Defaults = require('../../defaults');
+const Defaults = require('../../../defaults');
 const seneca = require('seneca')();
-const AMQPSenecaListener = require('../../lib/listener');
+const AMQPSenecaListener = require('../../../lib/listener');
 
 // Use default options
 var options = Defaults.amqp;

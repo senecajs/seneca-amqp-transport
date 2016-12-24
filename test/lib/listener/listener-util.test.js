@@ -3,7 +3,7 @@
 const chai = require('chai');
 chai.should();
 
-const amqputil = require('../../lib/listener/listener-util');
+const amqputil = require('../../../lib/listener/listener-util');
 
 /**
  * listener-utils unit tests

@@ -11,7 +11,7 @@ chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
 
-const deadLetter = require('../../lib/common/dead-letter');
+const deadLetter = require('../../../lib/common/dead-letter');
 const DEFAULT_OPTIONS = {
   queue: {
     name: 'seneca.dlq'
