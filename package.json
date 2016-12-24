@@ -42,9 +42,9 @@
   "dependencies": {
     "amqplib": "^0.5.1",
     "amqpuri": "^1.0.3",
-    "bluebird": "^3.4.6",
+    "bluebird": "^3.4.7",
     "jsonic": "^0.2.2",
-    "lodash": "^4.17.2",
+    "lodash": "^4.17.3",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
@@ -52,7 +52,7 @@
     "chai": "^3.5.0",
     "chai3-json-schema": "^1.2.1",
     "dirty-chai": "^1.2.2",
-    "eslint": "^3.12.0",
+    "eslint": "^3.12.2",
     "eslint-config-seneca": "^3.0.0",
     "eslint-config-xo-space": "^0.15.0",
     "eslint-plugin-hapi": "^4.0.0",
@@ -64,7 +64,7 @@
     "gulp-load-plugins": "^1.4.0",
     "gulp-mocha": "^3.0.1",
     "gulp-release": "^1.1.1",
-    "pre-commit": "^1.2.0",
+    "pre-commit": "^1.2.2",
     "sinon": "^1.17.6",
     "sinon-bluebird": "^3.1.0",
     "sinon-chai": "^2.8.0"
