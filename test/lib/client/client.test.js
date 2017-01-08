@@ -31,7 +31,7 @@ describe('On client module', function() {
     options: DEFAULT_OPTIONS
   };
 
-  before(function() {
+  after(function() {
     seneca.close();
   });
 
@@ -76,9 +76,7 @@ describe('On client module', function() {
 
     it('should have started the new client', function(done) {
       client.setup(seneca, options, Function.prototype)
-        .then((cl) => {
-          cl.started.should.be.ok();
-        })
+        .then((cl) => cl.started.should.be.true())
         .asCallback(done);
     });
 
@@ -99,18 +97,6 @@ describe('On client module', function() {
           channel.assertExchange.should.have.been.calledOnce();
           channel.assertExchange.should.have.been
             .calledWith(ex.name, ex.type, ex.options);
-        })
-        .asCallback(done);
-    });
-
-    it('should declare the queue on the channel', function(done) {
-      client.setup(seneca, options, Function.prototype)
-        .then(() => {
-          var queueOptions = DEFAULT_OPTIONS.client.queues;
-          var queueName = amqputil.resolveClientQueue(queueOptions);
-          channel.assertQueue.should.have.been.calledOnce();
-          channel.assertQueue.should.have.been
-            .calledWith(queueName, queueOptions.options);
         })
         .asCallback(done);
     });
