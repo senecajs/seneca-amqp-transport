@@ -41,21 +41,16 @@ describe('On listener-factory module', function() {
   });
 
   describe('the Listener#listen() function', function() {
-    var listener = null;
-
     before(function() {
       sinon.stub(channel, 'consume', channel.consume);
     });
 
-    before(function() {
-      seneca.close();
+    before(function(done) {
+      seneca.ready(() => done());
     });
 
-    before(function(done) {
-      seneca.ready(function() {
-        listener = Listener(seneca, options);
-        return done();
-      });
+    after(function() {
+      seneca.close();
     });
 
     afterEach(function() {
@@ -64,10 +59,12 @@ describe('On listener-factory module', function() {
     });
 
     it('should return a Promise', function() {
+      var listener = Listener(seneca, options);
       listener.listen().should.be.instanceof(Promise);
     });
 
     it('should start consuming messages from a queue', function(done) {
+      var listener = Listener(seneca, options);
       listener.listen()
         .then(() => {
           channel.consume.should.have.been.calledOnce();

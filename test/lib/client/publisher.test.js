@@ -10,37 +10,19 @@ chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
 
-// use the default options
 const Publisher = require('../../../lib/client/publisher');
 
 const CORRELATION_ID = 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5';
 const EXCHANGE = 'seneca.topic';
 
 describe('On publisher module', function() {
-  let channel = {
-    consume: () => Promise.resolve(),
-    publish: () => Promise.resolve()
-  };
-
-  before(function() {
-    // Create spies for channel methods
-    sinon.stub(channel, 'consume', channel.consume);
-    sinon.stub(channel, 'publish', channel.publish);
-  });
-
-  afterEach(function() {
-    // Reset the state of the stub functions
-    channel.consume.reset();
-    channel.publish.reset();
-  });
-
   describe('the factory function', function() {
     it('should be a function', function() {
       Publisher.should.be.a('function');
     });
 
     it('should create a new Publisher', function() {
-      var pub = Publisher(channel);
+      var pub = Publisher({});
       pub.should.be.an('object');
       pub.should.have.property('publish').that.is.a('function');
       pub.should.have.property('awaitReply').that.is.a('function');
@@ -52,6 +34,20 @@ describe('On publisher module', function() {
   });
 
   describe('the publish() method', function() {
+    const channel = {
+      publish: () => Promise.resolve()
+    };
+
+    before(function() {
+      // Create spies for channel methods
+      sinon.stub(channel, 'publish', channel.publish);
+    });
+
+    afterEach(function() {
+      // Reset the state of the stub functions
+      channel.publish.reset();
+    });
+
     const message = JSON.stringify({ foo: 'bar' });
     const rk = 'foo.bar';
 
@@ -98,6 +94,20 @@ describe('On publisher module', function() {
   });
 
   describe('the awaitReply() method', function() {
+    const channel = {
+      consume: () => Promise.resolve()
+    };
+
+    before(function() {
+      // Create spies for channel methods
+      sinon.stub(channel, 'consume', channel.consume);
+    });
+
+    afterEach(function() {
+      // Reset the state of the stub functions
+      channel.consume.reset();
+    });
+
     it('should return a Promise', function() {
       var pub = Publisher(channel);
       pub.awaitReply().should.be.instanceof(Promise);
@@ -123,23 +133,23 @@ describe('On publisher module', function() {
       }
     };
 
-    const ch = {
+    const channel = {
       consume: (queue, cb) => cb(reply)
     };
 
     before(function() {
       // Stub `channel#consume` method and make it call the `consumeReply`
       // callback with a mock `reply` object
-      sinon.stub(ch, 'consume', (queue, cb) => cb(reply));
+      sinon.stub(channel, 'consume', (queue, cb) => cb(reply));
     });
 
     afterEach(function() {
-      ch.consume.reset();
+      channel.consume.reset();
     });
 
     it('should call the `repyHandler` callback with a message', function() {
       var replyHandler = sinon.spy();
-      var pub = Publisher(ch, {
+      var pub = Publisher(channel, {
         replyQueue: 'reply.queue',
         replyHandler,
         correlationId: CORRELATION_ID
@@ -152,7 +162,7 @@ describe('On publisher module', function() {
 
     it('should ignore messages if `correlationId` does not match', function() {
       var replyHandler = sinon.spy();
-      var pub = Publisher(ch, {
+      var pub = Publisher(channel, {
         replyQueue: 'reply.queue',
         replyHandler,
         correlationId: 'foo_' + CORRELATION_ID
