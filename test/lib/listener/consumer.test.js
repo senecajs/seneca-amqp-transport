@@ -98,6 +98,36 @@ describe('On consumer module', function() {
           .asCallback(done);
       });
 
+    it('should reject a message if the message handler throws an error',
+      function(done) {
+        const message = {
+          content: JSON.stringify({ foo: 'bar' }),
+          properties: {
+            correlationId: 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5',
+            replyTo: 'reply.queue'
+          }
+        };
+
+        const channel = {
+          nack: Function.prototype,
+          consume: (queue, handler) => Promise.resolve()
+            .then(() => handler(message))
+        };
+
+        const messageHandler = function() {
+          throw new Error();
+        };
+
+        var nack = sinon.spy(channel, 'nack');
+        var consumer = Consumer(channel, { messageHandler });
+        consumer.consume()
+          .then(function() {
+            nack.should.have.been.calledOnce();
+            nack.should.have.been.calledWith(message, false, false);
+          })
+          .asCallback(done);
+      });
+
     it('should reject a message if no content is defined', function(done) {
       const message = {
         properties: {
