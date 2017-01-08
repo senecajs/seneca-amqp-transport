@@ -1,176 +1,141 @@
 'use strict';
 
-const Chai = require('chai');
+const Promise = require('bluebird');
+const chai = require('chai');
 const DirtyChai = require('dirty-chai');
-const Sinon = require('sinon');
+const sinon = require('sinon');
 const SinonChai = require('sinon-chai');
-Chai.should();
-Chai.use(SinonChai);
-Chai.use(DirtyChai);
+chai.should();
+chai.use(SinonChai);
+chai.use(DirtyChai);
 
-const Defaults = require('../../../defaults');
+const DEFAULT_OPTIONS = require('../../../defaults').amqp;
+const amqputil = require('../../../lib/listener/listener-util');
 const seneca = require('seneca')();
-const AMQPSenecaListener = require('../../../lib/listener');
+const listener = require('../../../lib/listener');
 
-// Use default options
-var options = Defaults.amqp;
+describe('On listener module', function() {
+  let channel = {
+    assertQueue: (queue) => Promise.resolve({
+      queue
+    }),
+    assertExchange: (exchange) => Promise.resolve({
+      exchange
+    }),
+    consume: () => Promise.resolve(),
+    publish: () => Promise.resolve(),
+    bindQueue: () => Promise.resolve(),
+    sendToQueue: () => Promise.resolve(),
+    ack: Function.prototype,
+    nack: Function.prototype,
+    prefetch: Function.prototype,
+    on: Function.prototype
+  };
 
-var transport = {
-  exchange: 'seneca.topic',
-  queue: 'seneca.role:create',
-  channel: {
-    consume: function() {},
-    sendToQueue: function() {},
-    ack: function() {},
-    nack: function() {}
-  }
-};
-
-var data = {
-  kind: 'act',
-  act: {
-    max: 100,
-    min: 25,
-    role: 'create'
-  },
-  sync: true
-};
-
-var message = {
-  properties: {
-    replyTo: 'seneca.res.r1FYNSEN'
-  },
-  content: new Buffer(JSON.stringify(data), 'utf-8')
-};
-
-
-var listener = null;
-
-describe('Unit tests for listener module', function() {
-  before(function(done) {
-    seneca.ready(function() {
-      // create a new AMQPSenecaListener instance
-      listener = new AMQPSenecaListener(seneca, transport, options);
-
-      done();
-    });
-  });
+  let options = {
+    ch: channel,
+    options: DEFAULT_OPTIONS
+  };
 
   before(function() {
+    // Add some `pin` to the options to be used in queue name creation
+    DEFAULT_OPTIONS.pin = 'role:entity,cmd:create';
+
+    // Create spies for channel methods
+    sinon.stub(channel, 'assertQueue', channel.assertQueue);
+    sinon.stub(channel, 'assertExchange', channel.assertExchange);
+    sinon.stub(channel, 'prefetch', channel.prefetch);
+    sinon.stub(channel, 'bindQueue', channel.bindQueue);
+  });
+
+  after(function() {
     seneca.close();
   });
 
-  describe('handleMessage()', function() {
-    it('should not handle empty messages', Sinon.test(function() {
-      // stubs
-      var stubHandleRequest = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
-        return cb();
-      });
-
-      // spies
-      var spyStringifyJSON = this.spy(listener.utils, 'stringifyJSON');
-      var spySendToQueue = this.spy(transport.channel, 'sendToQueue');
-      var spyAck = this.spy(transport.channel, 'ack');
-
-      // handle the message
-      listener.handleMessage(message, data);
-
-      /*
-       * assertions
-       */
-      stubHandleRequest.should.have.been.calledOnce();
-      spyStringifyJSON.should.have.not.been.called();
-      spySendToQueue.should.have.not.been.called();
-      spyAck.should.have.not.been.called();
-    }));
-
-    it('should push messages to reply queue and acknowledge them', Sinon.test(function() {
-      // stubs
-      var stubHandleRequest = this.stub(listener.utils, 'handle_request', function(seneca, data, options, cb) {
-        return cb(data);
-      });
-
-      // spies
-      var spyStringifyJSON = this.spy(listener.utils, 'stringifyJSON');
-      var spySendToQueue = this.spy(transport.channel, 'sendToQueue');
-      var spyAck = this.spy(transport.channel, 'ack');
-
-      // handle the message
-      listener.handleMessage(message, data);
-
-      /*
-       * assertions
-       */
-      stubHandleRequest.should.have.been.calledOnce();
-      spyStringifyJSON.should.have.been.calledOnce();
-      spyStringifyJSON.should.have.been.calledWithExactly(seneca, 'listen-amqp', data);
-      spySendToQueue.should.have.been.calledOnce();
-      spySendToQueue.should.have.been.calledWithExactly(message.properties.replyTo, new Buffer(JSON.stringify(data)), {
-        correlationId: message.properties.correlationId
-      });
-      spyAck.should.have.been.calledOnce();
-      spyAck.should.have.been.calledWithExactly(message);
-    }));
+  before(function(done) {
+    seneca.ready(() => done());
   });
 
-  describe('listen()', function() {
-    it('should listen and consume messages from the channel', Sinon.test(function() {
-      // stubs
-      var spyConsume = this.stub(transport.channel, 'consume', function(queue, cb) {
-        // return the message
-        return cb(message);
-      });
+  describe('the setup() function', function() {
+    afterEach(function() {
+      // Reset the state of the stub functions
+      channel.assertQueue.reset();
+      channel.assertExchange.reset();
+      channel.prefetch.reset();
+      channel.bindQueue.reset();
+    });
 
-      listener.listen(transport.queue, message);
+    it('should return a Promise', function() {
+      listener.setup(seneca, options, Function.prototype)
+        .should.be.instanceof(Promise);
+    });
 
-      spyConsume.should.have.been.calledOnce();
-    }));
-  });
+    it('should resolve to a new Listener instance', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then((li) => {
+          li.should.be.an('object');
+          li.should.have.property('listen');
+        })
+        .asCallback(done);
+    });
 
-  describe('consume()', function() {
-    it('should not acknowledge messages without content', Sinon.test(function() {
-      var msg = {
-        properties: {
-          replyTo: 'seneca.res.r1FYNSEN'
-        }
-      };
+    it('should have started the new listener', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then((li) => {
+          li.started.should.be.true();
+        })
+        .asCallback(done);
+    });
 
-      var spyNack = this.spy(transport.channel, 'nack');
-      var spyHandleMessage = this.spy(listener, 'handleMessage');
+    it('should set the prefetch value on the channel', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then(() => {
+          channel.prefetch.should.have.been.calledOnce();
+          channel.prefetch.should.have.been
+            .calledWith(DEFAULT_OPTIONS.listener.channel.prefetch);
+        })
+        .asCallback(done);
+    });
 
-      // consume the message
-      listener.consume()(msg);
+    it('should declare the exchange on the channel', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then(() => {
+          var ex = DEFAULT_OPTIONS.exchange;
+          channel.assertExchange.should.have.been.calledOnce();
+          channel.assertExchange.should.have.been
+            .calledWith(ex.name, ex.type, ex.options);
+        })
+        .asCallback(done);
+    });
 
-      spyNack.should.have.been.calledOnce();
-      spyHandleMessage.should.not.have.been.called();
-    }));
+    it('should declare the queue on the channel', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then(() => {
+          var queueOptions = DEFAULT_OPTIONS.listener.queues;
+          var queueName = amqputil.resolveListenQueue({
+            role: 'entity',
+            cmd: 'create'
+          }, queueOptions);
+          channel.assertQueue.should.have.been.calledOnce();
+          channel.assertQueue.should.have.been
+            .calledWith(queueName, queueOptions.options);
+        })
+        .asCallback(done);
+    });
 
-    it('should not acknowledge messages without a replyTo property', Sinon.test(function() {
-      var msg = {
-        properties: {}
-      };
-
-      var spyNack = this.spy(transport.channel, 'nack');
-      var spyHandleMessage = this.spy(listener, 'handleMessage');
-
-      // consume the message
-      listener.consume()(msg);
-
-      spyNack.should.have.been.calledOnce();
-      spyHandleMessage.should.not.have.been.called();
-    }));
-
-    it('should handle a valid message', Sinon.test(function() {
-      var spyNack = this.spy(transport.channel, 'nack');
-      var spyHandleMessage = this.spy(listener, 'handleMessage');
-      var spyParseJSON = this.spy(listener.utils, 'parseJSON');
-
-      // consume the message
-      listener.consume()(message);
-
-      spyNack.should.not.have.been.called();
-      spyParseJSON.should.have.been.calledOnce();
-      spyHandleMessage.should.have.been.calledOnce();
-    }));
+    it('should bind the queue to the exchange', function(done) {
+      listener.setup(seneca, options, Function.prototype)
+        .then(() => {
+          var queueOptions = DEFAULT_OPTIONS.listener.queues;
+          var queueName = amqputil.resolveListenQueue({
+            role: 'entity',
+            cmd: 'create'
+          }, queueOptions);
+          channel.bindQueue.should.have.been.calledOnce();
+          channel.bindQueue.should.have.been
+            .calledWith(queueName, DEFAULT_OPTIONS.exchange.name);
+        })
+        .asCallback(done);
+    });
   });
 });

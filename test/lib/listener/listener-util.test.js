@@ -12,7 +12,7 @@ describe('On listener-util module', function() {
   /**
    * Function: resolveListenQueue()
    */
-  describe('resolveListenQueue() function', function() {
+  describe('the resolveListenQueue() function', function() {
     it('should resolve single pin', function() {
       var pin = {
         role: 'entity',
@@ -87,7 +87,7 @@ describe('On listener-util module', function() {
   /**
    * Function: resolveListenTopics()
    */
-  describe('resolveListenTopics()', function() {
+  describe('the resolveListenTopics()', function() {
     it('should return an array of topics based on the array of pins', function() {
       var pins = [{
         role: 'entity',
