@@ -7,7 +7,9 @@
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
-> **Important notice**: If you are upgrading to `2.1.0` from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
+> **Important**: Starting from `2.2.0` this plugin will require the usage of the `--harmony` flag in order to run in node versions _older_ than LTS (currently 6.x.x).
+
+> **Important**: If you are upgrading to `2.1.0` (or later) from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
 
 ## Install
 
@@ -204,14 +206,14 @@ AMQP_URL='amqp://guest:guest@localhost:5672' node client.js
 
 ## Roadmap
 - [x] :muscle: ~~Mocha unit tests.~~
-- [ ] Functional tests ([#74](https://github.com/senecajs/seneca-amqp-transport/issues/74)).
+- [x] :muscle: ~~Functional tests~~ ([#74](https://github.com/senecajs/seneca-amqp-transport/issues/74)).
 - [x] :muscle: ~~Setup Travis CI.~~
 - [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)).
 - [ ] Better support for work queues.
 - [ ] Better support for fanout exchanges.
 - [ ] Improve logging using `seneca.log`.
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
-- [ ] _Internal_: remove classes in favor of factory functions ([WIP](https://github.com/senecajs/seneca-amqp-transport/pull/73)).
+- [x] ~~_Internal_: remove classes in favor of factory functions~~ (https://github.com/senecajs/seneca-amqp-transport/pull/73).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
