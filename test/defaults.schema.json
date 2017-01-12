@@ -3,13 +3,13 @@
   "type": "object",
   "properties": {
     "amqp": {
-      "required": ["client", "exchange", "listen", "type", "url"],
+      "required": ["client", "exchange", "listener", "type", "url"],
       "type": "object",
       "properties": {
         "url": {
           "type": "string"
         },
-        "listen": {
+        "listener": {
           "required": ["channel", "queues"],
           "type": "object",
           "properties": {

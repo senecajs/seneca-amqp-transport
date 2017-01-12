@@ -23,7 +23,7 @@
         }
       }
     },
-    "listen": {
+    "listener": {
       "channel": {
         "prefetch": 1
       },

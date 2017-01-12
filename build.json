@@ -1,9 +1,13 @@
 {
   "paths": {
     "src": ["index.js", "lib/**/*.js"],
-    "test": ["test/**/*spec.js", "test/**/*test.js"]
+    "test": ["test/**/*test.js"],
+    "e2e": ["e2e/**/*e2e.js"]
   },
   "eslint": {
     "failOnError": true
+  },
+  "mocha": {
+    "timeout": 5000
   }
 }

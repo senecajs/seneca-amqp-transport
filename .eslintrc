@@ -11,6 +11,7 @@
     "no-unused-vars": [2, { "vars": "all", "args": "after-used" }],
     "space-before-function-paren": [2, "never"],
     "brace-style": [2, "1tbs",  { "allowSingleLine": false }],
-    "arrow-parens": ["error", "always"]
+    "arrow-parens": ["error", "always"],
+    "hapi/hapi-capitalize-modules": [0, "always"]
   }
 }

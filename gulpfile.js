@@ -2,6 +2,7 @@
 'use strict';
 
 const $ = require('gulp-load-plugins')();
+const sequence = require('run-sequence');
 const config = require('./build.json');
 const gulp = require('gulp');
 
@@ -25,24 +26,44 @@ gulp.task('eslint', () =>
  * Runs unit tests and prints out
  * a report.
  *
- * `gulp test`
+ * `gulp test:unit`
  */
-gulp.task('test', (cb) => {
+gulp.task('test:unit', (cb) => {
   process.env.NODE_ENV = 'test';
   gulp.src(config.paths.src)
     .pipe($.istanbul()) // Covering files
     .pipe($.istanbul.hookRequire()) // Force `require` to return covered files
     .on('finish', function() {
       gulp.src(config.paths.test)
-        .pipe($.mocha())
+        .pipe($.mocha(config.mocha))
         .pipe($.istanbul.writeReports()) // Creating the reports after tests ran
         .pipe($.istanbul.enforceThresholds({
           thresholds: {
-            global: 90
+            global: 80
           }
         })) // Enforce a coverage of at least 90%
         .on('end', cb);
     });
+});
+
+/**
+ * Runs end to end, functional tests.
+ *
+ * `gulp test:e2e`
+ */
+gulp.task('test:e2e', () => {
+  process.env.NODE_ENV = 'test';
+  return gulp.src(config.paths.e2e)
+    .pipe($.mocha(config.mocha));
+});
+
+/**
+ * Runs both unit and end to end tests, sequentially.
+ *
+ * `gulp test`
+ */
+gulp.task('test', function(cb) {
+  sequence('test:e2e', 'test:unit', cb);
 });
 
 /**
@@ -59,7 +80,18 @@ gulp.task('watch', () => gulp.watch(config.paths.src, ['eslint']));
  *
  * `gulp validate`
  */
-gulp.task('validate', ['eslint', 'test']);
+gulp.task('validate', ['eslint', 'test:unit']);
+
+/**
+ * Lints source code and runs unit as well as
+ * end to end tests.
+ * Used during CI jobs.
+ *
+ * `gulp integrate`
+ */
+gulp.task('integrate', function(cb) {
+  sequence('validate', 'test:e2e', cb);
+});
 
 /**
  * Alias for 'validate'.
