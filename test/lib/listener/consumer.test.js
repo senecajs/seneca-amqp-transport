@@ -83,6 +83,7 @@ describe('On consumer module', function() {
         };
 
         const channel = {
+          ack: Function.prototype,
           consume: (queue, handler) => Promise.resolve()
             .then(() => handler(message))
         };

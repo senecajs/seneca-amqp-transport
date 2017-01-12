@@ -179,8 +179,8 @@ describe('On listener-factory module', function() {
             // Should not send response to `replyTo` queue
             channel.sendToQueue.should.not.have.been.calledOnce();
 
-            // Should not acknowledge the message on the channel
-            channel.ack.should.not.have.been.calledOnce();
+            // Should acknowledge the message on the channel
+            channel.ack.should.have.been.calledOnce();
           })
           .asCallback(done);
       }));

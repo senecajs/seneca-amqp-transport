@@ -48,12 +48,12 @@ describe('On listener module', function() {
     sinon.stub(channel, 'bindQueue', channel.bindQueue);
   });
 
-  after(function() {
-    seneca.close();
-  });
-
   before(function(done) {
     seneca.ready(() => done());
+  });
+
+  after(function() {
+    seneca.close();
   });
 
   describe('the setup() function', function() {
