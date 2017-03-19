@@ -5,7 +5,7 @@ const sinon = require('sinon');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 const Promise = require('bluebird');
-require('sinon-bluebird');
+
 
 chai.should();
 chai.use(SinonChai);

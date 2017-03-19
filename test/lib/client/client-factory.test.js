@@ -4,7 +4,7 @@ const chai = require('chai');
 const sinon = require('sinon');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
-require('sinon-bluebird');
+
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
