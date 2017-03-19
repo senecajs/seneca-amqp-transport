@@ -35,9 +35,9 @@ describe('On dead-letter module', function() {
 
   before(function() {
     // Create spies for channel methods
-    sinon.stub(channel, 'assertQueue', channel.assertQueue);
-    sinon.stub(channel, 'assertExchange', channel.assertExchange);
-    sinon.stub(channel, 'bindQueue', channel.bindQueue);
+    sinon.stub(channel, 'assertQueue').callsFake(channel.assertQueue);
+    sinon.stub(channel, 'assertExchange').callsFake(channel.assertExchange);
+    sinon.stub(channel, 'bindQueue').callsFake(channel.bindQueue);
   });
 
   afterEach(function() {

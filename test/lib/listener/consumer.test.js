@@ -38,7 +38,7 @@ describe('On consumer module', function() {
 
     before(function() {
       // Create spies for channel methods
-      sinon.stub(channel, 'consume', channel.consume);
+      sinon.stub(channel, 'consume').callsFake(channel.consume);
     });
 
     afterEach(function() {
@@ -144,7 +144,7 @@ describe('On consumer module', function() {
       };
 
       // Create spies for channel methods
-      sinon.stub(channel, 'nack', channel.nack);
+      sinon.stub(channel, 'nack').callsFake(channel.nack);
 
       var messageHandler = sinon.spy();
       var consumer = Consumer(channel, { messageHandler });
@@ -172,7 +172,7 @@ describe('On consumer module', function() {
       };
 
       // Create spies for channel methods
-      sinon.stub(channel, 'nack', channel.nack);
+      sinon.stub(channel, 'nack').callsFake(channel.nack);
 
       var messageHandler = sinon.spy();
       var consumer = Consumer(channel, { messageHandler });

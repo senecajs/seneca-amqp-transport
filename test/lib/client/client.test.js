@@ -41,12 +41,12 @@ describe('On client module', function() {
     DEFAULT_OPTIONS.client.queues.id = 'foo';
 
     // Create spies for channel methods
-    sinon.stub(channel, 'assertQueue', channel.assertQueue);
-    sinon.stub(channel, 'assertExchange', channel.assertExchange);
-    sinon.stub(channel, 'consume', channel.consume);
-    sinon.stub(channel, 'publish', channel.publish);
-    sinon.stub(channel, 'prefetch', channel.prefetch);
-    sinon.stub(channel, 'on', channel.on);
+    sinon.stub(channel, 'assertQueue').callsFake(channel.assertQueue);
+    sinon.stub(channel, 'assertExchange').callsFake(channel.assertExchange);
+    sinon.stub(channel, 'consume').callsFake(channel.consume);
+    sinon.stub(channel, 'publish').callsFake(channel.publish);
+    sinon.stub(channel, 'prefetch').callsFake(channel.prefetch);
+    sinon.stub(channel, 'on').callsFake(channel.on);
   });
 
   afterEach(function() {
