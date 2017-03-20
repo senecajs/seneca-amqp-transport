@@ -66,7 +66,7 @@
     "pre-commit": "^1.2.2",
     "run-sequence": "^1.2.2",
     "seneca": "^3.3.0",
-    "sinon": "^1.17.7",
+    "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0"
   },
   "pre-commit": [
