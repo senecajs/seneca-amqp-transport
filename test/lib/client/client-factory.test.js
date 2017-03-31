@@ -2,12 +2,14 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
+const sinonTest = require('sinon-test');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
+sinon.test = sinonTest.configureTest(sinon);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
@@ -92,13 +94,14 @@ describe('On client-factory module', function() {
         // Create seneca.export('transport/utils') stub
         // to make it call the provided callback, which -in turn- ends up
         // calling the `act` function on the client factory
-        this.stub(transportUtils, 'make_client', (seneca, cb) => cb(null, null,
-          function(err, done) {
-            if (err) {
-              throw err;
-            }
-            return done(options.options, Function.prototype);
-          }));
+        this.stub(transportUtils, 'make_client')
+          .callsFake((seneca, cb) => cb(null, null,
+            function(err, done) {
+              if (err) {
+                throw err;
+              }
+              return done(options.options, Function.prototype);
+            }));
 
         this.stub(seneca, 'export')
           .withArgs('transport/utils').returns(transportUtils);
@@ -124,12 +127,13 @@ describe('On client-factory module', function() {
 
         // Create seneca.export('transport/utils') stub
         // to make it call the provided callback
-        this.stub(transportUtils, 'make_client', (seneca, cb) => cb(null, null,
-          Function.prototype));
+        this.stub(transportUtils, 'make_client')
+          .callsFake((seneca, cb) => cb(null, null, Function.prototype));
 
         // Make `channel#consume` call its handler function
-        this.stub(channel, 'consume', (queue, handler) => Promise.resolve()
-          .then(() => handler(reply)));
+        this.stub(channel, 'consume')
+          .callsFake((queue, handler) => Promise.resolve()
+              .then(() => handler(reply)));
 
         this.stub(seneca, 'export')
           .withArgs('transport/utils').returns(transportUtils);

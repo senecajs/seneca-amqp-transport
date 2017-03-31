@@ -40,7 +40,7 @@ describe('On publisher module', function() {
 
     before(function() {
       // Create spies for channel methods
-      sinon.stub(channel, 'publish', channel.publish);
+      sinon.spy(channel, 'publish');
     });
 
     afterEach(function() {
@@ -100,7 +100,7 @@ describe('On publisher module', function() {
 
     before(function() {
       // Create spies for channel methods
-      sinon.stub(channel, 'consume', channel.consume);
+      sinon.spy(channel, 'consume');
     });
 
     afterEach(function() {
@@ -140,7 +140,7 @@ describe('On publisher module', function() {
     before(function() {
       // Stub `channel#consume` method and make it call the `consumeReply`
       // callback with a mock `reply` object
-      sinon.stub(channel, 'consume', (queue, cb) => cb(reply));
+      sinon.stub(channel, 'consume').callsFake((queue, cb) => cb(reply));
     });
 
     afterEach(function() {
@@ -179,7 +179,7 @@ describe('On publisher module', function() {
 
       // Stub `channel#consume` method and make it call the `consumeReply`
       // callback with a mock `reply` object with no `content` property.
-      sinon.stub(noContentChannel, 'consume', (queue, cb) => cb({
+      sinon.stub(noContentChannel, 'consume').callsFake((queue, cb) => cb({
         properties: reply.properties
       }));
 

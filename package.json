@@ -61,13 +61,14 @@
     "gulp-if": "^2.0.2",
     "gulp-istanbul": "^1.1.1",
     "gulp-load-plugins": "^1.5.0",
-    "gulp-mocha": "^4.1.0",
+    "gulp-mocha": "^4.2.0",
     "gulp-release": "^1.1.1",
     "pre-commit": "^1.2.2",
     "run-sequence": "^1.2.2",
     "seneca": "^3.3.0",
-    "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0"
+    "sinon": "^2.1.0",
+    "sinon-chai": "^2.9.0",
+    "sinon-test": "^1.0.1"
   },
   "pre-commit": [
     "validate"

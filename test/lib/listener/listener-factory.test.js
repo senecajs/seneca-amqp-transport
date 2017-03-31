@@ -3,12 +3,14 @@
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
+const sinonTest = require('sinon-test');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
+sinon.test = sinonTest.configureTest(sinon);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
@@ -50,11 +52,11 @@ describe('On listener-factory module', function() {
 
   describe('the Listener#listen() function', function() {
     before(function() {
-      sinon.stub(channel, 'consume', channel.consume);
+      sinon.spy(channel, 'consume');
     });
 
     afterEach(function() {
-      // Reset the state of the stub functions
+      // Reset the state of the spy functions
       channel.consume.reset();
     });
 
@@ -107,9 +109,9 @@ describe('On listener-factory module', function() {
     before(function() {
       // Stub the `channel#consume()` method to make it call the message
       // handler function as if a new message had just arrived to the queue
-      sinon.stub(channel, 'consume', channel.consume);
-      sinon.stub(channel, 'sendToQueue', channel.sendToQueue);
-      sinon.stub(channel, 'ack', channel.ack);
+      sinon.spy(channel, 'consume');
+      sinon.spy(channel, 'sendToQueue');
+      sinon.spy(channel, 'ack');
     });
 
     afterEach(function() {
@@ -167,8 +169,8 @@ describe('On listener-factory module', function() {
         // Could be any "falsy" value
         var reply = false;
 
-        this.stub(transportUtils, 'handle_request',
-          (seneca, data, options, cb) => cb(reply));
+        this.stub(transportUtils, 'handle_request')
+        .callsFake((seneca, data, options, cb) => cb(reply));
 
         this.stub(seneca, 'export')
             .withArgs('transport/utils').returns(transportUtils);
