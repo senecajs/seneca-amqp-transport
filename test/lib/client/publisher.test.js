@@ -40,7 +40,7 @@ describe('On publisher module', function() {
 
     before(function() {
       // Create spies for channel methods
-      sinon.stub(channel, 'publish').callsFake(channel.publish);
+      sinon.spy(channel, 'publish');
     });
 
     afterEach(function() {
@@ -100,7 +100,7 @@ describe('On publisher module', function() {
 
     before(function() {
       // Create spies for channel methods
-      sinon.stub(channel, 'consume').callsFake(channel.consume);
+      sinon.spy(channel, 'consume');
     });
 
     afterEach(function() {

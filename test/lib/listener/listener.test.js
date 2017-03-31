@@ -42,10 +42,10 @@ describe('On listener module', function() {
     DEFAULT_OPTIONS.pin = 'role:entity,cmd:create';
 
     // Create spies for channel methods
-    sinon.stub(channel, 'assertQueue').callsFake(channel.assertQueue);
-    sinon.stub(channel, 'assertExchange').callsFake(channel.assertExchange);
-    sinon.stub(channel, 'prefetch').callsFake(channel.prefetch);
-    sinon.stub(channel, 'bindQueue').callsFake(channel.bindQueue);
+    sinon.spy(channel, 'assertQueue');
+    sinon.spy(channel, 'assertExchange');
+    sinon.spy(channel, 'prefetch');
+    sinon.spy(channel, 'bindQueue');
   });
 
   before(function(done) {
