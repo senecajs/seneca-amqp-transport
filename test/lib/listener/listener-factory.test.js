@@ -169,8 +169,8 @@ describe('On listener-factory module', function() {
         // Could be any "falsy" value
         var reply = false;
 
-        this.stub(transportUtils, 'handle_request',
-          (seneca, data, options, cb) => cb(reply));
+        this.stub(transportUtils, 'handle_request')
+        .callsFake((seneca, data, options, cb) => cb(reply));
 
         this.stub(seneca, 'export')
             .withArgs('transport/utils').returns(transportUtils);
