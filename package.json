@@ -9,6 +9,9 @@
     "lib/*",
     "defaults.json"
   ],
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "scripts": {
     "integrate": "gulp integrate",
     "test": "gulp test",
