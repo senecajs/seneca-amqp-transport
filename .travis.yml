@@ -29,5 +29,4 @@ deploy:
     repo: senecajs/seneca-amqp-transport
     node_js: '7'
 cache:
-  bundler: true
   directories: node_modules
