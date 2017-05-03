@@ -45,7 +45,7 @@
   "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
     "amqplib": "^0.5.1",
-    "amqpuri": "^1.0.3",
+    "amqpuri": "^1.1.0",
     "bluebird": "^3.5.0",
     "jsonic": "^0.3.0",
     "lodash": "^4.17.4",
@@ -64,13 +64,13 @@
     "gulp-if": "^2.0.2",
     "gulp-istanbul": "^1.1.1",
     "gulp-load-plugins": "^1.5.0",
-    "gulp-mocha": "^4.3.0",
+    "gulp-mocha": "^4.3.1",
     "gulp-release": "^1.1.1",
     "pre-commit": "^1.2.2",
     "run-sequence": "^1.2.2",
     "seneca": "^3.3.0",
-    "sinon": "^2.1.0",
-    "sinon-chai": "^2.9.0",
+    "sinon": "^2.2.0",
+    "sinon-chai": "^2.10.0",
     "sinon-test": "^1.0.1"
   },
   "pre-commit": [
