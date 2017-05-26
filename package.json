@@ -52,7 +52,7 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.0.0",
     "chai3-json-schema": "^1.2.1",
     "dirty-chai": "^1.2.2",
     "eslint": "^3.19.0",
