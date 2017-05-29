@@ -15,7 +15,10 @@ notifications:
   - nfantone@gmail.com
 before_install:
   - npm i -g npm
+  - npm install -g greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
 script: npm run integrate
+after_script: greenkeeper-lockfile-upload
 services:
   - rabbitmq
 after_success:
