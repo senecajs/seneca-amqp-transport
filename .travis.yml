@@ -9,6 +9,7 @@ branches:
   - develop
   - /^v?(\d\.){2}\d$/
   - /^greenkeeper-.*$/
+  - /^greenkeeper/.*$/
 notifications:
   email:
   - nfantone@gmail.com
