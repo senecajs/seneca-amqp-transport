@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-
 'use strict';
 
-var client = require('seneca')()
+const client = require('seneca')()
   .use('..')
   .client({
     type: 'amqp',
