@@ -16,12 +16,8 @@ require('seneca')()
       now: Date.now()
     });
   })
-  .add('cmd:log,level:*', function(req, done) {
-    console[req.level](req.message);
-    return done(null, { ok: true });
-  })
   .listen({
     type: 'amqp',
-    pin: ['cmd:salute', 'cmd:log,level:*'],
+    pin: 'cmd:salute',
     url: process.env.AMQP_URL
   });

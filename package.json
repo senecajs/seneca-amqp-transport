@@ -1,6 +1,6 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "codename": "Migrative Meathook",
   "description": "Official AMQP transport plugin for Seneca",
   "main": "index.js",
@@ -9,9 +9,18 @@
     "lib/*",
     "defaults.json"
   ],
+  "engines": {
+    "node": ">= 6.0.0"
+  },
   "scripts": {
-    "test": "gulp test",
-    "validate": "gulp validate"
+    "coverage": "nyc --cache npm test",
+    "test": "npm-run-all test:unit test:e2e",
+    "test:unit": "NODE_ENV=test mocha --reporter spec --bail test/**/*.test.js",
+    "test:e2e": "NODE_ENV=test mocha --reporter spec --bail e2e/**/*.e2e.js",
+    "lint": "eslint index.js lib",
+    "validate": "npm-run-all lint test:unit",
+    "integrate": "npm-run-all lint coverage",
+    "release": "./scripts/release.sh"
   },
   "repository": {
     "type": "git",
@@ -40,35 +49,29 @@
   },
   "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
-    "amqplib": "^0.4.2",
-    "amqpuri": "^1.0.2",
-    "bluebird": "^3.4.6",
-    "jsonic": "^0.2.2",
-    "lodash": "^4.16.4",
-    "shortid": "^2.2.6",
-    "uuid": "^2.0.3"
+    "amqplib": "^0.5.1",
+    "amqpuri": "^1.1.0",
+    "bluebird": "^3.5.0",
+    "jsonic": "^0.3.0",
+    "lodash": "^4.17.4",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "seneca": "^3.2.1",
-    "chai": "^3.5.0",
+    "mocha": "^3.4.2",
+    "chai": "^4.0.2",
     "chai3-json-schema": "^1.2.1",
-    "dirty-chai": "^1.2.2",
-    "eslint": "^3.8.0",
+    "dirty-chai": "^2.0.0",
+    "eslint": "^4.1.1",
     "eslint-config-seneca": "^3.0.0",
-    "eslint-config-xo-space": "^0.15.0",
     "eslint-plugin-hapi": "^4.0.0",
-    "eslint-plugin-standard": "^2.0.1",
-    "gulp": "^3.9.1",
-    "gulp-eslint": "^3.0.1",
-    "gulp-if": "^2.0.1",
-    "gulp-istanbul": "^1.1.1",
-    "gulp-load-plugins": "^1.3.0",
-    "gulp-mocha": "^3.0.1",
-    "gulp-release": "^1.1.0",
-    "pre-commit": "^1.1.3",
-    "sinon": "^1.17.6",
-    "sinon-bluebird": "^3.1.0",
-    "sinon-chai": "^2.8.0"
+    "eslint-plugin-standard": "^3.0.1",
+    "pre-commit": "^1.2.2",
+    "seneca": "^3.3.0",
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0",
+    "sinon-test": "^2.0.0",
+    "npm-run-all": "^4.0.2",
+    "nyc": "^11.0.3"
   },
   "pre-commit": [
     "validate"

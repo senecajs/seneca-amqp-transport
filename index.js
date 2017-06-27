@@ -5,9 +5,8 @@
  *
  * @module seneca-amqp-transport
  */
-const Defaults = require('./defaults');
-const ClientHook = require('./lib/client-hook');
-const ListenHook = require('./lib/listen-hook');
+const defaults = require('./defaults');
+const hooks = require('./lib/hooks');
 
 const PLUGIN_NAME = 'amqp-transport';
 const PLUGIN_TAG = require('./package.json').version;
@@ -16,14 +15,14 @@ const TRANSPORT_TYPE = 'amqp';
 module.exports = function(opts) {
   var seneca = this;
   var so = seneca.options();
-  var options = seneca.util.deepextend(Defaults, so.transport, opts);
-  var listen = new ListenHook(seneca);
-  var client = new ClientHook(seneca);
+  var options = seneca.util.deepextend(defaults, so.transport, opts);
+  var listener = hooks.listenerHook(seneca);
+  var client = hooks.clientHook(seneca);
   seneca.add({
     role: 'transport',
     hook: 'listen',
     type: TRANSPORT_TYPE
-  }, listen.hook(options));
+  }, listener.hook(options));
   seneca.add({
     role: 'transport',
     hook: 'client',

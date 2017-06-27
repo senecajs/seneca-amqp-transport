@@ -1,21 +1,27 @@
 language: node_js
 node_js:
-- '4'
 - '6'
+- '8'
 sudo: false
 branches:
   only:
   - master
   - develop
   - /^v?(\d\.){2}\d$/
+  - /^greenkeeper/.*$/
 notifications:
   email:
   - nfantone@gmail.com
 before_install:
   - npm i -g npm
-script: npm run validate
+  - npm install -g greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
+script: npm run integrate
+after_script: greenkeeper-lockfile-upload
+services:
+  - rabbitmq
 after_success:
-  - test $TRAVIS_NODE_VERSION == '6' && bash <(curl -s https://codecov.io/bash)
+  - test $TRAVIS_NODE_VERSION == '8' && bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
@@ -24,7 +30,6 @@ deploy:
   on:
     tags: true
     repo: senecajs/seneca-amqp-transport
-    node_js: '6'
+    node_js: '8'
 cache:
-  bundler: true
   directories: node_modules

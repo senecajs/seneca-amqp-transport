@@ -3,11 +3,15 @@
 > Official [Seneca][1] AMQP transport plugin
 
 # seneca-amqp-transport
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/senecajs/seneca-amqp-transport.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/senecajs/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/senecajs/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/senecajs/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/senecajs/seneca-amqp-transport?branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-amqp-transport/badge.svg)](https://snyk.io/test/github/senecajs/seneca-amqp-transport) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/senecajs/seneca-amqp-transport/blob/master/LICENSE)
 
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
-> **Important notice**: If you are upgrading to `2.1.0` from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
+> **Important**: Starting from `2.2.0` this plugin will require the usage of the `--harmony` flag in order to run in node versions _older_ than LTS (currently 6.x.x).
+
+> **Important**: If you are upgrading to `2.1.0` (or later) from an older version, _please read and follow_ instructions on [this wiki guide][13] to avoid some potential issues.
 
 ## Install
 
@@ -82,7 +86,7 @@ setInterval(function() {
 #### How it works
 A client creates an [exclusive][6], randomly named response queue (something similar to `seneca.act.x42jK0l`) and starts consuming from it - much like a listener would do. On every `act`, the client publishes the message to the  `seneca.topic` exchange using a routing key built from the _pin that matches the act pattern_. In the simple example above, the _pattern_ is `cmd:log,level:log` which equals the only declared pin. With that, the routing key `cmd.log.level.log` is inferred. An AMQP `replyTo` header is set to the name of the random queue, in an [RPC-schema][7] fashion.
 
-> Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnect and re-created each time.
+> Manual queue naming on a client (using the `name` parameter as seen in the listener configuration) is not supported. Client queues are deleted once the client disconnects and re-created each time.
 
 As you can see, pins play an important role on routing messages on the broker, so in order for a listener to receive messages from a client, **their pins must match**.
 
@@ -182,12 +186,12 @@ npm i seneca
 
 # Start listener.js
 cd examples
-AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node listener.js
+AMQP_URL='amqp://guest:guest@localhost:5672' node listener.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216405556}
 
 # Start client.js
 cd examples
-AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
+AMQP_URL='amqp://guest:guest@localhost:5672' node client.js
 {"kind":"notice","notice":"seneca started","level":"info","when":1476216473818}
 { id: 93,
   message: 'Hello World!',
@@ -204,12 +208,14 @@ AMQP_URL='amqp://guest:guest@dev.rabbitmq.com:5672' node client.js
 
 ## Roadmap
 - [x] :muscle: ~~Mocha unit tests.~~
-- [ ] Functional tests.
+- [x] :muscle: ~~Functional tests~~ ([#74](https://github.com/senecajs/seneca-amqp-transport/issues/74)).
 - [x] :muscle: ~~Setup Travis CI.~~
 - [x] :muscle: ~~Support for message TTL and dead-lettering~~ ([#59](https://github.com/senecajs/seneca-amqp-transport/issues/59)).
 - [ ] Better support for work queues.
 - [ ] Better support for fanout exchanges.
+- [ ] Improve logging using `seneca.log`.
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
+- [x] ~~_Internal_: remove classes in favor of factory functions~~ (https://github.com/senecajs/seneca-amqp-transport/pull/73).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
