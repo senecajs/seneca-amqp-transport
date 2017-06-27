@@ -55,7 +55,7 @@
     "chai": "^4.0.0",
     "chai3-json-schema": "^1.2.1",
     "dirty-chai": "^1.2.2",
-    "eslint": "^3.19.0",
+    "eslint": "^4.1.0",
     "eslint-config-seneca": "^3.0.0",
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-standard": "^3.0.1",
