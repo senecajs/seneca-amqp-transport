@@ -2810,9 +2810,9 @@ sinon-chai@^2.10.0:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.10.0.tgz#6ab3008bb8cae9929e744d766574b4cf35f34b5b"
 
-sinon-test@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-1.0.1.tgz#1b0fb73110e619d2eedb5e76706fd9bca9a7067c"
+sinon-test@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/sinon-test/-/sinon-test-2.0.0.tgz#5f427ea8b611a7532c7cd5b3b7f3be69bcc2ff15"
 
 sinon@^2.2.0:
   version "2.2.0"

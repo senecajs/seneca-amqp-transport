@@ -71,7 +71,7 @@
     "seneca": "^3.3.0",
     "sinon": "^2.2.0",
     "sinon-chai": "^2.10.0",
-    "sinon-test": "^1.0.1"
+    "sinon-test": "^2.0.0"
   },
   "pre-commit": [
     "validate"
