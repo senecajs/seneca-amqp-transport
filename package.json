@@ -13,9 +13,14 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "integrate": "gulp integrate",
-    "test": "gulp test",
-    "validate": "gulp validate"
+    "coverage": "nyc --cache npm test",
+    "test": "npm-run-all test:unit test:e2e",
+    "test:unit": "NODE_ENV=test mocha --reporter spec --bail test/**/*.test.js",
+    "test:e2e": "NODE_ENV=test mocha --reporter spec --bail e2e/**/*.e2e.js",
+    "lint": "eslint index.js lib",
+    "validate": "npm-run-all lint test:unit",
+    "integrate": "npm-run-all lint coverage",
+    "release": "./scripts/release.sh"
   },
   "repository": {
     "type": "git",
@@ -49,29 +54,24 @@
     "bluebird": "^3.5.0",
     "jsonic": "^0.3.0",
     "lodash": "^4.17.4",
-    "uuid": "^3.0.1"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "chai": "^4.0.0",
+    "mocha": "^3.4.2",
+    "chai": "^4.0.2",
     "chai3-json-schema": "^1.2.1",
-    "dirty-chai": "^1.2.2",
-    "eslint": "^4.1.0",
+    "dirty-chai": "^2.0.0",
+    "eslint": "^4.1.1",
     "eslint-config-seneca": "^3.0.0",
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-standard": "^3.0.1",
-    "gulp": "^3.9.1",
-    "gulp-eslint": "^3.0.1",
-    "gulp-if": "^2.0.2",
-    "gulp-istanbul": "^1.1.1",
-    "gulp-load-plugins": "^1.5.0",
-    "gulp-mocha": "^4.3.1",
-    "gulp-release": "^1.1.1",
     "pre-commit": "^1.2.2",
-    "run-sequence": "^1.2.2",
     "seneca": "^3.3.0",
-    "sinon": "^2.2.0",
-    "sinon-chai": "^2.10.0",
-    "sinon-test": "^2.0.0"
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0",
+    "sinon-test": "^2.0.0",
+    "npm-run-all": "^4.0.2",
+    "nyc": "^11.0.3"
   },
   "pre-commit": [
     "validate"
