@@ -7,14 +7,26 @@
 **Implemented enhancements:**
 
 - Add functional tests using rabbitmq services on CI [\#74](https://github.com/senecajs/seneca-amqp-transport/issues/74)
+- Update tests to use Sinon ^2.0.0 [\#85](https://github.com/senecajs/seneca-amqp-transport/pull/85) ([nfantone](https://github.com/nfantone))
 - \[WIP\] Refactor classes -\> factory functions [\#73](https://github.com/senecajs/seneca-amqp-transport/pull/73) ([nfantone](https://github.com/nfantone))
 
 **Fixed bugs:**
 
+- incompatible version of `amqpuri` [\#90](https://github.com/senecajs/seneca-amqp-transport/issues/90)
 - AMQP Listener Doesn't Work With dot values in the pin \(e.g. role:twitter,version:v1.0,cmd:tweets,method:GET\) [\#66](https://github.com/senecajs/seneca-amqp-transport/issues/66)
+
+**Closed issues:**
+
+- AMQPS Support [\#77](https://github.com/senecajs/seneca-amqp-transport/issues/77)
 
 **Merged pull requests:**
 
+- Update sinon-test to the latest version 🚀 [\#95](https://github.com/senecajs/seneca-amqp-transport/pull/95) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update eslint to the latest version 🚀 [\#94](https://github.com/senecajs/seneca-amqp-transport/pull/94) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update dependencies to enable Greenkeeper 🌴 [\#92](https://github.com/senecajs/seneca-amqp-transport/pull/92) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update jsonic to version 0.3.0 🚀 [\#89](https://github.com/senecajs/seneca-amqp-transport/pull/89) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update sinon to version 2.0.0 🚀 [\#80](https://github.com/senecajs/seneca-amqp-transport/pull/80) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- Update gulp-mocha to version 4.0.0 🚀 [\#79](https://github.com/senecajs/seneca-amqp-transport/pull/79) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Update uuid to version 3.0.1 🚀 [\#72](https://github.com/senecajs/seneca-amqp-transport/pull/72) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Update amqplib to version 0.5.0 🚀 [\#68](https://github.com/senecajs/seneca-amqp-transport/pull/68) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
 - Fixes literal periods in a pin not publishing/listening properly [\#67](https://github.com/senecajs/seneca-amqp-transport/pull/67) ([ericnograles](https://github.com/ericnograles))
