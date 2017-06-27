@@ -1,14 +1,13 @@
 language: node_js
 node_js:
 - '6'
-- '7'
+- '8'
 sudo: false
 branches:
   only:
   - master
   - develop
   - /^v?(\d\.){2}\d$/
-  - /^greenkeeper-.*$/
   - /^greenkeeper/.*$/
 notifications:
   email:
@@ -22,7 +21,7 @@ after_script: greenkeeper-lockfile-upload
 services:
   - rabbitmq
 after_success:
-  - test $TRAVIS_NODE_VERSION == '7' && bash <(curl -s https://codecov.io/bash)
+  - test $TRAVIS_NODE_VERSION == '8' && bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: npm
   email: nfantone@gmail.com
@@ -31,6 +30,6 @@ deploy:
   on:
     tags: true
     repo: senecajs/seneca-amqp-transport
-    node_js: '7'
+    node_js: '8'
 cache:
   directories: node_modules
