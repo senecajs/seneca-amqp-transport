@@ -21,7 +21,7 @@ describe('On consumer module', function() {
     });
 
     it('should create a new Consumer', function() {
-      var consumer = Consumer({});
+      const consumer = Consumer({});
       consumer.should.be.an('object');
       consumer.should.have.property('consume').that.is.a('function');
     });
@@ -47,12 +47,21 @@ describe('On consumer module', function() {
     });
 
     it('should return a Promise', function() {
-      var consumer = Consumer(channel);
+      const consumer = Consumer(channel);
       consumer.consume().should.be.instanceof(Promise);
     });
 
+    it('should start consuming using the given options', function() {
+      const consumer = Consumer(channel);
+      consumer.consume(QUEUE, { noAck: true });
+
+      channel.consume.should.have.been.calledOnce();
+      channel.consume.should.have.been.calledWith(QUEUE,
+        sinon.match.func, sinon.match.has('noAck', true));
+    });
+
     it('should start consuming from given queue on the channel', function() {
-      var consumer = Consumer(channel);
+      const consumer = Consumer(channel);
       consumer.consume(QUEUE);
 
       channel.consume.should.have.been.calledOnce();
@@ -61,7 +70,7 @@ describe('On consumer module', function() {
 
     it('should consume from the queue given at creation time if not provided',
       function() {
-        var consumer = Consumer(channel, {
+        const consumer = Consumer(channel, {
           queue: QUEUE
         });
         consumer.consume();
@@ -88,8 +97,8 @@ describe('On consumer module', function() {
             .then(() => handler(message))
         };
 
-        var messageHandler = sinon.spy();
-        var consumer = Consumer(channel, { messageHandler });
+        const messageHandler = sinon.spy();
+        const consumer = Consumer(channel, { messageHandler });
         consumer.consume()
           .then(function() {
             messageHandler.should.have.been.calledOnce();
@@ -119,8 +128,8 @@ describe('On consumer module', function() {
           throw new Error();
         };
 
-        var nack = sinon.spy(channel, 'nack');
-        var consumer = Consumer(channel, { messageHandler });
+        const nack = sinon.spy(channel, 'nack');
+        const consumer = Consumer(channel, { messageHandler });
         consumer.consume()
           .then(function() {
             nack.should.have.been.calledOnce();
@@ -146,8 +155,8 @@ describe('On consumer module', function() {
       // Create spies for channel methods
       sinon.spy(channel, 'nack');
 
-      var messageHandler = sinon.spy();
-      var consumer = Consumer(channel, { messageHandler });
+      const messageHandler = sinon.spy();
+      const consumer = Consumer(channel, { messageHandler });
       consumer.consume()
         .then(function() {
           messageHandler.should.not.have.been.called();
@@ -174,8 +183,8 @@ describe('On consumer module', function() {
       // Create spies for channel methods
       sinon.spy(channel, 'nack');
 
-      var messageHandler = sinon.spy();
-      var consumer = Consumer(channel, { messageHandler });
+      const messageHandler = sinon.spy();
+      const consumer = Consumer(channel, { messageHandler });
       consumer.consume()
         .then(function() {
           messageHandler.should.not.have.been.called();
