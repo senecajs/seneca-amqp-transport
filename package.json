@@ -1,6 +1,6 @@
 {
   "name": "seneca-amqp-transport",
-  "version": "2.1.1-dev",
+  "version": "2.2.0",
   "codename": "Migrative Meathook",
   "description": "Official AMQP transport plugin for Seneca",
   "main": "index.js",
