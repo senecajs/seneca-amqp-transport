@@ -52,7 +52,7 @@ describe('On client-factory module', function() {
     });
 
     it('should create a Client object with a `start` method', function() {
-      var client = Client(seneca, options);
+      const client = Client(seneca, options);
       client.should.be.an('object');
       client.should.have.property('start').that.is.a('function');
     });
@@ -62,12 +62,12 @@ describe('On client-factory module', function() {
     it('should make a new Seneca client', sinon.test(function(done) {
       // Create seneca.export('transport/utils') stub
       // and spy on utils#make_client function
-      var makeClient = this.spy(transportUtils, 'make_client');
+      const makeClient = this.spy(transportUtils, 'make_client');
       this.stub(seneca, 'export')
         .withArgs('transport/utils').returns(transportUtils);
 
-      var callback = Function.prototype;
-      var client = Client(seneca, options);
+      const callback = Function.prototype;
+      const client = Client(seneca, options);
       client.start(callback)
         .then(() => {
           makeClient.should.have.been.calledOnce();
@@ -107,9 +107,9 @@ describe('On client-factory module', function() {
           .withArgs('transport/utils').returns(transportUtils);
 
         // Spy on `channel#publish()` method
-        var publish = this.spy(options.ch, 'publish');
+        const publish = this.spy(options.ch, 'publish');
 
-        var client = Client(seneca, options);
+        const client = Client(seneca, options);
         client.start(Function.prototype)
           .then(() => publish.should.have.been.calledOnce())
           .asCallback(done);
@@ -146,7 +146,7 @@ describe('On client-factory module', function() {
         let opts = Object.assign({}, options);
         opts.options.correlationId = reply.properties.correlationId;
 
-        var client = Client(seneca, opts);
+        const client = Client(seneca, opts);
         client.start(Function.prototype)
           .then(() => handleResponse.should.have.been.calledOnce())
           .asCallback(done);

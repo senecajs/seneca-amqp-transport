@@ -147,6 +147,22 @@ require('seneca')()
   });
 ```
 
+You may also pass in additional options for the `channel#publish` and `channel#consume` methods of [amqplib][3] under `publish` and `consume`, respectively.
+
+```js
+require('seneca')()
+  .use('seneca-amqp-transport')
+  .client({
+    type: 'amqp',
+    hostname: 'rabbitmq.host',
+    publish: {
+      persistent: true
+    }
+  });
+```
+
+> Read the offical [amqplib][3] docs for a list of available options for [`publish`](http://www.squaremobius.net/amqp.node/channel_api.html#channel_publish) and [`consume`](http://www.squaremobius.net/amqp.node/channel_api.html#channel_consume).
+
 ### Socket options
 Additionally, you may pass in options to the `amqp.connect` method of [amqplib][3] as documented in [its API reference][4], using the `socketOptions` parameter.
 

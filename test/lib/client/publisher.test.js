@@ -22,7 +22,7 @@ describe('On publisher module', function() {
     });
 
     it('should create a new Publisher', function() {
-      var pub = Publisher({});
+      const pub = Publisher({});
       pub.should.be.an('object');
       pub.should.have.property('publish').that.is.a('function');
       pub.should.have.property('awaitReply').that.is.a('function');
@@ -52,7 +52,7 @@ describe('On publisher module', function() {
     const rk = 'foo.bar';
 
     it('should publish a valid message to the channel', function() {
-      var pub = Publisher(channel);
+      const pub = Publisher(channel);
       pub.publish(message, EXCHANGE, rk);
 
       channel.publish.should.have.been.calledOnce();
@@ -61,7 +61,7 @@ describe('On publisher module', function() {
     });
 
     it('should publish to the given exchange and routing key', function() {
-      var pub = Publisher(channel);
+      const pub = Publisher(channel);
       pub.publish(message, EXCHANGE, rk);
 
       channel.publish.should.have.been.calledOnce();
@@ -69,7 +69,7 @@ describe('On publisher module', function() {
     });
 
     it('should set the `replyTo` option', function(done) {
-      var pub = Publisher(channel, { replyQueue: 'reply.queue' });
+      const pub = Publisher(channel, { replyQueue: 'reply.queue' });
       pub.publish(message, EXCHANGE, rk)
         .then(function() {
           channel.publish.should.have.been.calledOnce();
@@ -81,13 +81,25 @@ describe('On publisher module', function() {
     });
 
     it('should set the `correlationId` option', function(done) {
-      var pub = Publisher(channel, { correlationId: CORRELATION_ID });
+      const pub = Publisher(channel, { correlationId: CORRELATION_ID });
       pub.publish(message, EXCHANGE, rk)
         .then(function() {
           channel.publish.should.have.been.calledOnce();
           channel.publish.should.have.been.calledWith(sinon.match.string,
             sinon.match.string, sinon.match.defined,
             sinon.match.has('correlationId', CORRELATION_ID));
+        })
+        .asCallback(done);
+    });
+
+    it('should set channel#publish options', function(done) {
+      const pub = Publisher(channel, { correlationId: CORRELATION_ID });
+      pub.publish(message, EXCHANGE, rk, { persistent: true })
+        .then(function() {
+          channel.publish.should.have.been.calledOnce();
+          channel.publish.should.have.been.calledWith(sinon.match.string,
+            sinon.match.string, sinon.match.defined,
+            sinon.match.has('persistent', true));
         })
         .asCallback(done);
     });
@@ -109,12 +121,12 @@ describe('On publisher module', function() {
     });
 
     it('should return a Promise', function() {
-      var pub = Publisher(channel);
+      const pub = Publisher(channel);
       pub.awaitReply().should.be.instanceof(Promise);
     });
 
     it('should await for reply messages from the channel', function(done) {
-      var pub = Publisher(channel, { replyQueue: 'reply.queue' });
+      const pub = Publisher(channel, { replyQueue: 'reply.queue' });
       pub.awaitReply()
         .then(function() {
           channel.consume.should.have.been.calledOnce();
@@ -148,8 +160,8 @@ describe('On publisher module', function() {
     });
 
     it('should call the `repyHandler` callback with a message', function() {
-      var replyHandler = sinon.spy();
-      var pub = Publisher(channel, {
+      const replyHandler = sinon.spy();
+      const pub = Publisher(channel, {
         replyQueue: 'reply.queue',
         replyHandler,
         correlationId: CORRELATION_ID
@@ -161,8 +173,8 @@ describe('On publisher module', function() {
     });
 
     it('should ignore messages if `correlationId` does not match', function() {
-      var replyHandler = sinon.spy();
-      var pub = Publisher(channel, {
+      const replyHandler = sinon.spy();
+      const pub = Publisher(channel, {
         replyQueue: 'reply.queue',
         replyHandler,
         correlationId: 'foo_' + CORRELATION_ID
@@ -173,7 +185,7 @@ describe('On publisher module', function() {
     });
 
     it('should handle reply messages with no content', function() {
-      var noContentChannel = {
+      const noContentChannel = {
         consume: (queue, cb) => cb({ properties: reply.properties })
       };
 
@@ -183,8 +195,8 @@ describe('On publisher module', function() {
         properties: reply.properties
       }));
 
-      var replyHandler = sinon.spy();
-      var pub = Publisher(noContentChannel, {
+      const replyHandler = sinon.spy();
+      const pub = Publisher(noContentChannel, {
         replyQueue: 'reply.queue',
         replyHandler,
         correlationId: CORRELATION_ID
