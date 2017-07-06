@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/senecajs/seneca-amqp-transport/tree/HEAD)
 
-[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/2.1.0...HEAD)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/2.2.0...HEAD)
+
+**Closed issues:**
+
+- Support for persistent messages [\#93](https://github.com/senecajs/seneca-amqp-transport/issues/93)
+
+## [2.2.0](https://github.com/senecajs/seneca-amqp-transport/tree/2.2.0) (2017-07-06)
+[Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/2.1.0...2.2.0)
 
 **Implemented enhancements:**
 
@@ -21,6 +28,7 @@
 
 **Merged pull requests:**
 
+- Allow setting publish and consume methods' options [\#96](https://github.com/senecajs/seneca-amqp-transport/pull/96) ([nfantone](https://github.com/nfantone))
 - Update sinon-test to the latest version 🚀 [\#95](https://github.com/senecajs/seneca-amqp-transport/pull/95) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
 - Update eslint to the latest version 🚀 [\#94](https://github.com/senecajs/seneca-amqp-transport/pull/94) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
 - Update dependencies to enable Greenkeeper 🌴 [\#92](https://github.com/senecajs/seneca-amqp-transport/pull/92) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))

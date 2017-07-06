@@ -60,7 +60,7 @@ If your intention is to **declare multiple consumers** on a single queue, run mu
 ### Client
 
 ```js
-var client = require('seneca')()
+const client = require('seneca')()
   .use('seneca-amqp-transport')
   .client({
     type: 'amqp',
@@ -170,9 +170,9 @@ Additionally, you may pass in options to the `amqp.connect` method of [amqplib][
 // Example of using a TLS/SSL connection. Note that the server must be
 // configured to accept SSL connections; see http://www.rabbitmq.com/ssl.html.
 
-var fs = require('fs');
+const fs = require('fs');
 
-var opts = {
+const opts = {
   cert: fs.readFileSync('../etc/client/cert.pem'),
   key: fs.readFileSync('../etc/client/key.pem'),
   // cert and key or
@@ -231,7 +231,8 @@ AMQP_URL='amqp://guest:guest@localhost:5672' node client.js
 - [ ] Better support for fanout exchanges.
 - [ ] Improve logging using `seneca.log`.
 - [ ] Don't depend on pins for routing ([#58](https://github.com/senecajs/seneca-amqp-transport/issues/58)).
-- [x] ~~_Internal_: remove classes in favor of factory functions~~ (https://github.com/senecajs/seneca-amqp-transport/pull/73).
+- [x] :muscle: ~Remove dependency on gulp~.
+- [x] :muscle: ~~_Internal_: remove classes in favor of factory functions~~ (https://github.com/senecajs/seneca-amqp-transport/pull/73).
 
 ## Contributing
 This module follows the general [Senecajs.org][1] contribution guidelines and encourages open participation. If you feel you can help in any way, or discover any issues, feel free to [create an Issue][9] or [a Pull Request][10]. For more information on contribution please see our [Contributing guidelines][11].
