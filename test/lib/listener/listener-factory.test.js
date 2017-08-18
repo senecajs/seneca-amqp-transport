@@ -3,14 +3,12 @@
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
-const sinonTest = require('sinon-test');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
-sinon.test = sinonTest.configureTest(sinon);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
