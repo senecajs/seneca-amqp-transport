@@ -2,14 +2,12 @@
 
 const chai = require('chai');
 const sinon = require('sinon');
-const sinonTest = require('sinon-test');
 const DirtyChai = require('dirty-chai');
 const SinonChai = require('sinon-chai');
 
 chai.should();
 chai.use(SinonChai);
 chai.use(DirtyChai);
-sinon.test = sinonTest.configureTest(sinon);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
@@ -39,6 +37,8 @@ describe('On client-factory module', function() {
   };
 
   before(function(done) {
+    sinon.stub(seneca, 'export')
+      .withArgs('transport/utils').returns(transportUtils);
     seneca.ready(() => done());
   });
 
@@ -59,12 +59,10 @@ describe('On client-factory module', function() {
   });
 
   describe('the Client#start() function', function() {
-    it('should make a new Seneca client', sinon.test(function(done) {
+    it('should make a new Seneca client', function(done) {
       // Create seneca.export('transport/utils') stub
       // and spy on utils#make_client function
-      const makeClient = this.spy(transportUtils, 'make_client');
-      this.stub(seneca, 'export')
-        .withArgs('transport/utils').returns(transportUtils);
+      const makeClient = sinon.spy(transportUtils, 'make_client');
 
       const callback = Function.prototype;
       const client = Client(seneca, options);
@@ -75,7 +73,7 @@ describe('On client-factory module', function() {
             options.options, callback);
         })
         .asCallback(done);
-    }));
+    });
   });
 
   describe('the Client object', function() {
@@ -85,16 +83,20 @@ describe('On client-factory module', function() {
       };
     });
 
+    beforeEach(function() {
+      transportUtils['make_client'].restore();
+    });
+
     after(function() {
       delete DEFAULT_OPTIONS.meta$;
     });
 
     it('should publish a new message to a queue on a Seneca act',
-      sinon.test(function(done) {
+      function(done) {
         // Create seneca.export('transport/utils') stub
         // to make it call the provided callback, which -in turn- ends up
         // calling the `act` function on the client factory
-        this.stub(transportUtils, 'make_client')
+        sinon.stub(transportUtils, 'make_client')
           .callsFake((seneca, cb) => cb(null, null,
             function(err, done) {
               if (err) {
@@ -103,20 +105,17 @@ describe('On client-factory module', function() {
               return done(options.options, Function.prototype);
             }));
 
-        this.stub(seneca, 'export')
-          .withArgs('transport/utils').returns(transportUtils);
-
         // Spy on `channel#publish()` method
-        const publish = this.spy(options.ch, 'publish');
+        const publish = sinon.spy(options.ch, 'publish');
 
         const client = Client(seneca, options);
         client.start(Function.prototype)
           .then(() => publish.should.have.been.calledOnce())
           .asCallback(done);
-      }));
+      });
 
     it('should handle a reply message upon arrival to the queue',
-      sinon.test(function(done) {
+      function(done) {
         const reply = {
           content: JSON.stringify({ foo: 'bar' }),
           properties: {
@@ -127,20 +126,17 @@ describe('On client-factory module', function() {
 
         // Create seneca.export('transport/utils') stub
         // to make it call the provided callback
-        this.stub(transportUtils, 'make_client')
+        sinon.stub(transportUtils, 'make_client')
           .callsFake((seneca, cb) => cb(null, null, Function.prototype));
 
         // Make `channel#consume` call its handler function
-        this.stub(channel, 'consume')
+        sinon.stub(channel, 'consume')
           .callsFake((queue, handler) => Promise.resolve()
-              .then(() => handler(reply)));
-
-        this.stub(seneca, 'export')
-          .withArgs('transport/utils').returns(transportUtils);
+            .then(() => handler(reply)));
 
         // Spy on `utils#handle_response`, which is what is used by
         // Seneca to handle client responses. It should be called on each reply
-        let handleResponse = this.spy(transportUtils, 'handle_response');
+        let handleResponse = sinon.spy(transportUtils, 'handle_response');
 
         // Add `correlationId` to the passed options
         let opts = Object.assign({}, options);
@@ -150,6 +146,6 @@ describe('On client-factory module', function() {
         client.start(Function.prototype)
           .then(() => handleResponse.should.have.been.calledOnce())
           .asCallback(done);
-      }));
+      });
   });
 });
