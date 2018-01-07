@@ -20,7 +20,8 @@
     "lint": "eslint index.js lib test",
     "validate": "npm-run-all lint test:unit",
     "integrate": "npm-run-all lint coverage",
-    "release": "./scripts/release.sh"
+    "release": "./scripts/release.sh",
+    "prettier": "prettier --write --no-semi --single-quote index.js lib/*.js test/*.js"
   },
   "repository": {
     "type": "git",
@@ -57,7 +58,6 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "mocha": "^4.0.0",
     "chai": "^4.1.1",
     "chai-json-schema": "^1.5.0",
     "dirty-chai": "^2.0.1",
@@ -65,12 +65,14 @@
     "eslint-config-seneca": "^3.0.0",
     "eslint-plugin-hapi": "^4.0.0",
     "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^4.0.0",
+    "npm-run-all": "^4.0.2",
+    "nyc": "^11.1.0",
     "pre-commit": "^1.2.2",
+    "prettier": "^1.9.2",
     "seneca": "^3.4.2",
     "sinon": "^3.2.1",
-    "sinon-chai": "^2.13.0",
-    "npm-run-all": "^4.0.2",
-    "nyc": "^11.1.0"
+    "sinon-chai": "^2.13.0"
   },
   "pre-commit": [
     "validate"
