@@ -10,31 +10,43 @@ const client = require('seneca')()
   });
 
 setInterval(function() {
-  client.act('action:get_time', {
-    id: Math.floor(Math.random() * 91) + 10
-  }, (err, res) => {
-    if (err) {
-      throw err;
+  client.act(
+    'action:get_time',
+    {
+      id: Math.floor(Math.random() * 91) + 10
+    },
+    (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.log(res);
     }
-    console.log(res);
-  });
+  );
 
-  client.act('level:log', {
-    id: Math.floor(Math.random() * 91) + 10,
-    text: '[level:log] Print out this random number: ' + 100 * Math.random()
-  }, (err, res) => {
-    if (err) {
-      throw err;
+  client.act(
+    'level:log',
+    {
+      id: Math.floor(Math.random() * 91) + 10,
+      text: '[level:log] Print out this random number: ' + 100 * Math.random()
+    },
+    (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.log(res);
     }
-    console.log(res);
-  });
+  );
 
-  client.act('proc:status', {
-    id: Math.floor(Math.random() * 91) + 10
-  }, (err, res) => {
-    if (err) {
-      throw err;
+  client.act(
+    'proc:status',
+    {
+      id: Math.floor(Math.random() * 91) + 10
+    },
+    (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.log(res);
     }
-    console.log(res);
-  });
+  );
 }, 500);

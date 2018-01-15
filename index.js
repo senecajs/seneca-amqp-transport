@@ -18,16 +18,22 @@ module.exports = function(opts) {
   var options = seneca.util.deepextend(defaults, so.transport, opts);
   var listener = hooks.listenerHook(seneca);
   var client = hooks.clientHook(seneca);
-  seneca.add({
-    role: 'transport',
-    hook: 'listen',
-    type: TRANSPORT_TYPE
-  }, listener.hook(options));
-  seneca.add({
-    role: 'transport',
-    hook: 'client',
-    type: TRANSPORT_TYPE
-  }, client.hook(options));
+  seneca.add(
+    {
+      role: 'transport',
+      hook: 'listen',
+      type: TRANSPORT_TYPE
+    },
+    listener.hook(options)
+  );
+  seneca.add(
+    {
+      role: 'transport',
+      hook: 'client',
+      type: TRANSPORT_TYPE
+    },
+    client.hook(options)
+  );
 
   return {
     tag: PLUGIN_TAG,

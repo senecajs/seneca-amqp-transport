@@ -21,7 +21,7 @@
     "validate": "npm-run-all lint test:unit",
     "integrate": "npm-run-all lint coverage",
     "release": "./scripts/release.sh",
-    "prettier": "prettier index.js lib/*.js test/*.js"
+    "prettier": "prettier --write index.js lib/**/*.js examples/**/*.js e2e/**/*.js test/**/*.js"
   },
   "repository": {
     "type": "git",

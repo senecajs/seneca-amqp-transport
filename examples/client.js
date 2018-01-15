@@ -10,14 +10,18 @@ const client = require('seneca')()
   });
 
 setInterval(function() {
-  client.act('cmd:salute', {
-    name: 'World',
-    max: 100,
-    min: 25
-  }, (err, res) => {
-    if (err) {
-      throw err;
+  client.act(
+    'cmd:salute',
+    {
+      name: 'World',
+      max: 100,
+      min: 25
+    },
+    (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.log(res);
     }
-    console.log(res);
-  });
+  );
 }, 2000);

@@ -18,8 +18,8 @@ const client = require('../../../lib/client');
 
 describe('On client module', function() {
   let channel = {
-    assertQueue: (queue) => Promise.resolve({ queue }),
-    assertExchange: (exchange) => Promise.resolve({ exchange }),
+    assertQueue: queue => Promise.resolve({ queue }),
+    assertExchange: exchange => Promise.resolve({ exchange }),
     consume: () => Promise.resolve(),
     publish: () => Promise.resolve(),
     prefetch: Function.prototype,
@@ -61,13 +61,15 @@ describe('On client module', function() {
 
   describe('the setup() function', function() {
     it('should return a Promise', function() {
-      client.setup(seneca, options, Function.prototype)
+      client
+        .setup(seneca, options, Function.prototype)
         .should.be.instanceof(Promise);
     });
 
     it('should resolve to a new Client instance', function(done) {
-      client.setup(seneca, options, Function.prototype)
-        .then((cl) => {
+      client
+        .setup(seneca, options, Function.prototype)
+        .then(cl => {
           cl.should.be.an('object');
           cl.should.have.property('start');
         })
@@ -75,40 +77,50 @@ describe('On client module', function() {
     });
 
     it('should have started the new client', function(done) {
-      client.setup(seneca, options, Function.prototype)
-        .then((cl) => cl.started.should.be.true())
+      client
+        .setup(seneca, options, Function.prototype)
+        .then(cl => cl.started.should.be.true())
         .asCallback(done);
     });
 
     it('should set the prefetch value on the channel', function(done) {
-      client.setup(seneca, options, Function.prototype)
+      client
+        .setup(seneca, options, Function.prototype)
         .then(() => {
           channel.prefetch.should.have.been.calledOnce();
-          channel.prefetch.should.have.been
-            .calledWith(DEFAULT_OPTIONS.client.channel.prefetch);
+          channel.prefetch.should.have.been.calledWith(
+            DEFAULT_OPTIONS.client.channel.prefetch
+          );
         })
         .asCallback(done);
     });
 
     it('should declare the exchange on the channel', function(done) {
-      client.setup(seneca, options, Function.prototype)
+      client
+        .setup(seneca, options, Function.prototype)
         .then(() => {
           var ex = DEFAULT_OPTIONS.exchange;
           channel.assertExchange.should.have.been.calledOnce();
-          channel.assertExchange.should.have.been
-            .calledWith(ex.name, ex.type, ex.options);
+          channel.assertExchange.should.have.been.calledWith(
+            ex.name,
+            ex.type,
+            ex.options
+          );
         })
         .asCallback(done);
     });
 
     it('should declare the queue on the channel', function(done) {
-      client.setup(seneca, options, Function.prototype)
+      client
+        .setup(seneca, options, Function.prototype)
         .then(() => {
           var queueOptions = DEFAULT_OPTIONS.client.queues;
           var queueName = amqputil.resolveClientQueue(queueOptions);
           channel.assertQueue.should.have.been.calledOnce();
-          channel.assertQueue.should.have.been
-            .calledWith(queueName, queueOptions.options);
+          channel.assertQueue.should.have.been.calledWith(
+            queueName,
+            queueOptions.options
+          );
         })
         .asCallback(done);
     });

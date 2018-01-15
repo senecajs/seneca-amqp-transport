@@ -27,7 +27,7 @@ describe('On consumer module', function() {
     });
 
     it('should throw if no channel is provided', function() {
-      (Consumer).should.throw(TypeError, /provided/);
+      Consumer.should.throw(TypeError, /provided/);
     });
   });
 
@@ -56,8 +56,11 @@ describe('On consumer module', function() {
       consumer.consume(QUEUE, { noAck: true });
 
       channel.consume.should.have.been.calledOnce();
-      channel.consume.should.have.been.calledWith(QUEUE,
-        sinon.match.func, sinon.match.has('noAck', true));
+      channel.consume.should.have.been.calledWith(
+        QUEUE,
+        sinon.match.func,
+        sinon.match.has('noAck', true)
+      );
     });
 
     it('should start consuming from given queue on the channel', function() {
@@ -68,75 +71,76 @@ describe('On consumer module', function() {
       channel.consume.should.have.been.calledWith(QUEUE, sinon.match.func);
     });
 
-    it('should consume from the queue given at creation time if not provided',
-      function() {
-        const consumer = Consumer(channel, {
-          queue: QUEUE
-        });
-        consumer.consume();
-
-        channel.consume.should.have.been.calledOnce();
-        channel.consume.should.have.been.calledWith(QUEUE, sinon.match.func);
+    it('should consume from the queue given at creation time if not provided', function() {
+      const consumer = Consumer(channel, {
+        queue: QUEUE
       });
+      consumer.consume();
+
+      channel.consume.should.have.been.calledOnce();
+      channel.consume.should.have.been.calledWith(QUEUE, sinon.match.func);
+    });
   });
 
   describe('the onMessage() function', function() {
-    it('should call a message handler function on receiving a valid message',
-      function(done) {
-        const message = {
-          content: JSON.stringify({ foo: 'bar' }),
-          properties: {
-            correlationId: 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5',
-            replyTo: 'reply.queue'
-          }
-        };
+    it('should call a message handler function on receiving a valid message', function(done) {
+      const message = {
+        content: JSON.stringify({ foo: 'bar' }),
+        properties: {
+          correlationId: 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5',
+          replyTo: 'reply.queue'
+        }
+      };
 
-        const channel = {
-          ack: Function.prototype,
-          consume: (queue, handler) => Promise.resolve()
-            .then(() => handler(message))
-        };
+      const channel = {
+        ack: Function.prototype,
+        consume: (queue, handler) =>
+          Promise.resolve().then(() => handler(message))
+      };
 
-        const messageHandler = sinon.spy();
-        const consumer = Consumer(channel, { messageHandler });
-        consumer.consume()
-          .then(function() {
-            messageHandler.should.have.been.calledOnce();
-            messageHandler.should.have.been.calledWith(message.content,
-              sinon.match.func);
-          })
-          .asCallback(done);
-      });
+      const messageHandler = sinon.spy();
+      const consumer = Consumer(channel, { messageHandler });
+      consumer
+        .consume()
+        .then(function() {
+          messageHandler.should.have.been.calledOnce();
+          messageHandler.should.have.been.calledWith(
+            message.content,
+            sinon.match.func
+          );
+        })
+        .asCallback(done);
+    });
 
-    it('should reject a message if the message handler throws an error',
-      function(done) {
-        const message = {
-          content: JSON.stringify({ foo: 'bar' }),
-          properties: {
-            correlationId: 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5',
-            replyTo: 'reply.queue'
-          }
-        };
+    it('should reject a message if the message handler throws an error', function(done) {
+      const message = {
+        content: JSON.stringify({ foo: 'bar' }),
+        properties: {
+          correlationId: 'bf6c362d-ca8b-4fa6-b052-2bb462e1b7b5',
+          replyTo: 'reply.queue'
+        }
+      };
 
-        const channel = {
-          nack: Function.prototype,
-          consume: (queue, handler) => Promise.resolve()
-            .then(() => handler(message))
-        };
+      const channel = {
+        nack: Function.prototype,
+        consume: (queue, handler) =>
+          Promise.resolve().then(() => handler(message))
+      };
 
-        const messageHandler = function() {
-          throw new Error();
-        };
+      const messageHandler = function() {
+        throw new Error();
+      };
 
-        const nack = sinon.spy(channel, 'nack');
-        const consumer = Consumer(channel, { messageHandler });
-        consumer.consume()
-          .then(function() {
-            nack.should.have.been.calledOnce();
-            nack.should.have.been.calledWith(message, false, false);
-          })
-          .asCallback(done);
-      });
+      const nack = sinon.spy(channel, 'nack');
+      const consumer = Consumer(channel, { messageHandler });
+      consumer
+        .consume()
+        .then(function() {
+          nack.should.have.been.calledOnce();
+          nack.should.have.been.calledWith(message, false, false);
+        })
+        .asCallback(done);
+    });
 
     it('should reject a message if no content is defined', function(done) {
       const message = {
@@ -147,8 +151,8 @@ describe('On consumer module', function() {
       };
 
       const channel = {
-        consume: (queue, handler) => Promise.resolve()
-          .then(() => handler(message)),
+        consume: (queue, handler) =>
+          Promise.resolve().then(() => handler(message)),
         nack: () => Promise.resolve()
       };
 
@@ -157,7 +161,8 @@ describe('On consumer module', function() {
 
       const messageHandler = sinon.spy();
       const consumer = Consumer(channel, { messageHandler });
-      consumer.consume()
+      consumer
+        .consume()
         .then(function() {
           messageHandler.should.not.have.been.called();
           channel.nack.should.have.been.calledOnce();
@@ -175,8 +180,8 @@ describe('On consumer module', function() {
       };
 
       const channel = {
-        consume: (queue, handler) => Promise.resolve()
-          .then(() => handler(message)),
+        consume: (queue, handler) =>
+          Promise.resolve().then(() => handler(message)),
         nack: () => Promise.resolve()
       };
 
@@ -185,7 +190,8 @@ describe('On consumer module', function() {
 
       const messageHandler = sinon.spy();
       const consumer = Consumer(channel, { messageHandler });
-      consumer.consume()
+      consumer
+        .consume()
         .then(function() {
           messageHandler.should.not.have.been.called();
           channel.nack.should.have.been.calledOnce();

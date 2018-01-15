@@ -11,7 +11,9 @@ require('seneca')()
     });
   })
   .add('level:log', function(message, done) {
-    console[message.level](`[level:log] Action ${message.id} wants to log: ${message.text}`);
+    console[message.level](
+      `[level:log] Action ${message.id} wants to log: ${message.text}`
+    );
     return done(null, {
       pid: process.pid,
       status: `Message ${message.id} logged successfully`
