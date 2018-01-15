@@ -22,12 +22,11 @@ describe('On client-util module', function() {
       queue.should.equal('secret_id');
     });
 
-    it('should use no prefix or separator if no options are provided',
-      function() {
-        var queue = amqputil.resolveClientQueue();
-        // queue name should contain no prefix or separator
-        queue.should.match(/^[A-F0-9]+$/i);
-      });
+    it('should use no prefix or separator if no options are provided', function() {
+      var queue = amqputil.resolveClientQueue();
+      // queue name should contain no prefix or separator
+      queue.should.match(/^[A-F0-9]+$/i);
+    });
 
     it('should use custom prefix and default separator', function() {
       var options = {

@@ -29,7 +29,7 @@ describe('On publisher module', function() {
     });
 
     it('should throw if no channel is provided', function() {
-      (Publisher).should.throw(TypeError, /provided/);
+      Publisher.should.throw(TypeError, /provided/);
     });
   });
 
@@ -56,8 +56,11 @@ describe('On publisher module', function() {
       pub.publish(message, EXCHANGE, rk);
 
       channel.publish.should.have.been.calledOnce();
-      channel.publish.should.have.been.calledWith(sinon.match.string,
-        sinon.match.string, Buffer.from(message));
+      channel.publish.should.have.been.calledWith(
+        sinon.match.string,
+        sinon.match.string,
+        Buffer.from(message)
+      );
     });
 
     it('should publish to the given exchange and routing key', function() {
@@ -70,36 +73,48 @@ describe('On publisher module', function() {
 
     it('should set the `replyTo` option', function(done) {
       const pub = Publisher(channel, { replyQueue: 'reply.queue' });
-      pub.publish(message, EXCHANGE, rk)
+      pub
+        .publish(message, EXCHANGE, rk)
         .then(function() {
           channel.publish.should.have.been.calledOnce();
-          channel.publish.should.have.been.calledWith(sinon.match.string,
-            sinon.match.string, sinon.match.defined,
-            sinon.match.has('replyTo', 'reply.queue'));
+          channel.publish.should.have.been.calledWith(
+            sinon.match.string,
+            sinon.match.string,
+            sinon.match.defined,
+            sinon.match.has('replyTo', 'reply.queue')
+          );
         })
         .asCallback(done);
     });
 
     it('should set the `correlationId` option', function(done) {
       const pub = Publisher(channel, { correlationId: CORRELATION_ID });
-      pub.publish(message, EXCHANGE, rk)
+      pub
+        .publish(message, EXCHANGE, rk)
         .then(function() {
           channel.publish.should.have.been.calledOnce();
-          channel.publish.should.have.been.calledWith(sinon.match.string,
-            sinon.match.string, sinon.match.defined,
-            sinon.match.has('correlationId', CORRELATION_ID));
+          channel.publish.should.have.been.calledWith(
+            sinon.match.string,
+            sinon.match.string,
+            sinon.match.defined,
+            sinon.match.has('correlationId', CORRELATION_ID)
+          );
         })
         .asCallback(done);
     });
 
     it('should set channel#publish options', function(done) {
       const pub = Publisher(channel, { correlationId: CORRELATION_ID });
-      pub.publish(message, EXCHANGE, rk, { persistent: true })
+      pub
+        .publish(message, EXCHANGE, rk, { persistent: true })
         .then(function() {
           channel.publish.should.have.been.calledOnce();
-          channel.publish.should.have.been.calledWith(sinon.match.string,
-            sinon.match.string, sinon.match.defined,
-            sinon.match.has('persistent', true));
+          channel.publish.should.have.been.calledWith(
+            sinon.match.string,
+            sinon.match.string,
+            sinon.match.defined,
+            sinon.match.has('persistent', true)
+          );
         })
         .asCallback(done);
     });
@@ -127,11 +142,15 @@ describe('On publisher module', function() {
 
     it('should await for reply messages from the channel', function(done) {
       const pub = Publisher(channel, { replyQueue: 'reply.queue' });
-      pub.awaitReply()
+      pub
+        .awaitReply()
         .then(function() {
           channel.consume.should.have.been.calledOnce();
-          channel.consume.should.have.been.calledWith('reply.queue',
-            sinon.match.func, { noAck: true });
+          channel.consume.should.have.been.calledWith(
+            'reply.queue',
+            sinon.match.func,
+            { noAck: true }
+          );
         })
         .asCallback(done);
     });
@@ -191,9 +210,11 @@ describe('On publisher module', function() {
 
       // Stub `channel#consume` method and make it call the `consumeReply`
       // callback with a mock `reply` object with no `content` property.
-      sinon.stub(noContentChannel, 'consume').callsFake((queue, cb) => cb({
-        properties: reply.properties
-      }));
+      sinon.stub(noContentChannel, 'consume').callsFake((queue, cb) =>
+        cb({
+          properties: reply.properties
+        })
+      );
 
       const replyHandler = sinon.spy();
       const pub = Publisher(noContentChannel, {

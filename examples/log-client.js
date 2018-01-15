@@ -10,12 +10,16 @@ const client = require('seneca')()
   });
 
 setInterval(function() {
-  client.act('cmd:log,level:log', {
-    message: 'Hello World'
-  }, (err, res) => {
-    if (err) {
-      throw err;
+  client.act(
+    'cmd:log,level:log',
+    {
+      message: 'Hello World'
+    },
+    (err, res) => {
+      if (err) {
+        throw err;
+      }
+      console.log(res);
     }
-    console.log(res);
-  });
+  );
 }, 2000);

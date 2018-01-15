@@ -65,11 +65,14 @@ describe('On listener-factory module', function() {
 
     it('should start consuming messages from a queue', function(done) {
       var listener = Listener(seneca, options);
-      listener.listen()
+      listener
+        .listen()
         .then(() => {
           channel.consume.should.have.been.calledOnce();
-          channel.consume.should.have.been.calledWith(options.queue,
-            sinon.match.func);
+          channel.consume.should.have.been.calledWith(
+            options.queue,
+            sinon.match.func
+          );
         })
         .asCallback(done);
     });
@@ -91,8 +94,8 @@ describe('On listener-factory module', function() {
     };
 
     const channel = {
-      consume: (queue, handler) => Promise.resolve()
-        .then(() => handler(message)),
+      consume: (queue, handler) =>
+        Promise.resolve().then(() => handler(message)),
       sendToQueue: () => Promise.resolve(),
       ack: Function.prototype
     };
@@ -111,7 +114,8 @@ describe('On listener-factory module', function() {
       sinon.spy(channel, 'sendToQueue');
       sinon.spy(channel, 'ack');
 
-      sinon.stub(seneca, 'export')
+      sinon
+        .stub(seneca, 'export')
         .withArgs('transport/utils')
         .returns(transportUtils);
     });
@@ -127,49 +131,59 @@ describe('On listener-factory module', function() {
       var handleRequest = sinon.spy(transportUtils, 'handle_request');
 
       var listener = Listener(seneca, options);
-      listener.listen()
+      listener
+        .listen()
         .then(() => {
           handleRequest.should.have.been.calledOnce();
-          handleRequest.should.have.been.calledWith(seneca, { foo: 'bar' },
-            DEFAULT_OPTIONS, sinon.match.func);
+          handleRequest.should.have.been.calledWith(
+            seneca,
+            { foo: 'bar' },
+            DEFAULT_OPTIONS,
+            sinon.match.func
+          );
         })
         .asCallback(done);
     });
 
-    it('should reply to the `replyTo` queue with the response from a Seneca act',
-      function(done) {
-        var reply = { foo: 'bar' };
+    it('should reply to the `replyTo` queue with the response from a Seneca act', function(done) {
+      var reply = { foo: 'bar' };
 
-        sinon.stub(transportUtils, 'handle_request')
-          .callsFake((seneca, data, options, cb) => cb(reply));
+      sinon
+        .stub(transportUtils, 'handle_request')
+        .callsFake((seneca, data, options, cb) => cb(reply));
 
-        var listener = Listener(seneca, options);
-        listener.listen()
-          .then(() => {
-            // Should send response to `replyTo` queue
-            channel.sendToQueue.should.have.been.calledOnce();
-            channel.sendToQueue.should
-              .have.been.calledWith(message.properties.replyTo,
-                Buffer.from(JSON.stringify(reply)), {
-                  correlationId: message.properties.correlationId
-                });
+      var listener = Listener(seneca, options);
+      listener
+        .listen()
+        .then(() => {
+          // Should send response to `replyTo` queue
+          channel.sendToQueue.should.have.been.calledOnce();
+          channel.sendToQueue.should.have.been.calledWith(
+            message.properties.replyTo,
+            Buffer.from(JSON.stringify(reply)),
+            {
+              correlationId: message.properties.correlationId
+            }
+          );
 
-            // Should acknowledge the message on the channel
-            channel.ack.should.have.been.calledOnce();
-            channel.ack.should.have.been.calledWith(message);
-          })
-          .asCallback(done);
-      });
+          // Should acknowledge the message on the channel
+          channel.ack.should.have.been.calledOnce();
+          channel.ack.should.have.been.calledWith(message);
+        })
+        .asCallback(done);
+    });
 
     it('should not reply to the `replyTo` queue if response is falsy', function(done) {
       // Could be any "falsy" value
       var reply = false;
 
-      sinon.stub(transportUtils, 'handle_request')
+      sinon
+        .stub(transportUtils, 'handle_request')
         .callsFake((seneca, data, options, cb) => cb(reply));
 
       var listener = Listener(seneca, options);
-      listener.listen()
+      listener
+        .listen()
         .then(() => {
           // Should not send response to `replyTo` queue
           channel.sendToQueue.should.not.have.been.calledOnce();
