@@ -68,13 +68,9 @@
     "mocha": "^4.0.0",
     "npm-run-all": "^4.0.2",
     "nyc": "^11.1.0",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.9.2",
     "seneca": "^3.4.2",
     "sinon": "^3.2.1",
     "sinon-chai": "^2.13.0"
-  },
-  "pre-commit": [
-    "validate"
-  ]
+  }
 }
