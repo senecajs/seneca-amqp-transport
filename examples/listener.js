@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
-const path = require('path');
+const path = require('path')
 
 require('seneca')()
   .use('..')
@@ -16,10 +16,10 @@ require('seneca')()
         file: path.relative(process.cwd(), __filename)
       },
       now: Date.now()
-    });
+    })
   })
   .listen({
     type: 'amqp',
     pin: 'cmd:salute',
     url: process.env.AMQP_URL
-  });
+  })

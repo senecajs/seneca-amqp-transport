@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
 const client = require('seneca')()
   .use('..')
@@ -7,7 +7,7 @@ const client = require('seneca')()
     type: 'amqp',
     pin: ['action:get_time', 'level:*', 'proc:status'],
     url: process.env.AMQP_URL
-  });
+  })
 
 setInterval(function() {
   client.act(
@@ -17,11 +17,11 @@ setInterval(function() {
     },
     (err, res) => {
       if (err) {
-        throw err;
+        throw err
       }
-      console.log(res);
+      console.log(res)
     }
-  );
+  )
 
   client.act(
     'level:log',
@@ -31,11 +31,11 @@ setInterval(function() {
     },
     (err, res) => {
       if (err) {
-        throw err;
+        throw err
       }
-      console.log(res);
+      console.log(res)
     }
-  );
+  )
 
   client.act(
     'proc:status',
@@ -44,9 +44,9 @@ setInterval(function() {
     },
     (err, res) => {
       if (err) {
-        throw err;
+        throw err
       }
-      console.log(res);
+      console.log(res)
     }
-  );
-}, 500);
+  )
+}, 500)
