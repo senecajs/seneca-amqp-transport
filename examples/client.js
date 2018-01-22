@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+'use strict'
 
 const client = require('seneca')()
   .use('..')
@@ -7,7 +7,7 @@ const client = require('seneca')()
     type: 'amqp',
     pin: 'cmd:salute',
     url: process.env.AMQP_URL
-  });
+  })
 
 setInterval(function() {
   client.act(
@@ -19,9 +19,9 @@ setInterval(function() {
     },
     (err, res) => {
       if (err) {
-        throw err;
+        throw err
       }
-      console.log(res);
+      console.log(res)
     }
-  );
-}, 2000);
+  )
+}, 2000)
