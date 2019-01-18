@@ -9,7 +9,7 @@ const defaults = require('./defaults');
 const hooks = require('./lib/hooks');
 
 const PLUGIN_NAME = 'amqp-transport';
-const PLUGIN_TAG = require('./package.json').version;
+const PLUGIN_TAG = require('./package.json').version.replace(/\./g, '_'); // replacing dots with underscore, since dots are not allowed in tags anymore
 const TRANSPORT_TYPE = 'amqp';
 
 module.exports = function(opts) {
