@@ -7,6 +7,9 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/senecajs/seneca-amqp-transport.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/senecajs/seneca-amqp-transport.svg?branch=develop)](https://travis-ci.org/senecajs/seneca-amqp-transport) [![codecov.io](https://codecov.io/github/senecajs/seneca-amqp-transport/coverage.svg?branch=develop)](https://codecov.io/github/senecajs/seneca-amqp-transport?branch=develop) [![Known Vulnerabilities](https://snyk.io/test/github/senecajs/seneca-amqp-transport/badge.svg)](https://snyk.io/test/github/senecajs/seneca-amqp-transport) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/senecajs/seneca-amqp-transport/blob/master/LICENSE)
 
+| ![Voxgig](https://www.voxgig.com/res/img/vgt01r.png) | This open source module is sponsored and supported by [Voxgig](https://www.voxgig.com). |
+|---|---|
+
 This plugin allows seneca listeners and clients to communicate over [AMQP][2].
 
 > **Important**: Starting from `2.2.0` this plugin will require the usage of the `--harmony` flag in order to run in node versions _older_ than LTS (currently 6.x.x).
