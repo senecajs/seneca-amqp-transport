@@ -14,7 +14,7 @@ const amqputil = require('../../../lib/listener/listener-util');
 const seneca = require('seneca')();
 const listener = require('../../../lib/listener');
 
-describe('On listener module', function() {
+describe('On listener module', function () {
   let channel = {
     assertQueue: queue =>
       Promise.resolve({
@@ -39,7 +39,7 @@ describe('On listener module', function() {
     options: DEFAULT_OPTIONS
   };
 
-  before(function() {
+  before(function () {
     // Add some `pin` to the options to be used in queue name creation
     DEFAULT_OPTIONS.pin = 'role:entity,cmd:create';
 
@@ -50,115 +50,97 @@ describe('On listener module', function() {
     sinon.spy(channel, 'bindQueue');
   });
 
-  before(function(done) {
+  before(function (done) {
     seneca.ready(() => done());
   });
 
-  after(function() {
+  after(function () {
     seneca.close();
   });
 
-  describe('the setup() function', function() {
-    afterEach(function() {
+  describe('the setup() function', function () {
+    afterEach(function () {
       // Reset the state of the stub functions
-      channel.assertQueue.reset();
-      channel.assertExchange.reset();
-      channel.prefetch.reset();
-      channel.bindQueue.reset();
+      channel.assertQueue.resetHistory();
+      channel.assertExchange.resetHistory();
+      channel.prefetch.resetHistory();
+      channel.bindQueue.resetHistory();
     });
 
-    it('should return a Promise', function() {
+    it('should return a Promise', function () {
       listener
         .setup(seneca, options, Function.prototype)
         .should.be.instanceof(Promise);
     });
 
-    it('should resolve to a new Listener instance', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(li => {
-          li.should.be.an('object');
-          li.should.have.property('listen');
-        })
-        .asCallback(done);
+    it('should resolve to a new Listener instance', function () {
+      return listener.setup(seneca, options, Function.prototype).then(li => {
+        li.should.be.an('object');
+        li.should.have.property('listen');
+      });
     });
 
-    it('should have started the new listener', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(li => {
-          li.started.should.be.true();
-        })
-        .asCallback(done);
+    it('should have started the new listener', function () {
+      return listener.setup(seneca, options, Function.prototype).then(li => {
+        li.started.should.be.true();
+      });
     });
 
-    it('should set the prefetch value on the channel', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(() => {
-          channel.prefetch.should.have.been.calledOnce();
-          channel.prefetch.should.have.been.calledWith(
-            DEFAULT_OPTIONS.listener.channel.prefetch
-          );
-        })
-        .asCallback(done);
+    it('should set the prefetch value on the channel', function () {
+      return listener.setup(seneca, options, Function.prototype).then(() => {
+        channel.prefetch.should.have.been.calledOnce();
+        channel.prefetch.should.have.been.calledWith(
+          DEFAULT_OPTIONS.listener.channel.prefetch
+        );
+      });
     });
 
-    it('should declare the exchange on the channel', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(() => {
-          var ex = DEFAULT_OPTIONS.exchange;
-          channel.assertExchange.should.have.been.calledOnce();
-          channel.assertExchange.should.have.been.calledWith(
-            ex.name,
-            ex.type,
-            ex.options
-          );
-        })
-        .asCallback(done);
+    it('should declare the exchange on the channel', function () {
+      return listener.setup(seneca, options, Function.prototype).then(() => {
+        var ex = DEFAULT_OPTIONS.exchange;
+        channel.assertExchange.should.have.been.calledOnce();
+        channel.assertExchange.should.have.been.calledWith(
+          ex.name,
+          ex.type,
+          ex.options
+        );
+      });
     });
 
-    it('should declare the queue on the channel', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(() => {
-          var queueOptions = DEFAULT_OPTIONS.listener.queues;
-          var queueName = amqputil.resolveListenQueue(
-            {
-              role: 'entity',
-              cmd: 'create'
-            },
-            queueOptions
-          );
-          channel.assertQueue.should.have.been.calledOnce();
-          channel.assertQueue.should.have.been.calledWith(
-            queueName,
-            queueOptions.options
-          );
-        })
-        .asCallback(done);
+    it('should declare the queue on the channel', function () {
+      return listener.setup(seneca, options, Function.prototype).then(() => {
+        var queueOptions = DEFAULT_OPTIONS.listener.queues;
+        var queueName = amqputil.resolveListenQueue(
+          {
+            role: 'entity',
+            cmd: 'create'
+          },
+          queueOptions
+        );
+        channel.assertQueue.should.have.been.calledOnce();
+        channel.assertQueue.should.have.been.calledWith(
+          queueName,
+          queueOptions.options
+        );
+      });
     });
 
-    it('should bind the queue to the exchange', function(done) {
-      listener
-        .setup(seneca, options, Function.prototype)
-        .then(() => {
-          var queueOptions = DEFAULT_OPTIONS.listener.queues;
-          var queueName = amqputil.resolveListenQueue(
-            {
-              role: 'entity',
-              cmd: 'create'
-            },
-            queueOptions
-          );
-          channel.bindQueue.should.have.been.calledOnce();
-          channel.bindQueue.should.have.been.calledWith(
-            queueName,
-            DEFAULT_OPTIONS.exchange.name
-          );
-        })
-        .asCallback(done);
+    it('should bind the queue to the exchange', function () {
+      return listener.setup(seneca, options, Function.prototype).then(() => {
+        var queueOptions = DEFAULT_OPTIONS.listener.queues;
+        var queueName = amqputil.resolveListenQueue(
+          {
+            role: 'entity',
+            cmd: 'create'
+          },
+          queueOptions
+        );
+        channel.bindQueue.should.have.been.calledOnce();
+        channel.bindQueue.should.have.been.calledWith(
+          queueName,
+          DEFAULT_OPTIONS.exchange.name
+        );
+      });
     });
   });
 });

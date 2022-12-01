@@ -5,7 +5,7 @@ const path = require('path');
 
 require('seneca')()
   .use('..')
-  .add('cmd:salute', function(message, done) {
+  .add('cmd:salute', function (message, done) {
     return done(null, {
       id:
         Math.floor(Math.random() * (message.max - message.min + 1)) +

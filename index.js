@@ -12,7 +12,7 @@ const PLUGIN_NAME = 'amqp-transport';
 const PLUGIN_TAG = require('./package.json').version;
 const TRANSPORT_TYPE = 'amqp';
 
-module.exports = function(opts) {
+module.exports = function (opts) {
   var seneca = this;
   var so = seneca.options();
   var options = seneca.util.deepextend(defaults, so.transport, opts);

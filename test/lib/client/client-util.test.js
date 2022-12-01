@@ -8,12 +8,12 @@ const amqputil = require('../../../lib/client/client-util');
 /**
  * client-util unit tests
  */
-describe('On client-util module', function() {
+describe('On client-util module', function () {
   /**
    * Function: resolveClientQueue()
    */
-  describe('the resolveClientQueue() function', function() {
-    it('should use a custom id if provided', function() {
+  describe('the resolveClientQueue() function', function () {
+    it('should use a custom id if provided', function () {
       var options = {
         id: 'secret_id'
       };
@@ -22,13 +22,13 @@ describe('On client-util module', function() {
       queue.should.equal('secret_id');
     });
 
-    it('should use no prefix or separator if no options are provided', function() {
+    it('should use no prefix or separator if no options are provided', function () {
       var queue = amqputil.resolveClientQueue();
       // queue name should contain no prefix or separator
       queue.should.match(/^[A-F0-9]+$/i);
     });
 
-    it('should use custom prefix and default separator', function() {
+    it('should use custom prefix and default separator', function () {
       var options = {
         prefix: 'seneca'
       };
@@ -37,7 +37,7 @@ describe('On client-util module', function() {
       queue.should.contain('seneca.');
     });
 
-    it('should not use custom separator if no prefix is provided', function() {
+    it('should not use custom separator if no prefix is provided', function () {
       var options = {
         separator: '|'
       };
@@ -46,7 +46,7 @@ describe('On client-util module', function() {
       queue.should.not.contain('|');
     });
 
-    it('should use custom prefix and custom separator', function() {
+    it('should use custom prefix and custom separator', function () {
       var options = {
         prefix: 'seneca',
         separator: '|'
@@ -60,8 +60,8 @@ describe('On client-util module', function() {
   /**
    * Function: resolveClientTopic()
    */
-  describe('the resolveClientTopic() function', function() {
-    it('should use a topic name starting with the action prefix', function() {
+  describe('the resolveClientTopic() function', function () {
+    it('should use a topic name starting with the action prefix', function () {
       var options = {
         meta$: {
           pattern: 'role:create'
