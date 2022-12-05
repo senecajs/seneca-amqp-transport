@@ -9,7 +9,7 @@ const client = require('seneca')()
     url: process.env.AMQP_URL
   });
 
-setInterval(function() {
+setInterval(function () {
   client.act(
     'action:get_time',
     {

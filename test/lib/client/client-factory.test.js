@@ -14,7 +14,7 @@ const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const seneca = require('seneca')();
 const Client = require('../../../lib/client/client-factory');
 
-describe('On client-factory module', function() {
+describe('On client-factory module', function () {
   const channel = {
     on: Function.prototype,
     publish: () => Promise.resolve(),
@@ -36,7 +36,7 @@ describe('On client-factory module', function() {
     parseJSON: (seneca, type, msg) => JSON.parse(msg)
   };
 
-  before(function(done) {
+  before(function (done) {
     sinon
       .stub(seneca, 'export')
       .withArgs('transport/utils')
@@ -44,66 +44,63 @@ describe('On client-factory module', function() {
     seneca.ready(() => done());
   });
 
-  after(function() {
+  after(function () {
     seneca.close();
   });
 
-  describe('the factory function', function() {
-    it('should be a function', function() {
+  describe('the factory function', function () {
+    it('should be a function', function () {
       Client.should.be.a('function');
     });
 
-    it('should create a Client object with a `start` method', function() {
+    it('should create a Client object with a `start` method', function () {
       const client = Client(seneca, options);
       client.should.be.an('object');
       client.should.have.property('start').that.is.a('function');
     });
   });
 
-  describe('the Client#start() function', function() {
-    it('should make a new Seneca client', function(done) {
+  describe('the Client#start() function', function () {
+    it('should make a new Seneca client', function () {
       // Create seneca.export('transport/utils') stub
       // and spy on utils#make_client function
       const makeClient = sinon.spy(transportUtils, 'make_client');
 
       const callback = Function.prototype;
       const client = Client(seneca, options);
-      client
-        .start(callback)
-        .then(() => {
-          makeClient.should.have.been.calledOnce();
-          makeClient.should.have.been.calledWith(
-            seneca,
-            sinon.match.func,
-            options.options,
-            callback
-          );
-        })
-        .asCallback(done);
+      return client.start(callback).then(() => {
+        makeClient.should.have.been.calledOnce();
+        makeClient.should.have.been.calledWith(
+          seneca,
+          sinon.match.func,
+          options.options,
+          callback
+        );
+      });
     });
   });
 
-  describe('the Client object', function() {
-    before(function() {
+  describe('the Client object', function () {
+    before(function () {
       DEFAULT_OPTIONS.meta$ = {
         pattern: 'role:create'
       };
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
       transportUtils['make_client'].restore();
     });
 
-    after(function() {
+    after(function () {
       delete DEFAULT_OPTIONS.meta$;
     });
 
-    it('should publish a new message to a queue on a Seneca act', function(done) {
+    it('should publish a new message to a queue on a Seneca act', function () {
       // Create seneca.export('transport/utils') stub
       // to make it call the provided callback, which -in turn- ends up
       // calling the `act` function on the client factory
       sinon.stub(transportUtils, 'make_client').callsFake((seneca, cb) =>
-        cb(null, null, function(err, done) {
+        cb(null, null, function (err, done) {
           if (err) {
             throw err;
           }
@@ -115,13 +112,12 @@ describe('On client-factory module', function() {
       const publish = sinon.spy(options.ch, 'publish');
 
       const client = Client(seneca, options);
-      client
+      return client
         .start(Function.prototype)
-        .then(() => publish.should.have.been.calledOnce())
-        .asCallback(done);
+        .then(() => publish.should.have.been.calledOnce());
     });
 
-    it('should handle a reply message upon arrival to the queue', function(done) {
+    it('should handle a reply message upon arrival to the queue', function () {
       const reply = {
         content: JSON.stringify({ foo: 'bar' }),
         properties: {
@@ -152,10 +148,9 @@ describe('On client-factory module', function() {
       opts.options.correlationId = reply.properties.correlationId;
 
       const client = Client(seneca, opts);
-      client
+      return client
         .start(Function.prototype)
-        .then(() => handleResponse.should.have.been.calledOnce())
-        .asCallback(done);
+        .then(() => handleResponse.should.have.been.calledOnce());
     });
   });
 });

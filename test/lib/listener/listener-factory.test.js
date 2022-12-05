@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const seneca = require('seneca')();
 const Listener = require('../../../lib/listener/listener-factory');
 
-describe('On listener-factory module', function() {
+describe('On listener-factory module', function () {
   const channel = {
     on: Function.prototype,
     consume: () => Promise.resolve()
@@ -28,57 +28,54 @@ describe('On listener-factory module', function() {
     options: DEFAULT_OPTIONS
   };
 
-  before(function(done) {
+  before(function (done) {
     seneca.ready(() => done());
   });
 
-  after(function() {
+  after(function () {
     seneca.close();
   });
 
-  describe('the factory function', function() {
-    it('should be a function', function() {
+  describe('the factory function', function () {
+    it('should be a function', function () {
       Listener.should.be.a('function');
     });
 
-    it('should create a Listener object with a `listen` method', function() {
+    it('should create a Listener object with a `listen` method', function () {
       var listener = Listener(seneca, options);
       listener.should.be.an('object');
       listener.should.have.property('listen');
     });
   });
 
-  describe('the Listener#listen() function', function() {
-    before(function() {
+  describe('the Listener#listen() function', function () {
+    before(function () {
       sinon.spy(channel, 'consume');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       // Reset the state of the spy functions
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
-    it('should return a Promise', function() {
+    it('should return a Promise', function () {
       var listener = Listener(seneca, options);
       listener.listen().should.be.instanceof(Promise);
     });
 
-    it('should start consuming messages from a queue', function(done) {
+    it('should start consuming messages from a queue', function () {
       var listener = Listener(seneca, options);
-      listener
-        .listen()
-        .then(() => {
-          channel.consume.should.have.been.calledOnce();
-          channel.consume.should.have.been.calledWith(
-            options.queue,
-            sinon.match.func
-          );
-        })
-        .asCallback(done);
+      return listener.listen().then(() => {
+        channel.consume.should.have.been.calledOnce();
+        channel.consume.should.have.been.calledWith(
+          options.queue,
+          sinon.match.func
+        );
+      });
     });
   });
 
-  describe('the handleMessage() function', function() {
+  describe('the handleMessage() function', function () {
     const transportUtils = {
       handle_request: Function.prototype,
       parseJSON: (seneca, type, msg) => JSON.parse(msg),
@@ -107,7 +104,7 @@ describe('On listener-factory module', function() {
       options: DEFAULT_OPTIONS
     };
 
-    before(function() {
+    before(function () {
       // Stub the `channel#consume()` method to make it call the message
       // handler function as if a new message had just arrived to the queue
       sinon.spy(channel, 'consume');
@@ -120,32 +117,29 @@ describe('On listener-factory module', function() {
         .returns(transportUtils);
     });
 
-    afterEach(function() {
-      channel.consume.reset();
-      channel.sendToQueue.reset();
-      channel.ack.reset();
+    afterEach(function () {
+      channel.consume.resetHistory();
+      channel.sendToQueue.resetHistory();
+      channel.ack.resetHistory();
       transportUtils['handle_request'].restore();
     });
 
-    it('should handle the request when a message is consumed', function(done) {
+    it('should handle the request when a message is consumed', function () {
       var handleRequest = sinon.spy(transportUtils, 'handle_request');
 
       var listener = Listener(seneca, options);
-      listener
-        .listen()
-        .then(() => {
-          handleRequest.should.have.been.calledOnce();
-          handleRequest.should.have.been.calledWith(
-            seneca,
-            { foo: 'bar' },
-            DEFAULT_OPTIONS,
-            sinon.match.func
-          );
-        })
-        .asCallback(done);
+      return listener.listen().then(() => {
+        handleRequest.should.have.been.calledOnce();
+        handleRequest.should.have.been.calledWith(
+          seneca,
+          { foo: 'bar' },
+          DEFAULT_OPTIONS,
+          sinon.match.func
+        );
+      });
     });
 
-    it('should reply to the `replyTo` queue with the response from a Seneca act', function(done) {
+    it('should reply to the `replyTo` queue with the response from a Seneca act', function () {
       var reply = { foo: 'bar' };
 
       sinon
@@ -153,27 +147,24 @@ describe('On listener-factory module', function() {
         .callsFake((seneca, data, options, cb) => cb(reply));
 
       var listener = Listener(seneca, options);
-      listener
-        .listen()
-        .then(() => {
-          // Should send response to `replyTo` queue
-          channel.sendToQueue.should.have.been.calledOnce();
-          channel.sendToQueue.should.have.been.calledWith(
-            message.properties.replyTo,
-            Buffer.from(JSON.stringify(reply)),
-            {
-              correlationId: message.properties.correlationId
-            }
-          );
+      return listener.listen().then(() => {
+        // Should send response to `replyTo` queue
+        channel.sendToQueue.should.have.been.calledOnce();
+        channel.sendToQueue.should.have.been.calledWith(
+          message.properties.replyTo,
+          Buffer.from(JSON.stringify(reply)),
+          {
+            correlationId: message.properties.correlationId
+          }
+        );
 
-          // Should acknowledge the message on the channel
-          channel.ack.should.have.been.calledOnce();
-          channel.ack.should.have.been.calledWith(message);
-        })
-        .asCallback(done);
+        // Should acknowledge the message on the channel
+        channel.ack.should.have.been.calledOnce();
+        channel.ack.should.have.been.calledWith(message);
+      });
     });
 
-    it('should not reply to the `replyTo` queue if response is falsy', function(done) {
+    it('should not reply to the `replyTo` queue if response is falsy', function () {
       // Could be any "falsy" value
       var reply = false;
 
@@ -182,16 +173,13 @@ describe('On listener-factory module', function() {
         .callsFake((seneca, data, options, cb) => cb(reply));
 
       var listener = Listener(seneca, options);
-      listener
-        .listen()
-        .then(() => {
-          // Should not send response to `replyTo` queue
-          channel.sendToQueue.should.not.have.been.calledOnce();
+      return listener.listen().then(() => {
+        // Should not send response to `replyTo` queue
+        channel.sendToQueue.should.not.have.been.calledOnce();
 
-          // Should acknowledge the message on the channel
-          channel.ack.should.have.been.calledOnce();
-        })
-        .asCallback(done);
+        // Should acknowledge the message on the channel
+        channel.ack.should.have.been.calledOnce();
+      });
     });
   });
 });

@@ -15,18 +15,18 @@ const RK = 'cmd.test.role.listener';
 function deleteQueue(ch, queue) {
   return ch
     .deleteQueue(queue)
-    .thenReturn(ch)
+    .then(() => ch)
     .catch(() => ch.connection.createChannel());
 }
 
 function deleteExchange(ch, queue) {
   return ch
     .deleteExchange(queue)
-    .thenReturn(ch)
+    .then(() => ch)
     .catch(() => ch.connection.createChannel());
 }
 
-describe("A Seneca listener with type:'amqp'", function() {
+describe("A Seneca listener with type:'amqp'", function () {
   var ch = null;
   var listener = seneca.use('..', {
     exchange: {
@@ -46,7 +46,7 @@ describe("A Seneca listener with type:'amqp'", function() {
     }
   });
 
-  before(function() {
+  before(function () {
     // Connect to the broker, delete queue and exchange, and then declare
     // the actual listener. This is to properly test creation of needed AMQP
     // elements during listener initialization.
@@ -55,7 +55,7 @@ describe("A Seneca listener with type:'amqp'", function() {
       .then(conn => conn.createChannel())
       .then(channel => deleteQueue(channel, QUEUE_NAME))
       .then(channel => deleteExchange(channel, EXCHANGE_NAME))
-      .then(function(channel) {
+      .then(function (channel) {
         seneca.listen({
           type: 'amqp',
           url: process.env.AMQP_URL,
@@ -65,35 +65,32 @@ describe("A Seneca listener with type:'amqp'", function() {
       });
   });
 
-  before(function(done) {
-    seneca.ready(() => done());
+  before(function (done) {
+    seneca.ready(done);
   });
 
-  after(function() {
+  after(function () {
     // Close both the channel and the connection to the AMQP broker
     // Declared queue and exchange should be automatically deleted on
     // disconnection
     return ch.close().then(() => ch.connection.close());
   });
 
-  after(function() {
+  after(function () {
     seneca.close();
   });
 
-  it('should declare a new properly named queue in the broker', function(done) {
-    ch
-      .checkQueue(QUEUE_NAME)
-      .then(function(ok) {
-        ok.queue.should.eq(QUEUE_NAME);
-      })
-      .asCallback(done);
+  it('should declare a new properly named queue in the broker', function () {
+    return ch.checkQueue(QUEUE_NAME).then(function (ok) {
+      ok.queue.should.eq(QUEUE_NAME);
+    });
   });
 
-  it('should declare an exchange in the broker', function(done) {
-    ch.checkExchange(EXCHANGE_NAME).asCallback(done);
+  it('should declare an exchange in the broker', function () {
+    return ch.checkExchange(EXCHANGE_NAME);
   });
 
-  it('should call the `add()` callback when a new message is published', function(done) {
+  it('should call the `add()` callback when a new message is published', function (done) {
     var message = {
       kind: 'act',
       time: { client_sent: Date.now() },
@@ -101,7 +98,7 @@ describe("A Seneca listener with type:'amqp'", function() {
       sync: true
     };
 
-    listener.add('cmd:test', function(payload, cb) {
+    listener.add('cmd:test', function (payload, cb) {
       var received = seneca.util.clean(payload);
       received.should.eql(message.act);
       cb(null, { ok: true });
