@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');

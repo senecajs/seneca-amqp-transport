@@ -10,18 +10,20 @@
     "defaults.json"
   ],
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">=18"
   },
   "scripts": {
-    "coverage": "nyc --cache npm test",
-    "test": "npm-run-all test:unit test:e2e",
-    "test:unit": "NODE_ENV=test mocha --reporter spec --bail test/**/*.test.js",
-    "test:e2e": "NODE_ENV=test mocha --reporter spec --bail e2e/**/*.e2e.js",
+    "coverage": "NODE_ENV=test node --test --experimental-test-coverage 'test/**/*.test.js'",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "NODE_ENV=test node --test 'test/**/*.test.js'",
+    "test:e2e": "NODE_ENV=test node --test --test-concurrency=1 'e2e/**/*.e2e.js'",
     "lint": "eslint index.js lib test",
     "validate": "npm-run-all lint test:unit",
     "integrate": "npm-run-all lint coverage",
     "release": "./scripts/release.sh",
-    "prettier": "prettier --write index.js lib/**/*.js examples/**/*.js e2e/**/*.js test/**/*.js"
+    "prettier": "prettier --write index.js lib/**/*.js examples/**/*.js e2e/**/*.js test/**/*.js",
+    "services:up": "docker compose up -d --wait",
+    "services:down": "docker compose down -v"
   },
   "repository": {
     "type": "git",
@@ -62,7 +64,10 @@
     "chai": "^4.1.2",
     "chai-json-schema": "^1.5.0",
     "dirty-chai": "^2.0.1",
-    "mocha": "^5.1.1",
+    "eslint": "^5.0.0",
+    "eslint-config-prettier": "^3.0.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-standard": "^3.1.0",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.12.1",
     "seneca": "^4.0.0-rc5",

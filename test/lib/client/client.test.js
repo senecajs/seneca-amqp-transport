@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, after, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -32,6 +34,11 @@ describe('On client module', function() {
     ch: channel,
     options: DEFAULT_OPTIONS
   };
+
+  before(function(done) {
+    // Wait for seneca-transport to be registered
+    seneca.ready(() => done());
+  });
 
   after(function() {
     seneca.close();

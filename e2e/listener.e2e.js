@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, after } = require('../test/shared');
+
 const chai = require('chai');
 const DirtyChai = require('dirty-chai');
 chai.should();
