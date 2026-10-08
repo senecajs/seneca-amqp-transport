@@ -20,6 +20,18 @@ against RabbitMQ 4. Published on npm as `seneca-amqp-transport`.
 npm install seneca seneca-amqp-transport
 ```
 
+For the Seneca 4 prerelease, install it explicitly. The published
+`seneca-transport` (a dependency) declares `seneca >=3` as a peer, which
+excludes prereleases, so npm needs `--legacy-peer-deps` until a
+`seneca-transport` release widens that range:
+
+```sh
+npm install --legacy-peer-deps seneca@4.0.0-rc5 seneca-amqp-transport
+```
+
+`package.json` names the package `@seneca/amqp-transport`, but that scoped
+name is not published yet; releases up to 2.2.0 are `seneca-amqp-transport`.
+
 You need a RabbitMQ broker. For local work, `npm run services:up` in a clone
 of this repository starts one on port 15673 (see
 [Run the tests locally](docs/how-to/run-the-tests-locally.md)).
