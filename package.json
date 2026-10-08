@@ -39,7 +39,7 @@
     "microservice",
     "rpc"
   ],
-  "author": "Nicol\u00e1s Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
+  "author": "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
   "contributors": [
     "George Haidar <ghaidar0@gmail.com> (https://github.com/disintegrator)",
     "Chris Spiliotopoulos <chrysanthos.spiliotopoulos@gmail.com> (https://github.com/chefArchitect)"
@@ -50,31 +50,26 @@
   },
   "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
-    "amqplib": "^0.5.2",
+    "amqplib": "^2.2.0",
     "amqpuri": "^2.0.1",
     "bluebird": "^3.5.1",
     "jsonic": "^0.3.0",
     "lodash": "^4.17.10",
+    "seneca-transport": "^8.3.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-json-schema": "^1.5.0",
     "dirty-chai": "^2.0.1",
-    "eslint": "^5.0.0",
-    "eslint-config-prettier": "^3.0.0",
-    "eslint-plugin-prettier": "^2.6.0",
-    "eslint-plugin-standard": "^3.1.0",
     "mocha": "^5.1.1",
     "npm-run-all": "^4.1.2",
-    "nyc": "^12.0.1",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.12.1",
-    "seneca": "^3.4.3",
+    "seneca": "^4.0.0-rc5",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0"
   },
-  "pre-commit": [
-    "validate"
-  ]
+  "peerDependencies": {
+    "seneca": ">=3 || >=4.0.0-rc5"
+  }
 }

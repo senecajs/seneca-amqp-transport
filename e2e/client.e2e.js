@@ -6,7 +6,10 @@ chai.should();
 chai.use(DirtyChai);
 
 const amqp = require('amqplib');
-const seneca = require('seneca')();
+// Matches docker-compose.yml (npm run services:up).
+const AMQP_URL = process.env.AMQP_URL || 'amqp://guest:guest@127.0.0.1:15673';
+
+const seneca = require('seneca')().quiet();
 
 const CONSUMER_TAG = 'seneca-client-e2e';
 const QUEUE_NAME = 'seneca.add.cmd:test.role:client';
@@ -26,7 +29,7 @@ describe("A Seneca client with type:'amqp'", function() {
       }
     })
     .client({
-      url: process.env.AMQP_URL,
+      url: AMQP_URL,
       type: 'amqp',
       pin: 'cmd:test,role:client'
     });
@@ -39,7 +42,7 @@ describe("A Seneca client with type:'amqp'", function() {
     // Connect to the broker, (re-)declare exchange and queue used in test
     // and remove any pre-existing messages from it
     return amqp
-      .connect(process.env.AMQP_UR)
+      .connect(AMQP_URL)
       .then(conn => conn.createChannel())
       .then(channel => {
         return channel
@@ -52,7 +55,7 @@ describe("A Seneca client with type:'amqp'", function() {
           )
           .then(() => channel.assertExchange(EXCHANGE_NAME, 'topic'))
           .then(() => channel.bindQueue(QUEUE_NAME, EXCHANGE_NAME, RK))
-          .thenReturn(channel);
+          .then(() => channel);
       })
       .then(function(channel) {
         ch = channel;
@@ -88,7 +91,8 @@ describe("A Seneca client with type:'amqp'", function() {
 
         var content = JSON.parse(message.content.toString());
         content.should.have.property('act').that.is.an('object');
-        content.act.should.eql(
+        // Seneca 4 adds a `custom$` property; compare without $-suffixed keys.
+        seneca.util.clean(content.act).should.eql(
           Object.assign(
             {
               cmd: 'test',

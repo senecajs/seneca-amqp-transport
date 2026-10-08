@@ -43,7 +43,7 @@ describe('On consumer module', function() {
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
     it('should return a Promise', function() {

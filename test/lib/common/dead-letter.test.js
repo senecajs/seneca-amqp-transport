@@ -41,9 +41,9 @@ describe('On dead-letter module', function() {
 
   afterEach(function() {
     // Reset the state of the stub functions
-    channel.assertQueue.reset();
-    channel.assertExchange.reset();
-    channel.bindQueue.reset();
+    channel.assertQueue.resetHistory();
+    channel.assertExchange.resetHistory();
+    channel.bindQueue.resetHistory();
   });
 
   describe('the declareDeadLetter() function', function() {

@@ -1,0 +1,13 @@
+name: seneca-amqp-transport
+
+services:
+  rabbitmq:
+    image: rabbitmq:4.3-alpine
+    container_name: seneca-amqp-transport-rabbitmq
+    ports:
+      - "15673:5672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
+      interval: 5s
+      timeout: 5s
+      retries: 20

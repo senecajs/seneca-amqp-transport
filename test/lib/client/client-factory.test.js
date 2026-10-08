@@ -11,7 +11,9 @@ chai.use(DirtyChai);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
-const seneca = require('seneca')();
+const seneca = require('seneca')()
+  .quiet()
+  .use('seneca-transport');
 const Client = require('../../../lib/client/client-factory');
 
 describe('On client-factory module', function() {

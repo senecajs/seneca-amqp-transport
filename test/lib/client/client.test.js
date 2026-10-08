@@ -12,7 +12,9 @@ chai.use(DirtyChai);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
-const seneca = require('seneca')();
+const seneca = require('seneca')()
+  .quiet()
+  .use('seneca-transport');
 const amqputil = require('../../../lib/client/client-util');
 const client = require('../../../lib/client');
 
@@ -51,12 +53,12 @@ describe('On client module', function() {
 
   afterEach(function() {
     // Reset the state of the stub functions
-    channel.assertQueue.reset();
-    channel.assertExchange.reset();
-    channel.consume.reset();
-    channel.publish.reset();
-    channel.prefetch.reset();
-    channel.on.reset();
+    channel.assertQueue.resetHistory();
+    channel.assertExchange.resetHistory();
+    channel.consume.resetHistory();
+    channel.publish.resetHistory();
+    channel.prefetch.resetHistory();
+    channel.on.resetHistory();
   });
 
   describe('the setup() function', function() {
