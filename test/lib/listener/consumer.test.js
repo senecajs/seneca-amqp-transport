@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -43,7 +45,7 @@ describe('On consumer module', function() {
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
     it('should return a Promise', function() {

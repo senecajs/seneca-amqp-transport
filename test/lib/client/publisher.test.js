@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -45,7 +47,7 @@ describe('On publisher module', function() {
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.publish.reset();
+      channel.publish.resetHistory();
     });
 
     const message = JSON.stringify({ foo: 'bar' });
@@ -132,7 +134,7 @@ describe('On publisher module', function() {
 
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
     it('should return a Promise', function() {
@@ -175,7 +177,7 @@ describe('On publisher module', function() {
     });
 
     afterEach(function() {
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
     it('should call the `repyHandler` callback with a message', function() {

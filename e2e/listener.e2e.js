@@ -1,12 +1,17 @@
 'use strict';
 
+const { describe, it, before, after } = require('../test/shared');
+
 const chai = require('chai');
 const DirtyChai = require('dirty-chai');
 chai.should();
 chai.use(DirtyChai);
 
 const amqp = require('amqplib');
-const seneca = require('seneca')();
+// Matches docker-compose.yml (npm run services:up).
+const AMQP_URL = process.env.AMQP_URL || 'amqp://guest:guest@127.0.0.1:15673';
+
+const seneca = require('seneca')().quiet();
 
 const QUEUE_NAME = 'seneca.add.cmd:test.role:listener';
 const EXCHANGE_NAME = 'seneca.topic';
@@ -15,14 +20,14 @@ const RK = 'cmd.test.role.listener';
 function deleteQueue(ch, queue) {
   return ch
     .deleteQueue(queue)
-    .thenReturn(ch)
+    .then(() => ch)
     .catch(() => ch.connection.createChannel());
 }
 
 function deleteExchange(ch, queue) {
   return ch
     .deleteExchange(queue)
-    .thenReturn(ch)
+    .then(() => ch)
     .catch(() => ch.connection.createChannel());
 }
 
@@ -51,14 +56,14 @@ describe("A Seneca listener with type:'amqp'", function() {
     // the actual listener. This is to properly test creation of needed AMQP
     // elements during listener initialization.
     return amqp
-      .connect(process.env.AMQP_URL)
+      .connect(AMQP_URL)
       .then(conn => conn.createChannel())
       .then(channel => deleteQueue(channel, QUEUE_NAME))
       .then(channel => deleteExchange(channel, EXCHANGE_NAME))
       .then(function(channel) {
         seneca.listen({
           type: 'amqp',
-          url: process.env.AMQP_URL,
+          url: AMQP_URL,
           pin: 'cmd:test,role:listener'
         });
         ch = channel;
@@ -86,11 +91,11 @@ describe("A Seneca listener with type:'amqp'", function() {
       .then(function(ok) {
         ok.queue.should.eq(QUEUE_NAME);
       })
-      .asCallback(done);
+      .then(() => done(), done);
   });
 
   it('should declare an exchange in the broker', function(done) {
-    ch.checkExchange(EXCHANGE_NAME).asCallback(done);
+    ch.checkExchange(EXCHANGE_NAME).then(() => done(), done);
   });
 
   it('should call the `add()` callback when a new message is published', function(done) {

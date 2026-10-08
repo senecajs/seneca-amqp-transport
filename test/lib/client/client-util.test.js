@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it } = require('../../shared');
+
 const chai = require('chai');
 chai.should();
 

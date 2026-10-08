@@ -1,6 +1,6 @@
 {
   "name": "@seneca/amqp-transport",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "codename": "Migrative Meathook",
   "description": "Official AMQP transport plugin for Seneca",
   "main": "index.js",
@@ -10,18 +10,20 @@
     "defaults.json"
   ],
   "engines": {
-    "node": ">= 6.0.0"
+    "node": ">=18"
   },
   "scripts": {
-    "coverage": "nyc --cache npm test",
-    "test": "npm-run-all test:unit test:e2e",
-    "test:unit": "NODE_ENV=test mocha --reporter spec --bail test/**/*.test.js",
-    "test:e2e": "NODE_ENV=test mocha --reporter spec --bail e2e/**/*.e2e.js",
+    "coverage": "NODE_ENV=test node --test --experimental-test-coverage 'test/**/*.test.js'",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "NODE_ENV=test node --test 'test/**/*.test.js'",
+    "test:e2e": "NODE_ENV=test node --test --test-concurrency=1 'e2e/**/*.e2e.js'",
     "lint": "eslint index.js lib test",
     "validate": "npm-run-all lint test:unit",
     "integrate": "npm-run-all lint coverage",
     "release": "./scripts/release.sh",
-    "prettier": "prettier --write index.js lib/**/*.js examples/**/*.js e2e/**/*.js test/**/*.js"
+    "prettier": "prettier --write index.js lib/**/*.js examples/**/*.js e2e/**/*.js test/**/*.js",
+    "services:up": "docker compose up -d --wait",
+    "services:down": "docker compose down -v"
   },
   "repository": {
     "type": "git",
@@ -39,7 +41,7 @@
     "microservice",
     "rpc"
   ],
-  "author": "Nicol\u00e1s Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
+  "author": "Nicolás Fantone <nfantone@gmail.com> (https://github.com/nfantone)",
   "contributors": [
     "George Haidar <ghaidar0@gmail.com> (https://github.com/disintegrator)",
     "Chris Spiliotopoulos <chrysanthos.spiliotopoulos@gmail.com> (https://github.com/chefArchitect)"
@@ -50,11 +52,12 @@
   },
   "homepage": "https://github.com/senecajs/seneca-amqp-transport",
   "dependencies": {
-    "amqplib": "^0.5.2",
+    "amqplib": "^2.2.0",
     "amqpuri": "^2.0.1",
     "bluebird": "^3.5.1",
     "jsonic": "^0.3.0",
     "lodash": "^4.17.10",
+    "seneca-transport": "^8.3.0",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
@@ -65,16 +68,13 @@
     "eslint-config-prettier": "^3.0.0",
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-standard": "^3.1.0",
-    "mocha": "^5.1.1",
     "npm-run-all": "^4.1.2",
-    "nyc": "^12.0.1",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.12.1",
-    "seneca": "^3.4.3",
+    "seneca": "^4.0.0-rc5",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0"
   },
-  "pre-commit": [
-    "validate"
-  ]
+  "peerDependencies": {
+    "seneca": ">=3 || >=4.0.0-rc5"
+  }
 }

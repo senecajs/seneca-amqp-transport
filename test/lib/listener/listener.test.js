@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, after, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const DirtyChai = require('dirty-chai');
@@ -11,7 +13,9 @@ chai.use(DirtyChai);
 
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const amqputil = require('../../../lib/listener/listener-util');
-const seneca = require('seneca')();
+const seneca = require('seneca')()
+  .quiet()
+  .use('seneca-transport');
 const listener = require('../../../lib/listener');
 
 describe('On listener module', function() {
@@ -61,10 +65,10 @@ describe('On listener module', function() {
   describe('the setup() function', function() {
     afterEach(function() {
       // Reset the state of the stub functions
-      channel.assertQueue.reset();
-      channel.assertExchange.reset();
-      channel.prefetch.reset();
-      channel.bindQueue.reset();
+      channel.assertQueue.resetHistory();
+      channel.assertExchange.resetHistory();
+      channel.prefetch.resetHistory();
+      channel.bindQueue.resetHistory();
     });
 
     it('should return a Promise', function() {

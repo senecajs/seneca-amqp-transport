@@ -1,5 +1,24 @@
 # Change Log
 
+## 2.3.0 (unreleased)
+
+* Seneca 4 support (tested with `seneca@4.0.0-rc5` and 4.0.0 master) while
+  keeping Seneca 3: seneca-transport is loaded when Seneca does not bundle
+  it, the close hook uses `sys:seneca,cmd:close` on Seneca 4, and the
+  client reads the message pattern from the separate `meta` argument.
+* amqplib upgraded from 0.5 to 2: RabbitMQ 4.1 and later reject the 4096
+  byte `frame_max` of amqplib 0.5. Native amqplib promises are wrapped
+  where bluebird helpers are used.
+* Behaviour change: an explicit `url` connection setting is now used as
+  given; previously the `host` that Seneca core adds to every connection
+  config took precedence and the url was ignored.
+* Node 24 and 22 (engines `>=18`). Tests moved from mocha 5 to `node:test`;
+  RabbitMQ for tests runs from `docker-compose.yml` (`npm run services:up`).
+  Travis config and the pre-commit hook removed; GitHub Actions workflow
+  provided in `.patches/`.
+* Documentation reorganized into `docs/` (tutorial, how-to guides,
+  reference, explanation).
+
 ## [Unreleased](https://github.com/senecajs/seneca-amqp-transport/tree/HEAD)
 
 [Full Changelog](https://github.com/senecajs/seneca-amqp-transport/compare/2.2.0...HEAD)

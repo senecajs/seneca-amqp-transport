@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, after, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -12,7 +14,9 @@ chai.use(DirtyChai);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
-const seneca = require('seneca')();
+const seneca = require('seneca')()
+  .quiet()
+  .use('seneca-transport');
 const amqputil = require('../../../lib/client/client-util');
 const client = require('../../../lib/client');
 
@@ -30,6 +34,11 @@ describe('On client module', function() {
     ch: channel,
     options: DEFAULT_OPTIONS
   };
+
+  before(function(done) {
+    // Wait for seneca-transport to be registered
+    seneca.ready(() => done());
+  });
 
   after(function() {
     seneca.close();
@@ -51,12 +60,12 @@ describe('On client module', function() {
 
   afterEach(function() {
     // Reset the state of the stub functions
-    channel.assertQueue.reset();
-    channel.assertExchange.reset();
-    channel.consume.reset();
-    channel.publish.reset();
-    channel.prefetch.reset();
-    channel.on.reset();
+    channel.assertQueue.resetHistory();
+    channel.assertExchange.resetHistory();
+    channel.consume.resetHistory();
+    channel.publish.resetHistory();
+    channel.prefetch.resetHistory();
+    channel.on.resetHistory();
   });
 
   describe('the setup() function', function() {

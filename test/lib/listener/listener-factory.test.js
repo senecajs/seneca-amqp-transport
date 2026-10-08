@@ -1,5 +1,7 @@
 'use strict';
 
+const { describe, it, before, after, afterEach } = require('../../shared');
+
 const Promise = require('bluebird');
 const chai = require('chai');
 const sinon = require('sinon');
@@ -12,7 +14,9 @@ chai.use(DirtyChai);
 
 // use the default options
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
-const seneca = require('seneca')();
+const seneca = require('seneca')()
+  .quiet()
+  .use('seneca-transport');
 const Listener = require('../../../lib/listener/listener-factory');
 
 describe('On listener-factory module', function() {
@@ -55,7 +59,7 @@ describe('On listener-factory module', function() {
 
     afterEach(function() {
       // Reset the state of the spy functions
-      channel.consume.reset();
+      channel.consume.resetHistory();
     });
 
     it('should return a Promise', function() {
@@ -121,9 +125,9 @@ describe('On listener-factory module', function() {
     });
 
     afterEach(function() {
-      channel.consume.reset();
-      channel.sendToQueue.reset();
-      channel.ack.reset();
+      channel.consume.resetHistory();
+      channel.sendToQueue.resetHistory();
+      channel.ack.resetHistory();
       transportUtils['handle_request'].restore();
     });
 
