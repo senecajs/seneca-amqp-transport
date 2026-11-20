@@ -5,7 +5,7 @@ to each other through RabbitMQ. It takes about five minutes.
 
 ## 1. Install
 
-You need Node 22 or 24 and a RabbitMQ broker. In a clone of this
+You need Node 24 or later and a RabbitMQ broker. In a clone of this
 repository, Docker Compose starts one on `127.0.0.1:15673`:
 
 ```sh
@@ -16,7 +16,7 @@ npm run services:up
 In your own project:
 
 ```sh
-npm install seneca seneca-amqp-transport
+npm install seneca@^4 @seneca/amqp-transport
 ```
 
 ## 2. The program
@@ -30,7 +30,7 @@ repository, where it loads the plugin from the checkout):
 const Seneca = require('seneca');
 
 const AMQP_URL = process.env.AMQP_URL || 'amqp://guest:guest@127.0.0.1:15673';
-const PLUGIN = 'seneca-amqp-transport';
+const PLUGIN = '@seneca/amqp-transport';
 
 async function main() {
   const listener = Seneca({ log: 'silent' })
@@ -40,17 +40,13 @@ async function main() {
     })
     .listen({ type: 'amqp', pin: 'cmd:salute', url: AMQP_URL });
 
-  await new Promise((resolve, reject) =>
-    listener.ready(err => (err ? reject(err) : resolve()))
-  );
+  await listener.ready();
 
   const client = Seneca({ log: 'silent' })
     .use(PLUGIN)
     .client({ type: 'amqp', pin: 'cmd:salute', url: AMQP_URL });
 
-  await new Promise((resolve, reject) =>
-    client.ready(err => (err ? reject(err) : resolve()))
-  );
+  await client.ready();
 
   const out = await client.post('cmd:salute', { name: 'World' });
   console.log(out);
@@ -72,7 +68,7 @@ main().catch(err => {
 node docs/examples/getting-started.js
 ```
 
-Output (Seneca 4.0.0-rc5, RabbitMQ 4.3):
+Output (Seneca 4.0.0, RabbitMQ 3.13):
 
 ```
 { message: 'Hello World!' }
@@ -98,9 +94,6 @@ AMQP channel and connection.
 4. The listener consumed it, ran the local `cmd:salute` action, and sent
    the reply to the `replyTo` queue. The client matched the correlation
    id and resolved the promise.
-
-You waited for `ready` with the callback form because
-`await seneca.ready()` can hang on an idle instance in 4.0.0-rc5.
 
 ## 5. Next steps
 

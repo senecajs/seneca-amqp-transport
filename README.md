@@ -6,8 +6,8 @@
 An [AMQP 0-9-1][2] transport for Seneca: `seneca.listen({ type: 'amqp' })`
 consumes messages from a RabbitMQ queue and `seneca.client({ type: 'amqp' })`
 publishes them, with replies routed back over a callback queue. Works with
-Seneca 3 and the Seneca 4 prerelease (`seneca@4.0.0-rc5`), on Node 22 and 24,
-against RabbitMQ 4. Published on npm as `seneca-amqp-transport`.
+Seneca 4 on Node 24 or later, against RabbitMQ 3.13 and 4. Published on npm
+as `@seneca/amqp-transport` from version 3.0.0.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
@@ -17,20 +17,13 @@ against RabbitMQ 4. Published on npm as `seneca-amqp-transport`.
 ## Install
 
 ```sh
-npm install seneca seneca-amqp-transport
+npm install seneca@^4 @seneca/amqp-transport
 ```
 
-For the Seneca 4 prerelease, install it explicitly. The published
-`seneca-transport` (a dependency) declares `seneca >=3` as a peer, which
-excludes prereleases, so npm needs `--legacy-peer-deps` until a
-`seneca-transport` release widens that range:
-
-```sh
-npm install --legacy-peer-deps seneca@4.0.0-rc5 seneca-amqp-transport
-```
-
-`package.json` names the package `@seneca/amqp-transport`, but that scoped
-name is not published yet; releases up to 2.2.0 are `seneca-amqp-transport`.
+The plugin depends on `@seneca/transport` for the message protocol and
+loads it if the application has not. Releases up to 2.2.0 were published
+as `seneca-amqp-transport` and support Seneca 3; from 3.0.0 the package
+is `@seneca/amqp-transport` and needs Seneca 4.
 
 You need a RabbitMQ broker. For local work, `npm run services:up` in a clone
 of this repository starts one on port 15673 (see
@@ -44,13 +37,13 @@ of this repository starts one on port 15673 (see
 ```js
 // service.js
 require('seneca')()
-  .use('seneca-amqp-transport')
+  .use('@seneca/amqp-transport')
   .add('cmd:salute', (msg, reply) => reply({ message: `Hello ${msg.name}!` }))
   .listen({ type: 'amqp', pin: 'cmd:salute', url: 'amqp://guest:guest@localhost:5672' })
 
 // caller.js
 require('seneca')()
-  .use('seneca-amqp-transport')
+  .use('@seneca/amqp-transport')
   .client({ type: 'amqp', pin: 'cmd:salute', url: 'amqp://guest:guest@localhost:5672' })
   .act('cmd:salute,name:World', console.log)
 ```
@@ -85,7 +78,7 @@ changing action code. See [How the transport works](docs/explanation/how-it-work
 
 | Item | Summary | Reference |
 | ---- | ------- | --------- |
-| `seneca.use('seneca-amqp-transport', options)` | Registers the `amqp` transport type. Options go under `amqp`. | [Options](docs/reference/options.md) |
+| `seneca.use('@seneca/amqp-transport', options)` | Registers the `amqp` transport type. Options go under `amqp`. | [Options](docs/reference/options.md) |
 | `seneca.listen({ type: 'amqp', ... })` | Declares exchange, queue and bindings and consumes messages. | [Connection settings](docs/reference/options.md#connection-settings) |
 | `seneca.client({ type: 'amqp', ... })` | Publishes messages and waits for replies on a callback queue. | [Connection settings](docs/reference/options.md#connection-settings) |
 | `role:transport,hook:listen,type:amqp` | Action behind `listen`. | [Messages](docs/reference/messages.md) |
@@ -94,7 +87,7 @@ changing action code. See [How the transport works](docs/explanation/how-it-work
 ## Contributing
 
 The [Senecajs org][11] encourages open participation. To run the tests you
-need Docker, and Node 24 or 22:
+need Docker, and Node 24 or later:
 
 ```sh
 npm install
@@ -103,7 +96,7 @@ npm test                # unit tests, then e2e tests against RabbitMQ
 npm run services:down
 ```
 
-The tests run against the Seneca 4 prerelease devDependency. Set
+The tests run against the `seneca` `^4.0.0` devDependency. Set
 `AMQP_URL` to use another broker. The GitHub Actions workflow is delivered
 as a patch in [.patches](.patches/README.md); apply it with
 `git am .patches/*.patch`.
@@ -114,8 +107,8 @@ Written by Nicolás Fantone and contributors; uses the [amqplib][3] driver.
 
 | Version | Seneca | Node | RabbitMQ | amqplib |
 | ------- | ------ | ---- | -------- | ------- |
-| 2.3.x | 3.x, 4.0.0-rc5 and later | 22, 24 (>= 18) | 4.x (tested with 4.3) | 2.x |
-| 2.2.x | 3.x | 6 to 10 | 3.x | 0.5 |
+| 3.x (`@seneca/amqp-transport`) | 4.x | 24 or later | 3.13, 4.x | 2.x |
+| 2.2.x (`seneca-amqp-transport`) | 3.x | 6 to 10 | 3.x | 0.5 |
 
 See [CHANGELOG.md](CHANGELOG.md). Licensed under [MIT](LICENSE).
 

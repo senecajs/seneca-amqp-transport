@@ -6,10 +6,10 @@ call them directly: Seneca calls them when you use `listen()` and
 
 ## Plugin registration
 
-`use('seneca-amqp-transport')` registers a plugin named `amqp-transport`
+`use('@seneca/amqp-transport')` registers a plugin named `amqp-transport`
 whose tag is the package version. If the `transport/utils` export does not
-provide the seneca-transport helpers (Seneca 4 without seneca-transport),
-the plugin loads seneca-transport first. The plugin has no exports and
+provide the seneca-transport helpers (the Seneca 4 core export does not),
+the plugin loads `@seneca/transport` first. The plugin has no exports and
 defines no error codes.
 
 ## role:transport,hook:listen,type:amqp
@@ -51,7 +51,7 @@ Called by `seneca.client({ type: 'amqp', ... })`.
 * Reply: empty, once the client is ready.
 * Errors: as for listen.
 
-Each outbound message is serialized as JSON by the seneca-transport
+Each outbound message is serialized as JSON by the `@seneca/transport`
 helpers and published to the exchange with the routing key derived from
 the message (keys of the matched pin, sorted, values taken from the
 message), and the properties `replyTo`, `contentType: application/json`
@@ -60,6 +60,6 @@ and `correlationId`. Replies with another correlation id are ignored.
 ## Close hook
 
 For each connection the plugin adds a close hook that closes the channel
-and its connection, then calls the prior close action. It uses
-`sys:seneca,cmd:close` on Seneca 4 and `role:seneca,cmd:close` on
-Seneca 3. Errors while closing are logged, not returned.
+and its connection, then calls the prior close action
+(`sys:seneca,cmd:close`). Errors while closing are logged, not
+returned.

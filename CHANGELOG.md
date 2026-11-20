@@ -1,23 +1,46 @@
 # Change Log
 
-## 2.3.0 (unreleased)
+## 3.0.0 2026-11-20
 
-* Seneca 4 support (tested with `seneca@4.0.0-rc5` and 4.0.0 master) while
-  keeping Seneca 3: seneca-transport is loaded when Seneca does not bundle
-  it, the close hook uses `sys:seneca,cmd:close` on Seneca 4, and the
-  client reads the message pattern from the separate `meta` argument.
+First release under the name `@seneca/amqp-transport`. Version 2.3.0
+was prepared in the repository but never published; its changes are
+part of this release.
+
+* Seneca 4: the peer dependency is `seneca` `^4.0.0`, and Seneca 3 is no
+  longer supported. Seneca 3 users stay on `seneca-amqp-transport@2`.
+  Tested against seneca 4.0.0 with `@seneca/transport` 9.0.0, Node.js 26
+  and RabbitMQ 3.13 (unit and e2e tests).
+* Renamed from `seneca-amqp-transport` to `@seneca/amqp-transport`.
+  Load it with `seneca.use('@seneca/amqp-transport')`.
+* Node.js 24 or later (`engines.node` `>=24`).
+* The dependency `seneca-transport` `^8.3.0` is replaced by
+  `@seneca/transport` `^9.0.0`, which the plugin loads when the
+  application has not. With seneca-transport 8.3.0 a remote error could
+  not be serialized on Seneca 4.
+* The close hook uses `sys:seneca,cmd:close`, and the client reads the
+  message pattern from the separate `meta` argument (B9).
+* A listener no longer dies when a remote action fails: it replies with
+  the error, which reaches the caller with its own `code` and `message`.
+  The listener used to act through the plugin's delegate, which marks
+  messages `fatal$`.
+* `seneca.util.deep` replaces `seneca.util.deepextend`, so Seneca 4 no
+  longer warns with `SENECA_DEP_UTIL_DEEPEXTEND` (D2).
 * amqplib upgraded from 0.5 to 2: RabbitMQ 4.1 and later reject the 4096
   byte `frame_max` of amqplib 0.5. Native amqplib promises are wrapped
   where bluebird helpers are used.
 * Behaviour change: an explicit `url` connection setting is now used as
   given; previously the `host` that Seneca core adds to every connection
   config took precedence and the url was ignored.
-* Node 24 and 22 (engines `>=18`). Tests moved from mocha 5 to `node:test`;
-  RabbitMQ for tests runs from `docker-compose.yml` (`npm run services:up`).
-  Travis config and the pre-commit hook removed; GitHub Actions workflow
-  provided in `.patches/`.
-* Documentation reorganized into `docs/` (tutorial, how-to guides,
-  reference, explanation).
+* Development: tests moved from mocha 5 to `node:test`, load
+  `@seneca/transport` by its full name, and include a new e2e test of
+  concurrent acts and of a remote action error. RabbitMQ for tests runs
+  from `docker-compose.yml` (`npm run services:up`). The development
+  dependency is `seneca` `^4.0.0`. No `package-lock.json` or `.npmrc` is
+  committed. Travis config, the pre-commit hook and the git flow
+  `release` script removed.
+* `CHANGELOG.md` is included in the package. Documentation reorganized
+  into `docs/` (tutorial, how-to guides, reference, explanation) and
+  updated for this release.
 
 ## [Unreleased](https://github.com/senecajs/seneca-amqp-transport/tree/HEAD)
 

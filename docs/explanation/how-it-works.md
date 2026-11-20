@@ -30,20 +30,24 @@ that expire, or that a listener rejects because they have no body or no
 `replyTo`, go to `seneca.dlx` and end up in `seneca.dlq`, where you can
 inspect them.
 
-## Relationship with seneca-transport
+## Relationship with @seneca/transport
 
 The message format, request tracking and reply handling are not
 implemented here. The plugin uses the helpers (`make_client`,
 `handle_request`, `prepare_request`, `resolve_pins` and others) exported by
 seneca-transport as `transport/utils`. Seneca 3 bundled seneca-transport;
-Seneca 4 does not, so the plugin depends on seneca-transport and loads it
-when the helpers are missing.
+Seneca 4 does not, so the plugin depends on `@seneca/transport`, the
+Seneca 4 version of seneca-transport, and loads it when the helpers are
+missing.
 
 ## Seneca 3 versus Seneca 4
 
-| Topic | Seneca 3 | Seneca 4 |
+Version 3.0.0 of the plugin supports Seneca 4 only. Seneca 3 users stay
+on `seneca-amqp-transport@2`. The differences:
+
+| Topic | Seneca 3 (plugin 2.x) | Seneca 4 (plugin 3.x) |
 | ----- | -------- | -------- |
-| seneca-transport | bundled | loaded by this plugin |
+| Transport helpers | seneca-transport, bundled | `@seneca/transport`, loaded by this plugin |
 | Close pattern | `role:seneca,cmd:close` | `sys:seneca,cmd:close` |
 | Message metadata in the client | `args.meta$` | separate `meta` argument |
 | Instance `transport` options | merged into plugin options | not merged |
