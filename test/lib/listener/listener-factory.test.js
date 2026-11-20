@@ -16,7 +16,7 @@ chai.use(DirtyChai);
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const seneca = require('seneca')()
   .quiet()
-  .use('seneca-transport');
+  .use('@seneca/transport');
 const Listener = require('../../../lib/listener/listener-factory');
 
 describe('On listener-factory module', function() {

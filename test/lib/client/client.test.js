@@ -16,7 +16,7 @@ chai.use(DirtyChai);
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const seneca = require('seneca')()
   .quiet()
-  .use('seneca-transport');
+  .use('@seneca/transport');
 const amqputil = require('../../../lib/client/client-util');
 const client = require('../../../lib/client');
 
@@ -36,7 +36,7 @@ describe('On client module', function() {
   };
 
   before(function(done) {
-    // Wait for seneca-transport to be registered
+    // Wait for @seneca/transport to be registered
     seneca.ready(() => done());
   });
 

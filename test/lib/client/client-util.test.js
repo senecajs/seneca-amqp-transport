@@ -73,5 +73,13 @@ describe('On client-util module', function() {
       var topic = amqputil.resolveClientTopic(options);
       topic.should.contain('role.');
     });
+
+    it('should read the pattern from the meta argument', function() {
+      var topic = amqputil.resolveClientTopic(
+        { role: 'create', cmd: 'user' },
+        { pattern: 'cmd:user,role:create' }
+      );
+      topic.should.equal('cmd.user.role.create');
+    });
   });
 });
