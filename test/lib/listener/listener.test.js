@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const amqputil = require('../../../lib/listener/listener-util');
 const seneca = require('seneca')()
   .quiet()
-  .use('seneca-transport');
+  .use('@seneca/transport');
 const listener = require('../../../lib/listener');
 
 describe('On listener module', function() {

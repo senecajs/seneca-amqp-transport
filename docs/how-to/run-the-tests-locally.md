@@ -5,7 +5,7 @@ the same way CI does.
 
 ## Prerequisites
 
-* Node 24 (or 22).
+* Node 24 or later.
 * Docker with the Compose plugin.
 
 ## Steps
@@ -15,10 +15,6 @@ the same way CI does.
    ```sh
    npm install
    ```
-
-   The repository has an `.npmrc` with `legacy-peer-deps=true`, because
-   published dependencies (seneca-transport) declare `peer seneca >=3`,
-   which excludes the Seneca 4 prerelease.
 
 2. Start RabbitMQ:
 
@@ -60,12 +56,12 @@ the same way CI does.
 To use another broker, set `AMQP_URL`, for example
 `AMQP_URL=amqp://user:pass@rabbit.internal:5672/vhost npm run test:e2e`.
 
-## Test against the unreleased Seneca 4.0.0
+## Test against another Seneca 4 build
 
 ```sh
-npm install --no-save /path/to/seneca-4.0.0.tgz
+npm install --no-save /path/to/seneca-4.x.y.tgz
 npm test
-npm install   # back to the devDependency (4.0.0-rc5)
+npm install   # back to the devDependency
 ```
 
 ## CI

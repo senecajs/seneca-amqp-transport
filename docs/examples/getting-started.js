@@ -5,7 +5,7 @@ const Seneca = require('seneca');
 
 const AMQP_URL = process.env.AMQP_URL || 'amqp://guest:guest@127.0.0.1:15673';
 
-// In your own project, use 'seneca-amqp-transport' instead of '../..'.
+// In your own project, use '@seneca/amqp-transport' instead of '../..'.
 const PLUGIN = process.env.AMQP_PLUGIN || require.resolve('../..');
 
 async function main() {
@@ -16,17 +16,13 @@ async function main() {
     })
     .listen({ type: 'amqp', pin: 'cmd:salute', url: AMQP_URL });
 
-  await new Promise((resolve, reject) =>
-    listener.ready(err => (err ? reject(err) : resolve()))
-  );
+  await listener.ready();
 
   const client = Seneca({ log: 'silent' })
     .use(PLUGIN)
     .client({ type: 'amqp', pin: 'cmd:salute', url: AMQP_URL });
 
-  await new Promise((resolve, reject) =>
-    client.ready(err => (err ? reject(err) : resolve()))
-  );
+  await client.ready();
 
   const out = await client.post('cmd:salute', { name: 'World' });
   console.log(out);

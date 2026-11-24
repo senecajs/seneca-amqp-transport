@@ -11,7 +11,7 @@ Plugin options apply to every client and listener of the instance. Put
 them under the `amqp` key:
 
 ```js
-Seneca().use('seneca-amqp-transport', {
+Seneca().use('@seneca/amqp-transport', {
   amqp: {
     exchange: { name: 'docs.topic', options: { durable: false, autoDelete: true } },
     listener: { queues: { options: { durable: false, exclusive: true } } }
@@ -20,8 +20,8 @@ Seneca().use('seneca-amqp-transport', {
 ```
 
 Options outside `amqp` (for example a top level `exchange`) are ignored.
-On Seneca 4, top level instance options such as `Seneca({ transport: {...} })`
-are not merged into the plugin; on Seneca 3 the `transport` block still is.
+Seneca 4 does not merge top level instance options such as
+`Seneca({ transport: {...} })` into the plugin.
 
 RabbitMQ 4 refuses non-durable queues that are not exclusive (the
 `transient_nonexcl_queues` feature is disabled), so pair `durable: false`

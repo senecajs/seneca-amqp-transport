@@ -1,4 +1,4 @@
-# seneca-amqp-transport documentation
+# @seneca/amqp-transport documentation
 
 The documentation follows the [Diátaxis](https://diataxis.fr/) structure.
 Start with the tutorial, use the how-to guides for tasks, look details up

@@ -16,7 +16,7 @@ chai.use(DirtyChai);
 const DEFAULT_OPTIONS = require('../../../defaults').amqp;
 const seneca = require('seneca')()
   .quiet()
-  .use('seneca-transport');
+  .use('@seneca/transport');
 const Listener = require('../../../lib/listener/listener-factory');
 
 describe('On listener-factory module', function() {
@@ -139,8 +139,15 @@ describe('On listener-factory module', function() {
         .listen()
         .then(() => {
           handleRequest.should.have.been.calledOnce();
+          // A delegate of the root instance that does not mark messages
+          // fatal$, so that a failing action is replied to, not fatal.
           handleRequest.should.have.been.calledWith(
-            seneca,
+            sinon.match(
+              actor =>
+                actor.root === seneca.root &&
+                'function' === typeof actor.act &&
+                !(actor.fixedmsg || {}).fatal$
+            ),
             { foo: 'bar' },
             DEFAULT_OPTIONS,
             sinon.match.func

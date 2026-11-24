@@ -9,7 +9,7 @@ connection. Defaults come from [defaults.json](../../defaults.json).
 ## Plugin options
 
 ```js
-Seneca().use('seneca-amqp-transport', { amqp: { /* ... */ } })
+Seneca().use('@seneca/amqp-transport', { amqp: { /* ... */ } })
 ```
 
 | Option | Type | Default | Effect |
@@ -35,8 +35,8 @@ Seneca().use('seneca-amqp-transport', { amqp: { /* ... */ } })
 | `amqp.client.queues.id` | string | random (first part of a v4 UUID) | Fixed suffix for the reply queue name. |
 | `amqp.client.queues.options` | object | `{ autoDelete: true, exclusive: true, arguments: { 'x-dead-letter-exchange': 'seneca.dlx', 'x-message-ttl': 10000 } }` | amqplib `assertQueue` options for reply queues. |
 
-Options outside `amqp` are ignored. On Seneca 3 the instance
-`transport` options block is merged too; Seneca 4 does not do that.
+Options outside `amqp` are ignored. Seneca 4 does not merge the
+instance `transport` options block into the plugin.
 RabbitMQ 4 refuses `durable: false` queues unless they are `exclusive`.
 
 ## Connection settings

@@ -16,16 +16,17 @@ module.exports = function(opts) {
   var seneca = this;
   var so = seneca.options();
 
-  // Seneca 3 shipped seneca-transport (which provides the `transport/utils`
-  // helpers this plugin relies on). Seneca 4 does not, so load it if needed.
+  // The `transport/utils` helpers this plugin relies on (such as
+  // make_client) come from @seneca/transport, not from Seneca 4 core, so
+  // load it unless the application already has.
   var tu = seneca.export('transport/utils');
   if (!tu || 'function' !== typeof tu.make_client) {
-    seneca.use(require('seneca-transport'));
+    seneca.use(require('@seneca/transport'));
   }
 
   // Seneca 4 does not merge the core `transport` options block into
-  // plugins; `so.transport` is still honoured when present (Seneca 3).
-  var options = seneca.util.deepextend(defaults, so.transport, opts);
+  // plugins; `so.transport` is still honoured when present.
+  var options = seneca.util.deep(defaults, so.transport, opts);
   var listener = hooks.listenerHook(seneca);
   var client = hooks.clientHook(seneca);
   seneca.add(
